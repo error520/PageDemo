@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorAccent</item>#通知栏颜色
+        <item name="colorPrimaryDark">@color/colorAccent</item>#导航栏颜色
+        <item name="colorAccent">@color/colorAccent</item>#控件选中后颜色
+    </style>
+
+</resources>

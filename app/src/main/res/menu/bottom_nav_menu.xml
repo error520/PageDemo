@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_first"
+        android:icon="@drawable/ic_shezhi"
+        android:title="@string/title_Setting" />
+
+    <item
+        android:id="@+id/navigation_second"
+        android:icon="@drawable/ic_zhuangtai"
+        android:title="@string/title_Condition" />
+
+    <item
+        android:id="@+id/navigation_third"
+        android:icon="@drawable/ic_duxie"
+        android:title="@string/title_ReadWrite" />
+    <item
+        android:id="@+id/navigation_fourth"
+        android:icon="@drawable/ic_shiboqi"
+        android:title="@string/title_OSC" />
+
+
+
+</menu>
