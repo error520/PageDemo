@@ -9,15 +9,25 @@
 
 android:layout_height="fill_parent"
 
-android:orientation="vertical" >
-
+android:orientation="vertical"
+    android:background="#DBEEF4">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:background="#686867"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose"
         android:textColor="#3838AC"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"
+        android:padding="12dp"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:background="#686867"/>
     <ListView
 
         android:id="@+id/mylist"
@@ -27,13 +37,23 @@ android:orientation="vertical" >
         android:layout_height="300dp"
 
         ></ListView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:background="#686867"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Write"
         android:textColor="#3838AC"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"
+        android:padding="12dp"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:background="#686867"/>
 
 
 
@@ -47,7 +67,10 @@ android:orientation="vertical" >
         android:divider="@null"
         />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dip"
+        android:background="#686867"/>
 
     <Button
 
