@@ -23,7 +23,7 @@
         android:id="@+id/list1"
         android:divider="#B4B3B3"
         android:dividerHeight="1.0dip"
-        android:scrollbars="none"
+
         android:descendantFocusability="beforeDescendants"
         android:background="@drawable/listview_bg"
         android:cacheColorHint="@android:color/transparent"

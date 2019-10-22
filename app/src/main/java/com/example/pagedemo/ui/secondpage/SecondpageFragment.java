@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SecondpageFragment extends Fragment {
     private View view;//得到碎片对应的布局文件,方便后续使用
-
+    public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -38,12 +38,12 @@ public class SecondpageFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup)getActivity(). findViewById(R.id.table_title);
-        tableTitle.setBackgroundColor(Color.rgb(177, 173, 172));
+        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
         //！！！数据每次点击后都应该刷新数据
         final List<Parameter> list0 = new ArrayList<Parameter>();
-        list0.add(new Parameter( "B0.00", "Output frequency","-300.00~300.00Hz","0.01Hz","NULL"));
-        list0.add(new Parameter("B0.01", "Output voltage","0~60000V","1V","NULL"));
-        list0.add(new Parameter( "B0.02", "Output current","0.0~3Ie","0.1A","NULL"));
+        list0.add(new Parameter(  "Output frequency","-300.00~300.00Hz"));
+        list0.add(new Parameter( "Output voltage","0~60000V"));
+        list0.add(new Parameter(  "Output current","0.0~3Ie"));
         ListView tableListView = (ListView) getActivity().findViewById(R.id.list0);
         TableAdapter adapter = new TableAdapter(this.getActivity(),list0);
         tableListView.setAdapter(adapter);

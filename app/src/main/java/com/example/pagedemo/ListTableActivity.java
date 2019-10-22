@@ -12,7 +12,11 @@ import java.util.List;
 //import com.example.tabledemo.R;
 
 public class ListTableActivity extends Activity {
-
+    public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
+    String[] Name={"Output frequency","Output voltage","Output current","Motor power","Motor actual frequency",
+    "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
+    "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
+    "Custom-made version number","Software date"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,16 +24,13 @@ public class ListTableActivity extends Activity {
 
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup) findViewById(R.id.table_title);
-        tableTitle.setBackgroundColor(Color.rgb(177, 173, 172));
+        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
 
-        
         //！！！数据每次点击后都应该刷新数据
         final List<Parameter> list = new ArrayList<Parameter>();
-        list.add(new Parameter( "B0.00", "Output frequency","-300.00~300.00Hz","0.01Hz","NULL"));
-        list.add(new Parameter("B0.01", "Output voltage","0~60000V","1V","NULL"));
-        list.add(new Parameter( "B0.02", "Output current","0.0~3Ie","0.1A","NULL"));
-
-
+        for(int i=0;i<15;i++){
+            list.add(new Parameter(  Name[i],"-300.00~300.00Hz"+i));
+        }
         ListView tableListView = (ListView) findViewById(R.id.list1);
 
         TableAdapter adapter = new TableAdapter(this, list);

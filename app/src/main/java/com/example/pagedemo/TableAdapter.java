@@ -1,6 +1,7 @@
 package com.example.pagedemo;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ public class TableAdapter extends BaseAdapter {
 
     private List<Parameter> list;
     private LayoutInflater inflater;
-
+    public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
     public TableAdapter(Context context, List<Parameter> list){
         this.list = list;
         inflater = LayoutInflater.from(context);
@@ -53,28 +54,19 @@ public class TableAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             convertView = inflater.inflate(R.layout.list_item1, null);
-            viewHolder.parameterFC= (TextView) convertView.findViewById(R.id.text_FC);
             viewHolder.parameterName = (TextView) convertView.findViewById(R.id.text_Name);
             viewHolder.parameterDescribe = (TextView) convertView.findViewById(R.id.text_Describe);
-            viewHolder.parameterUnit = (TextView) convertView.findViewById(R.id.text_Unit);
-            viewHolder.parameterRange = (TextView) convertView.findViewById(R.id.text_Range);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.parameterFC.setText(Parameter.getFC());
-        viewHolder.parameterFC.setTextSize(13);
+
         viewHolder.parameterName.setText(Parameter.getName());
         viewHolder.parameterName.setTextSize(13);
         viewHolder.parameterDescribe.setText(Parameter.getDescribe());
         viewHolder.parameterDescribe.setTextSize(13);
-        viewHolder.parameterUnit.setText(Parameter.getUnit());
-        viewHolder.parameterUnit.setTextSize(13);
-        viewHolder.parameterRange.setText(Parameter.getRange());
-        viewHolder.parameterRange.setTextSize(13);
-
-
+        convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
         return convertView;
     }
 

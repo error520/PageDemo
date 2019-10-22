@@ -100,6 +100,7 @@ public class ListViewAdapter extends BaseAdapter {
         holder.editText.setTag(watcher);
 
         convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
+
         return convertView;
 
     }

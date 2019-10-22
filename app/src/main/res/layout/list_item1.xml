@@ -5,24 +5,6 @@
     android:layout_height="wrap_content" >
 
     <TextView
-        android:id="@+id/text_FC"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:gravity="center"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip"
-        android:singleLine="true"
-        android:text="功能码"
-        android:textColor="#000000"
-        android:textSize="15sp" />
-    
-    <View 
-        android:layout_width="1.5dip"
-        android:layout_height="fill_parent"
-        android:background="#B4B3B3"/>
-
-    <TextView
         android:id="@+id/text_Name"
         android:layout_width="0dip"
         android:layout_height="match_parent"
@@ -30,8 +12,7 @@
         android:gravity="center"
         android:paddingTop="10dip"
         android:paddingBottom="10dip"
-        android:singleLine="true"
-        android:text="名称"
+        android:text="Name"
         android:textColor="#000000"
         android:textSize="15sp" />
 
@@ -39,6 +20,7 @@
         android:layout_width="1.5dip"
         android:layout_height="fill_parent"
         android:background="#B4B3B3"/>
+<!--    android:singleLine="true"-->
 
     <TextView
         android:id="@+id/text_Describe"
@@ -48,47 +30,14 @@
         android:gravity="center"
         android:paddingTop="10dip"
         android:paddingBottom="10dip"
-        android:singleLine="true"
-        android:text="描述"
-        android:textColor="#000000"
+        android:text="Describe"
+        android:textColor="#3838AC"
         android:textSize="15sp" />
-     
-     <View 
+
+    <View
         android:layout_width="1.5dip"
         android:layout_height="fill_parent"
-        android:background="#B4B3B3"/>
-
-    <TextView
-        android:id="@+id/text_Unit"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip"
-        android:singleLine="true"
-        android:text="单位"
-        android:textColor="#000000"
-        android:textSize="15sp" />
-     
-     <View 
-        android:layout_width="1.5dip"
-        android:layout_height="fill_parent"
-        android:background="#B4B3B3"/>
-
-    <TextView
-        android:id="@+id/text_Range"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:gravity="center"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip"
-        android:singleLine="true"
-        android:text="范围"
-        android:textColor="#000000"
-        android:textSize="15sp" />
-     
+        android:background="#B4B3B3" />
 
 
 </LinearLayout>
