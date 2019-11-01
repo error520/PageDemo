@@ -26,6 +26,7 @@
     </activity>
         <activity android:name=".edittext.EditTextActivity" />
         <activity android:name=".edittext.ListView_SpinnerActivity" />
+        <activity android:name=".OSCActivity" />
 
     </application>
 
