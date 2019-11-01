@@ -24,6 +24,9 @@ import java.util.List;
 public class SecondpageFragment extends Fragment {
     private View view;//得到碎片对应的布局文件,方便后续使用
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
+    String[] Name={"Output frequency","Output voltage","Motor power","变频器是否运行","变频器是否反转","是否达到主设定","是否允许串口控制",
+        "是否允许串口给定","报警/故障/正常","故障/报警代码"};
+
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -41,21 +44,30 @@ public class SecondpageFragment extends Fragment {
         tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
         //！！！数据每次点击后都应该刷新数据
         final List<Parameter> list0 = new ArrayList<Parameter>();
-        list0.add(new Parameter(  "Output frequency","-300.00~300.00Hz"));
-        list0.add(new Parameter( "Output voltage","0~60000V"));
-        list0.add(new Parameter(  "Output current","0.0~3Ie"));
+        for(int i=0;i<10;i++){
+            list0.add(new Parameter(  Name[i],"z"+i));
+        }
         ListView tableListView = (ListView) getActivity().findViewById(R.id.list0);
         TableAdapter adapter = new TableAdapter(this.getActivity(),list0);
         tableListView.setAdapter(adapter);
-        Button button = (Button) getActivity().findViewById(R.id.SecondpageMore);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"点击了TwoFragment里面的Button按钮",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(getContext(), ListTableActivity.class);
-                getActivity().startActivity(intent);//当然也可以写成getContext()
+        Button button0 = (Button) getActivity().findViewById(R.id.SecondpageMore);
+        button0.setOnClickListener(new SecondpageFragment.ButtonListener());
+        Button button1 = (Button) getActivity().findViewById(R.id.SecondpageReload);
+        button1.setOnClickListener(new SecondpageFragment.ButtonListener());
+    }
+    private class ButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.SecondpageMore:
+                    Toast.makeText(getContext(),"点击了TwoFragment里面的 更多 按钮",Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getContext(), ListTableActivity.class);
+                    getActivity().startActivity(intent);//当然也可以写成getContext()
+                case R.id.SecondpageReload:
+                    Toast.makeText(getContext(),"点击了TwoFragment里面的 刷新 按钮",Toast.LENGTH_SHORT).show();
 
             }
-        });
+
+        }
     }
 }
