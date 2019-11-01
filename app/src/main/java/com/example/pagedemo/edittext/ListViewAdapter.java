@@ -68,7 +68,7 @@ public class ListViewAdapter extends BaseAdapter {
 //        holder.edit_name.setText(GroupArray[position]);
 
         holder.edit_name.setText(ItemBean.getName());
-
+        holder.edit_name.setTextSize(13);
         holder.edit_current.setText(ItemBean.getCurrent());
         //This is important. Remove TextWatcher first.
         if (holder.editText.getTag() instanceof TextWatcher) {

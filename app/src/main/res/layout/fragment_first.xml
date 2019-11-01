@@ -1,17 +1,286 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="#DBEEF4"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="#DBEEF4"/>
+    <ListView
 
+        android:id="@+id/mylist0"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="100dp"
+
+        ></ListView>
+
+    <ListView
+        android:id="@+id/list_view0"
+        android:descendantFocusability="beforeDescendants"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/fragment1_text"
+        android:divider="@null"
+        />
+    <Button
+        android:id="@+id/FirstpageSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="170dp"
+        />
     <TextView
         android:id="@+id/fragment1_text"
+        android:text="控制字"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="This is the first fragment!"/>
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/control_bit2"
+        android:text="bit2~bit10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_111B"
+            android:text="运行命令"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/control_110B"
+            android:text="方式0停车"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/control_101B"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="方式1停车" />
+
+        <Button
+            android:id="@+id/control_100B"
+            android:text="外部故障停车"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/control_011B"
+            android:text="方式2停车"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit3"
+        android:text="bit3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit3_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="正转"/>
+
+        <Button
+            android:id="@+id/control_bit3_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="反转"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit4"
+        android:text="bit4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit4_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="点动正转无效"/>
+
+        <Button
+            android:id="@+id/control_bit4_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="点动正转"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit5"
+        android:text="bit5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit5_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="点动反转无效"/>
+
+        <Button
+            android:id="@+id/control_bit5_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="点动反转"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit6"
+        android:text="bit6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit6_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="允许加减速"/>
+
+        <Button
+            android:id="@+id/control_bit6_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="禁止加减速"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit7"
+        android:text="bit7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit7_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="上位机控制字1有效"/>
+
+        <Button
+            android:id="@+id/control_bit7_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="上位机控制字1无效"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit8"
+        android:text="bit8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit8_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="主给定有效"/>
+
+        <Button
+            android:id="@+id/control_bit8_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="主给定无效"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/control_bit9"
+        android:text="bit9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/control_bit9_0"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="故障复位有效"/>
+
+        <Button
+            android:id="@+id/control_bit9_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="故障复位无效"/>
+    </LinearLayout>
     <Button
         android:id="@+id/FirstpageMore"
         android:layout_width="wrap_content"
@@ -19,7 +288,7 @@
         android:text="More"
         tools:layout_editor_absoluteX="153dp"
         tools:layout_editor_absoluteY="170dp"
-        tools:ignore="MissingConstraints" />
+         />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout></ScrollView>
