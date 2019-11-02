@@ -1,8 +1,12 @@
 package com.example.pagedemo.ui.firstpage;
 
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,9 @@ import com.example.pagedemo.edittext.TextAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.pagedemo.BluetoothService.*;
+import com.example.pagedemo.util;
+
 public class FirstpageFragment extends Fragment implements View.OnClickListener {
     String[] Name =  { "Control mode", "Main reference  frequency selector"};
     String[][] temp = {{"0：Vector control without PG","1: Vector control with PG","2:V/F control"},
@@ -35,6 +42,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     private com.example.pagedemo.edittext.ListViewAdapter mAdapter;
     private List<com.example.pagedemo.edittext.ItemBean> mData;
     //记住一定要重写onCreateView方法
+    private BLEService mBluetoothLeService;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,11 +54,15 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         show();
+        //绑定服务
+        Intent BLEIntent = new Intent(getActivity(),BLEService.class);
+        getActivity().bindService(BLEIntent,connection, Context.BIND_AUTO_CREATE);
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
         mData.add(new ItemBean( "Digital reference frequency", "","  "));
         mAdapter = new com.example.pagedemo.edittext.ListViewAdapter(this.getActivity(), mData);
         mListView.setAdapter(mAdapter);
+        util.setListViewHeightBasedOnChildren(mListView);
         Button button0 = (Button) getActivity().findViewById(R.id.FirstpageMore);
         button0.setOnClickListener(this);
         Button button1 = (Button) getActivity().findViewById(R.id.FirstpageSubmit);
@@ -123,6 +135,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.control_111B:
                 Toast.makeText(getContext(),"运行命令",Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.control_110B:
                 Toast.makeText(getContext(),"方式0停车",Toast.LENGTH_SHORT).show();
@@ -182,5 +195,19 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         }
 
 
-}
+    }
+
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mBluetoothLeService = ((BLEService.localBinder) service)
+                    .getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 }

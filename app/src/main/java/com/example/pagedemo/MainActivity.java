@@ -1,6 +1,8 @@
 package com.example.pagedemo;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +45,14 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.item00:
+                Intent intent = new Intent(this,com.example.pagedemo.ui.scanpage.DeviceList.class);
+                try{
+                startActivity(intent);
+                }catch(Exception e){
+                    Log.d("device_list",e.toString());
+                }
+             break;
             case R.id.item01:
                 textview.setText("item1 selected!");
                 break;

@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="android.myapplication.MainActivity">
     <item
+        android:id="@+id/item00"
+        android:checkable="true"
+        android:title="蓝牙连接" />
+    <item
             android:id="@+id/item01"
             android:title="参数列表" />
     <item

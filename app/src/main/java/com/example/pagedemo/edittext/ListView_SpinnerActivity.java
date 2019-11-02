@@ -4,6 +4,7 @@ package com.example.pagedemo.edittext;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pagedemo.R;
-
+import com.example.pagedemo.util;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,6 +248,7 @@ public class ListView_SpinnerActivity extends Activity implements View.OnClickLi
         }
         mAdapter = new com.example.pagedemo.edittext.ListViewAdapter(this, mData);
         mListView.setAdapter(mAdapter);
+        util.setListViewHeightBasedOnChildren(mListView);
         Button button1 = (Button) findViewById(R.id.button1);
         button1.setOnClickListener(this);
         Button button2 = (Button) findViewById(R.id.Control_111B);
@@ -312,6 +314,7 @@ public class ListView_SpinnerActivity extends Activity implements View.OnClickLi
             TextAdapter textAdapter = new TextAdapter(ListView_SpinnerActivity.this, texts, R.layout.main_item);//向自定义的Adapter中传值
             listView = (ListView) findViewById(R.id.mylist);
             listView.setAdapter(textAdapter);//传值到ListView中
+            util.setListViewHeightBasedOnChildren(listView);
         }
     }
 

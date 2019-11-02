@@ -37,6 +37,8 @@ public class ListTableActivity extends Activity {
 
         tableListView.setAdapter(adapter);
 
+
+
 //        // 点击事件
 //        tableListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 //            @Override
