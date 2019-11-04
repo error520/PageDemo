@@ -23,6 +23,7 @@ import com.example.pagedemo.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -81,7 +82,7 @@ public class BLEService extends Service {
      */
     private void broadcastUpdate(final String action, final String device){
         Intent intent = new Intent(action);
-        intent.putExtra(EXTRA_DEVICE_DATA,device);
+        intent.putExtra(action,device);
         localBroadcastManager.sendBroadcast(intent);
     }
     /**
@@ -127,15 +128,17 @@ public class BLEService extends Service {
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            if(!device_list.contains(device.getName()+"\n" +
-                    device.getAddress())) {
-                device_list.add(device.getName()+"\n" +
-                        device.getAddress());
-                broadcastUpdate(ACTION_GET_DEVICE_NAME,device.getName()+"\n" +
-                        device.getAddress());
-                Log.d(TAG,device.getName()+"\n" +
-                        device.getAddress());
-            }
+                if(!device_list.contains(device.getName()+"\n" +
+                        device.getAddress())) {
+                    device_list.add(device.getName()+"\n" +
+                            device.getAddress());
+                    if(!Objects.isNull(device.getName()))
+                        broadcastUpdate(ACTION_GET_DEVICE_NAME,device.getName()+"\n" +
+                            device.getAddress());
+                    Log.d(TAG,device.getName()+"\n" +
+                            device.getAddress());
+                }
+
 
         }
     };

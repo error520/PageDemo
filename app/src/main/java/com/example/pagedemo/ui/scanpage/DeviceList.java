@@ -96,8 +96,9 @@ public class DeviceList extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        try {
+//        try {
             initUI();
+            getBlePermissionFromSys();
             Intent BLEIntent = new Intent(this, BLEService.class);
             bindService(BLEIntent, connection, BIND_AUTO_CREATE);
             //   startService(BLEIntent);
@@ -105,9 +106,9 @@ public class DeviceList extends AppCompatActivity{
             localReceiver = new LocalReceiver();
             localBroadcastManager = LocalBroadcastManager.getInstance(this);
             localBroadcastManager.registerReceiver(localReceiver, util.makeGattUpdateIntentFilter());
-        }catch(Exception e){
-            Log.d("device_list",e.toString());
-        }
+//        }catch(Exception e){
+//            Log.d("device_list",e.toString());
+//        }
 //        Set<BluetoothDevice>pairedDevices=mBtAdapter.getBondedDevices();
 //        if(pairedDevices.size()>0){
 //            for(BluetoothDevice device : pairedDevices){
