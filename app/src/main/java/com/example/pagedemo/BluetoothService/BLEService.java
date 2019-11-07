@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.pagedemo.util;
@@ -40,8 +42,12 @@ public class BLEService extends Service {
     public final static String ACTION_GET_DEVICE_NAME = "com.kinco.BLEService.ACTION_GET_DEVICE_NAME";
     public final static String ACTION_SEARCH_COMPLETED = "com.kinco.BLEService.ACTION_SEARCH_COMPLETED";
     public final static String EXTRA_MESSAGE_DATA = "com.kinco.BLEService.EXTRA_DATA";
-    public final static String EXTRA_DEVICE_DATA = "com.kinco.BLEService.DEVICE_DATA";
+    public final static String ACTION_DATA_LENGTH_FALSE = "com.kinco.BLEService.ACTION_DATA_LENGTH_FALSE";
+    public final static  String ACTION_ERROR_CODE="com.kinco.BLEService.ACTION_ERROR_CODE";
     private boolean mScanning;
+    public boolean mConnected=false;
+    public boolean mFilter = true;
+    public static String slaveAddress="null";
     private final  IBinder mBinder = new localBinder();
     private BluetoothGatt mBluetoothGatt;
     private List<BluetoothGattCharacteristic> gattCharacteristics;
@@ -52,6 +58,7 @@ public class BLEService extends Service {
     private UUID notify_UUID_chara;
     private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGattCharacteristic writeCharacteristic;
+
 
     public boolean init(){
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
@@ -86,12 +93,21 @@ public class BLEService extends Service {
         localBroadcastManager.sendBroadcast(intent);
     }
     /**
-     * 接收到消息
+     * 接收到消息, 并传递一定信息量到前台
+     * 0是正常接收, 1是错误码, 2是长度不正常
      * */
     public void broadcastUpdate(String message,int i){
-        Intent intent = new Intent(ACTION_DATA_AVAILABLE);
-        intent.putExtra(EXTRA_MESSAGE_DATA,message);
-        localBroadcastManager.sendBroadcast(intent);
+        switch(i) {
+            case 0:{Intent intent = new Intent(ACTION_DATA_AVAILABLE);
+                intent.putExtra(EXTRA_MESSAGE_DATA, message);
+                localBroadcastManager.sendBroadcast(intent);}break;
+            case 1:{Intent intent = new Intent(ACTION_ERROR_CODE);
+                intent.putExtra(ACTION_ERROR_CODE, message);
+                localBroadcastManager.sendBroadcast(intent);}break;
+            case 2:{Intent intent = new Intent(ACTION_DATA_LENGTH_FALSE);
+                intent.putExtra(ACTION_DATA_LENGTH_FALSE, message);
+                localBroadcastManager.sendBroadcast(intent);}break;
+        }
     }
 
     public void scanLeDevice(final boolean enable) {
@@ -132,7 +148,7 @@ public class BLEService extends Service {
                         device.getAddress())) {
                     device_list.add(device.getName()+"\n" +
                             device.getAddress());
-                    if(!Objects.isNull(device.getName()))
+                    if(!Objects.isNull(device.getName())||!mFilter)
                         broadcastUpdate(ACTION_GET_DEVICE_NAME,device.getName()+"\n" +
                             device.getAddress());
                     Log.d(TAG,device.getName()+"\n" +
@@ -145,9 +161,12 @@ public class BLEService extends Service {
 
     public boolean connect(final String address) {//4
 //        Log.d(TAG, "连接" + mBluetoothDeviceAddress);
+        if(!(mBluetoothGatt==null))
+            close();
         if (mBtAdapter == null || address == null) {
             Log.d(TAG,"BluetoothAdapter不能初始化 or 未知 address.");
             Toast.makeText(this,"未能连接",Toast.LENGTH_LONG).show();
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
             return false;
         }
 
@@ -156,13 +175,16 @@ public class BLEService extends Service {
         if (device == null) {
             Toast.makeText(this,"设备没找到，不能连接",Toast.LENGTH_SHORT).show();
             Log.d("data", "设备没找到，不能连接");
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
             return false;
         }
 
         mBluetoothGatt = device.connectGatt(this, true, mBluetoothGattCallback);//真正的连接
         //这个方法需要三个参数：一个Context对象，自动连接（boolean值,表示只要BLE设备可用是否自动连接到它），和BluetoothGattCallback调用。
         Log.d(TAG, "尝试新的连接.");
+        mConnected=true;
         return true;
+
     }
     BluetoothGattCallback mBluetoothGattCallback = new BluetoothGattCallback() {
         //当连接状态发生改变(有信息来)
@@ -176,10 +198,14 @@ public class BLEService extends Service {
                     Log.e(TAG,"连接成功");
                     //发现服务
                     gatt.discoverServices();
+
                 }
             }else{
                 //连接失败
                 Log.e(TAG,"失败=="+status);
+                mConnected = false;
+                slaveAddress="null";
+                broadcastUpdate(ACTION_GATT_DISCONNECTED);
                 mBluetoothGatt.close();
 
             }
@@ -190,6 +216,8 @@ public class BLEService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
+                mConnected = true;
+                broadcastUpdate(ACTION_GATT_CONNECTED);
                 //得到所有Service
                 List<BluetoothGattService> supportedGattServices = gatt.getServices();
                 for (BluetoothGattService gattService : supportedGattServices) {
@@ -243,9 +271,19 @@ public class BLEService extends Service {
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             byte bb2[] = characteristic.getValue();
-            Log.d(TAG, util.toHexString(bb2));
-            broadcastUpdate(util.toHexString(bb2),1);//收到的消息进行广播
+            Log.d(TAG, "Slave:"+util.toHexString(bb2));
+            if(bb2.length>5) {
+                broadcastUpdate(util.toHexString(bb2),0);//收到的消息进行广播
+            }else if((bb2.length==5)){
+                broadcastUpdate(util.toHexString(bb2),1);//广播错误码
+            }
+            else{
+                Log.e(TAG,"长度错误!当前长度为"+bb2.length+"");
+            broadcastUpdate(bb2.length+"",2);
+            }
+
         }
+
 
         //调用mBluetoothGatt.readRemoteRssi()时的回调，rssi即信号强度
         @Override
@@ -269,6 +307,7 @@ public class BLEService extends Service {
         super.onCreate();
         init();
         Log.d(TAG,"创建了服务");
+
     }
 
     @Override
@@ -287,19 +326,30 @@ public class BLEService extends Service {
         }
         mBluetoothGatt.close();
         mBluetoothGatt = null;
+        mConnected=false;
+        slaveAddress = "null";
     }
 
     //读取数据
     public void readData(String data1, String data2){
-           sendDataPackage(data1,data2,true);
+        if(mConnected)
+            sendDataPackage(data1,data2,true);
+        else
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
     //发送数据
     public void writeData(String data1,String data2){
+        if(mConnected)
             sendDataPackage(data1,data2,false);
+        else
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
 
     //生成数据包, true为读取数据, false为写数据
     private void sendDataPackage(String data1, String data2, boolean mode){
+        if(data2.length()<4)
+            for(int i=0;i<(4-data2.length());i++)
+                data2 = "0"+data2;
         int numA = Integer.parseInt(data1, 16);
         int numB = Integer.parseInt(data2, 16);
         byte dataA[] = util.intToByte2(numA);
@@ -317,6 +367,7 @@ public class BLEService extends Service {
         try {
             writeCharacteristic.setValue(send);
             mBluetoothGatt.writeCharacteristic(writeCharacteristic);
+            Log.d(TAG,"Master:"+util.toHexString(send));
         } catch (Exception e) {
             Log.d("data", e.toString());
         }

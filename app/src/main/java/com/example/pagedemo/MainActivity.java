@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -15,6 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.pagedemo.ui.DeviceList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity  {
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item00:
-                Intent intent = new Intent(this,com.example.pagedemo.ui.scanpage.DeviceList.class);
+                Intent intent = new Intent(this, DeviceList.class);
                 try{
                 startActivity(intent);
                 }catch(Exception e){
@@ -54,10 +56,10 @@ public class MainActivity extends AppCompatActivity  {
                 }
              break;
             case R.id.item01:
-                textview.setText("item1 selected!");
+                Toast.makeText(MyApplication.getContext(),"Coming soon",Toast.LENGTH_SHORT);
                 break;
             case R.id.item02:
-                textview.setText("item2 selected!");
+                Toast.makeText(MyApplication.getContext(),"Coming soon",Toast.LENGTH_SHORT);
                 break;
         }
         return super.onOptionsItemSelected(item);

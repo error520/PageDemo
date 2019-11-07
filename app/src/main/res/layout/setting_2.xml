@@ -32,13 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="1.5dip"
         android:background="#686867"/>
+
     <ListView
 
         android:id="@+id/mylist"
 
         android:layout_width="match_parent"
 
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
 
         ></ListView>
     <View
@@ -61,13 +62,6 @@
             android:textColor="#3838AC"
             android:textSize="20sp"
             android:textStyle="bold" />
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Set!"
-            android:layout_alignParentRight="true"
-            />
     </RelativeLayout>
 
 
@@ -116,14 +110,14 @@
 
         <Button
             android:id="@+id/Control_111B"
-            android:text="运行命令"
+            android:text="Running conmmand"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
             android:id="@+id/Control_110B"
-            android:text="方式0停车"
+            android:text="Stop mode 0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -133,17 +127,17 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="方式1停车" />
+            android:text="Stop mode 1" />
 
         <Button
             android:id="@+id/Control_100B"
-            android:text="外部故障停车"
+            android:text="Stop by external fault"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         <Button
             android:id="@+id/Control_011B"
-            android:text="方式2停车"
+            android:text="Stop mode 2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -165,14 +159,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="正转"/>
+            android:text="Forward"/>
 
         <Button
             android:id="@+id/Control_bit3_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="反转"/>
+            android:text="Reverse"/>
     </LinearLayout>
     <TextView
         android:id="@+id/Control_bit4"
@@ -191,14 +185,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="点动正转无效"/>
+            android:text="Jog forward disable"/>
 
         <Button
             android:id="@+id/Control_bit4_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="点动正转"/>
+            android:text="Jog forward"/>
     </LinearLayout>
     <TextView
         android:id="@+id/Control_bit5"
@@ -217,14 +211,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="点动反转无效"/>
+            android:text="Jog reverse disable"/>
 
         <Button
             android:id="@+id/Control_bit5_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="点动反转"/>
+            android:text="Jog reverse"/>
     </LinearLayout>
     <TextView
         android:id="@+id/Control_bit6"
@@ -244,14 +238,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="允许加减速"/>
+            android:text="Disable Acc/Dcc"/>
 
         <Button
             android:id="@+id/Control_bit6_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="禁止加减速"/>
+            android:text="Enable Acc/Dcc"/>
     </LinearLayout>
     <TextView
         android:id="@+id/Control_bit7"
@@ -270,14 +264,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="上位机控制字1有效"/>
+            android:text="Host computer control word 1 disable"/>
 
         <Button
             android:id="@+id/Control_bit7_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="上位机控制字1无效"/>
+            android:text="Host computer control word 1 enable"/>
     </LinearLayout>
     <TextView
         android:id="@+id/Control_bit8"
@@ -296,14 +290,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="主给定有效"/>
+            android:text="Main reference disable"/>
 
         <Button
             android:id="@+id/Control_bit8_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="主给定无效"/>
+            android:text="Main reference enable"/>
     </LinearLayout>
     <TextView
         android:id="@+id/Control_bit9"
@@ -322,14 +316,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="故障复位有效"/>
+            android:text="Fault reset disable"/>
 
         <Button
             android:id="@+id/Control_bit9_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="故障复位无效"/>
+            android:text="Fault reset enable"/>
     </LinearLayout>
 
 

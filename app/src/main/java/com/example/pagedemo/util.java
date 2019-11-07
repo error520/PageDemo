@@ -1,13 +1,20 @@
 package com.example.pagedemo;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.pagedemo.BluetoothService.BLEService;
+import com.example.pagedemo.ui.firstpage.FirstpageFragment;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 public class util {
@@ -65,6 +72,8 @@ public class util {
         intentFilter.addAction(BLEService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(BLEService.ACTION_GET_DEVICE_NAME);
         intentFilter.addAction(BLEService.ACTION_SEARCH_COMPLETED);
+        intentFilter.addAction(BLEService.ACTION_DATA_LENGTH_FALSE);
+        intentFilter.addAction(BLEService.ACTION_ERROR_CODE);
         return intentFilter;
     };
 
@@ -91,6 +100,13 @@ public class util {
         // listView.getDividerHeight()获取子项间分隔符占用的高度
         // params.height最后得到整个ListView完整显示需要的高度
         listView.setLayoutParams(params);
+    }
+
+    //long是1, short是0
+    public static void centerToast(Context context, String message, int i){
+        Toast toast = Toast.makeText(context,message,i);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
 
 

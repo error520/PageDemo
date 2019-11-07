@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--android:background="@mipmap/wallpaper1"-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -36,8 +37,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/BLEscan"
         android:layout_below="@id/llayout1"
+        android:layout_above="@id/scanBottom"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -55,19 +56,41 @@
             android:layout_weight="1"></ListView>
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/processbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
-
-    <Button
-        android:id="@+id/BLEscan"
+    <LinearLayout
+        android:id="@+id/scanBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="SCAN" />
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/filter"
+            android:layout_width="116dp"
+            android:layout_height="43dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:switchMinWidth="50dp"
+            android:switchPadding="1dp"
+            android:text="Filter"
+            android:textAlignment="center"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/BLEscan"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_weight="6"
+            android:text="SCAN" />
+
+        <ProgressBar
+            android:id="@+id/processbar"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:layout_weight="8"
+            android:visibility="gone" />
+
+
+
+    </LinearLayout>
+
 </RelativeLayout>

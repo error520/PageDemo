@@ -1,4 +1,4 @@
-package com.example.pagedemo.ui.scanpage;
+package com.example.pagedemo.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
@@ -19,14 +19,17 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.pagedemo.R;
@@ -50,14 +53,17 @@ public class DeviceList extends AppCompatActivity{
     private IntentFilter filter = new IntentFilter();
     private ProgressBar progressBar;
     private Button BLEScan;
+    private Switch Filter;
     private boolean mScanning;//是否正在搜索
     private Handler mHandler;
     private TextView count;
     private static final long SCAN_PERIOD = 10000;
     private String TAG = "DeviceList";
+    private String slaveAddress="null";
     BLEService mBLE;
     private LocalBroadcastManager localBroadcastManager;
     ArrayList<String> device_list = new ArrayList<String>();
+    ArrayList<String> connected_list = new ArrayList<String>();
     private LocalReceiver localReceiver;
     private BLEService mBluetoothLeService;
 
@@ -65,7 +71,25 @@ public class DeviceList extends AppCompatActivity{
         setContentView(R.layout.device_list);
         setResult(Activity.RESULT_CANCELED);
         progressBar = (ProgressBar)findViewById(R.id.processbar);
+        progressBar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBluetoothLeService.stopLeScan();//点击停止
+                progressBar.setVisibility(View.GONE);
+                BLEScan.setVisibility(View.VISIBLE);
+            }
+        });
         BLEScan=(Button)findViewById(R.id.BLEscan);
+        Filter=(Switch)findViewById(R.id.filter);
+        Filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    mBluetoothLeService.mFilter=true;
+                else
+                    mBluetoothLeService.mFilter=false;
+            }
+        });
         BLEScan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,14 +104,19 @@ public class DeviceList extends AppCompatActivity{
         });
 
         mPairedDevicesArrayAdapter=new ArrayAdapter<String>(this,
-                R.layout.list_item);
+                R.layout.list_item,connected_list);
         mNewDevicesArrayAdapter=new ArrayAdapter<String>(this,
                 R.layout.list_item,device_list);
 
         ListView pairedListView=(ListView)findViewById(R.id.connected_devices);
         pairedListView.setAdapter(mPairedDevicesArrayAdapter);
-        pairedListView.setOnItemClickListener(mDeviceClickListen);
-
+        pairedListView.setOnItemClickListener(mDisconnectListen);
+        if(!BLEService.slaveAddress.equals("null")){
+            slaveAddress = BLEService.slaveAddress;
+            connected_list.clear();
+            connected_list.add(slaveAddress);
+            mPairedDevicesArrayAdapter.notifyDataSetChanged();
+        }
         ListView newDeviceListView=(ListView)findViewById(R.id.new_devices);
         newDeviceListView.setAdapter(mNewDevicesArrayAdapter);
         newDeviceListView.setOnItemClickListener(mDeviceClickListen);
@@ -101,25 +130,10 @@ public class DeviceList extends AppCompatActivity{
             getBlePermissionFromSys();
             Intent BLEIntent = new Intent(this, BLEService.class);
             bindService(BLEIntent, connection, BIND_AUTO_CREATE);
-            //   startService(BLEIntent);
             mHandler = new Handler();
             localReceiver = new LocalReceiver();
             localBroadcastManager = LocalBroadcastManager.getInstance(this);
             localBroadcastManager.registerReceiver(localReceiver, util.makeGattUpdateIntentFilter());
-//        }catch(Exception e){
-//            Log.d("device_list",e.toString());
-//        }
-//        Set<BluetoothDevice>pairedDevices=mBtAdapter.getBondedDevices();
-//        if(pairedDevices.size()>0){
-//            for(BluetoothDevice device : pairedDevices){
-//                mPairedDevicesArrayAdapter.add(device.getName()+"\n"
-//                +device.getAddress());
-//            }
-//        }else{
-//            String noDevices=getResources().getText(R.string.none_paired)
-//                    .toString();
-//            mPairedDevicesArrayAdapter.add(noDevices);
-//        }
     }
     @Override
     protected void onDestroy(){
@@ -127,7 +141,15 @@ public class DeviceList extends AppCompatActivity{
         localBroadcastManager.unregisterReceiver(localReceiver);
     }
 
-
+    private OnItemClickListener mDisconnectListen=new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView,
+                                View view, int i, long l) {
+                mBluetoothLeService.close();
+                connected_list.clear();
+                mPairedDevicesArrayAdapter.notifyDataSetChanged();
+        }
+    };
 
 
     //选项监听器
@@ -135,18 +157,21 @@ public class DeviceList extends AppCompatActivity{
         @Override
         public void onItemClick(AdapterView<?> adapterView,
                                 View view, int i, long l) {
-            //mBtAdapter.cancelDiscovery();
-            //停止扫描
             mBluetoothLeService.stopLeScan();
             String info=((TextView) view).getText().toString();
             String address=info.substring(info.length()-17);
-            Intent intent =new Intent();
-            intent.putExtra(EXTRA_DEVICE_ADDRESS,address);
-            Toast toast = Toast.makeText(DeviceList.this,"你选择了"+address, Toast.LENGTH_SHORT);
+//            Intent intent =new Intent();
+//            intent.putExtra(EXTRA_DEVICE_ADDRESS,address);
+            slaveAddress = info;
+            if(!slaveAddress.equals("null")) {
+                connected_list.clear();
+                mPairedDevicesArrayAdapter.notifyDataSetChanged();
+            }
+            Toast toast = Toast.makeText(DeviceList.this,"Connecting...please wait", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER,0,0);
             toast.show();
             mBluetoothLeService.connect(address);
-            finish();
+//            finish();
 //            Intent intent2 = new Intent(DeviceList.this,ChatActivity.class);
 //            intent2.putExtra(EXTRA_DEVICE_ADDRESS,address);
 
@@ -207,6 +232,21 @@ public class DeviceList extends AppCompatActivity{
                 progressBar.setVisibility(View.GONE);
                 BLEScan.setVisibility(View.VISIBLE);
             }
+            else if(action.equals(BLEService.ACTION_GATT_CONNECTED)){
+                Toast toast = Toast.makeText(getApplicationContext(),"Connection succeed!",Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
+                mBluetoothLeService.slaveAddress = slaveAddress;
+                connected_list.clear();
+                connected_list.add(slaveAddress);
+                mPairedDevicesArrayAdapter.notifyDataSetChanged();
+                finish();
+            }
+            else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)){
+                Toast toast = Toast.makeText(getApplicationContext(),"Connection failed!",Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
+            }
         }
     }
 
@@ -215,6 +255,7 @@ public class DeviceList extends AppCompatActivity{
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBluetoothLeService = ((BLEService.localBinder) service)
                     .getService();
+            mBluetoothLeService.mFilter=true;
         }
 
         @Override
