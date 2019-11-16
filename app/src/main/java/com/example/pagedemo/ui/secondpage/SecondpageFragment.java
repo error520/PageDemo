@@ -39,9 +39,10 @@ public class SecondpageFragment extends Fragment {
     LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
     List<Parameter> list0;
     TableAdapter adapter;
+    int count = 0;
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
     String[] Name={"Output frequency","Output voltage","Motor power","VFD","VFD rotation","Main reference","Serial port control",
-        "Serial port setting","Fault/alarm code"};
+        "Serial port setting","State"};
 
     //记住一定要重写onCreateView方法
     @Nullable
@@ -107,9 +108,11 @@ public class SecondpageFragment extends Fragment {
                 case R.id.SecondpageMore:
                     Intent intent=new Intent(getContext(), ListTableActivity.class);
                     getActivity().startActivity(intent);//当然也可以写成getContext()
+                    break;
                 case R.id.SecondpageReload:
-                    addressState="0110";
-                    mBluetoothLeService.readData("0110","0001");
+                    addressState="0100";
+                    mBluetoothLeService.readData("0100","0001");
+                    break;
 
 
             }
@@ -123,40 +126,78 @@ public class SecondpageFragment extends Fragment {
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                int info = Integer.valueOf(message.substring(9,11))+Integer.valueOf(message.substring(12,14))*256;
-                if(addressState.equals("0110")){
-                      Log.d(TAG,info+"");
-                    if((info&0x1)>0)
-                        list0.set(3,new Parameter(Name[3],"Running"));
-                    else
-                        list0.set(3,new Parameter(Name[3],"Stop"));
-                    if((info&0x02)>0)
-                        list0.set(4,new Parameter(Name[4],"Reverse"));
-                    else
-                        list0.set(4,new Parameter(Name[4],"Forward"));
-                    if((info&0x04)>0)
-                        list0.set(5,new Parameter(Name[5],"Reach"));
-                    else
-                        list0.set(5,new Parameter(Name[5],"Not Reach"));
-                    if((info&0x08)>0)
-                        list0.set(6,new Parameter(Name[6],"Enable"));
-                    else
-                        list0.set(6,new Parameter(Name[6],"Disable"));
-                    if((info&0x10)>0)
-                        list0.set(7,new Parameter(Name[7],"Enable"));
-                    else
-                        list0.set(7,new Parameter(Name[7],"Disable"));
-                    if((info&0x20)>0)
-                        list0.set(8,new Parameter(Name[8],"Alarm"));
-                    else
-                        list0.set(8,new Parameter(Name[8],"Fault of normal"));
+                Log.d(TAG,message);
+                try {
+                    int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
+                    if (addressState.equals("0100")) {
+                        list0.get(0).setDescribe(((float) ((short) info) / 100) + "Hz");
+                        addressState = "0101";
+                        mBluetoothLeService.readData("0101", "0001");
+                        return;
+                    }
+                    if (addressState.equals("0101")) {
+                        list0.get(1).setDescribe(info + "V");
+                        addressState = "0103";
+                        mBluetoothLeService.readData("0103", "0001");
+                        return;
+                    }
+                    if (addressState.equals("0103")) {
+                        list0.get(2).setDescribe((float) info / 10 + "%");
+                        addressState = "0110";
+                        mBluetoothLeService.readData("0110", "0001");
+                        return;
+                    }
+                    if (addressState.equals("0110")) {
+                        //Log.d(TAG,info+"");
+                        if ((info & 0x1) > 0)
+                            list0.get(3).setDescribe("Running");
+                        else
+                            list0.get(3).setDescribe("Stop");
+                        if ((info & 0x02) > 0)
+                            list0.get(4).setDescribe("Reverse");
+                        else
+                            list0.get(4).setDescribe("Forward");
+                        if ((info & 0x04) > 0)
+                            list0.get(5).setDescribe("Reach");
+                        else
+                            list0.get(5).setDescribe("Not Reach");
+                        if ((info & 0x08) > 0)
+                            list0.get(6).setDescribe("Enable");
+                        else
+                            list0.get(6).setDescribe("Disable");
+                        if ((info & 0x10) > 0)
+                            list0.get(7).setDescribe("Enable");
+                        else
+                            list0.get(7).setDescribe("Disable");
+                        if ((info & 0x20) > 0)
+                            list0.get(8).setDescribe("Alarm");
+                        else {
+                            if ((info & 0xff00) > 0)
+                                list0.get(8).setDescribe("Fault");
+                            else
+                                list0.get(8).setDescribe("Normal");
+                        }
+                    }
+                }catch(Exception e){
+                        util.saveErrorLog(getContext(),e.toString());
+                }
+
                     adapter.notifyDataSetChanged();
-//
+                    addressState="0000";
+                    util.centerToast(getContext(),"Reload completed!",0);
+                    return;
+
                }
 
-            }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
+                util.saveErrorLog(getContext(),"jieshoucuowu");
+            }
+            else if(action.equals(BLEService.ACTION_ERROR_CODE)){
+                util.centerToast(getContext(),"Read error:"
+                                +intent.getStringExtra(BLEService.ACTION_ERROR_CODE),0);
+                addressState="0000";
+
             }
         }
     }

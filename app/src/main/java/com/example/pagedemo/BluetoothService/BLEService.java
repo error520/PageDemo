@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.pagedemo.util;
@@ -48,6 +49,7 @@ public class BLEService extends Service {
     public boolean mConnected=false;
     public boolean mFilter = true;
     public static String slaveAddress="null";
+    public static byte slaveCode = 0x00;
     private final  IBinder mBinder = new localBinder();
     private BluetoothGatt mBluetoothGatt;
     private List<BluetoothGattCharacteristic> gattCharacteristics;
@@ -203,10 +205,7 @@ public class BLEService extends Service {
             }else{
                 //连接失败
                 Log.e(TAG,"失败=="+status);
-                mConnected = false;
-                slaveAddress="null";
-                broadcastUpdate(ACTION_GATT_DISCONNECTED);
-                mBluetoothGatt.close();
+                close();
 
             }
         }
@@ -216,6 +215,7 @@ public class BLEService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
+                //真正连接成功
                 mConnected = true;
                 broadcastUpdate(ACTION_GATT_CONNECTED);
                 //得到所有Service
@@ -307,6 +307,9 @@ public class BLEService extends Service {
         super.onCreate();
         init();
         Log.d(TAG,"创建了服务");
+//        //调试用
+//        scanLeDevice(true);
+//        connect("78:DB:2F:C7:63:A8");
 
     }
 
@@ -328,6 +331,8 @@ public class BLEService extends Service {
         mBluetoothGatt = null;
         mConnected=false;
         slaveAddress = "null";
+        slaveCode=0x00;
+        broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
 
     //读取数据
@@ -355,7 +360,7 @@ public class BLEService extends Service {
         byte dataA[] = util.intToByte2(numA);
         byte dataB[] = util.intToByte2(numB);
         byte CRC[] = new byte[2];
-        byte send[] = {0X05, 0X06, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00};
+        byte send[] = {slaveCode, 0X06, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00};
         if(mode)    send[1] = 0x03;
         send[2] = dataA[0];
         send[3] = dataA[1];

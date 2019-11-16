@@ -233,14 +233,28 @@ public class DeviceList extends AppCompatActivity{
                 BLEScan.setVisibility(View.VISIBLE);
             }
             else if(action.equals(BLEService.ACTION_GATT_CONNECTED)){
-                Toast toast = Toast.makeText(getApplicationContext(),"Connection succeed!",Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER,0,0);
-                toast.show();
-                mBluetoothLeService.slaveAddress = slaveAddress;
-                connected_list.clear();
-                connected_list.add(slaveAddress);
-                mPairedDevicesArrayAdapter.notifyDataSetChanged();
-                finish();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(getApplicationContext(),"Connection succeed!",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER,0,0);
+                        toast.show();
+                        mBluetoothLeService.slaveAddress = slaveAddress;
+                        try {
+                            mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
+                            Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
+                            connected_list.clear();
+                            connected_list.add(slaveAddress);
+                            mPairedDevicesArrayAdapter.notifyDataSetChanged();
+                            finish();
+                        }catch(Exception e){
+                            util.centerToast(DeviceList.this,"Failed to get SlaveAddress",0);
+                        }
+
+                    }
+                });
+
+
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)){
                 Toast toast = Toast.makeText(getApplicationContext(),"Connection failed!",Toast.LENGTH_SHORT);

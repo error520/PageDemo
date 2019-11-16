@@ -51,6 +51,8 @@ public class ThirdpageFragment extends Fragment {
     private ArrayAdapter<String> arr_adapter0;
     private ArrayAdapter<String> arr_adapter1;
     private String address;
+    private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(getContext());
+    private BroadcastReceiver receiver=new LocalReceiver();
 
     //记住一定要重写onCreateView方法
     @Nullable
@@ -66,6 +68,19 @@ public class ThirdpageFragment extends Fragment {
         initUI();
         initService();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        localBroadcastManager.unregisterReceiver(receiver);
+    }
+
     private void initService(){
         //绑定服务
         Intent BLEIntent = new Intent(getActivity(), BLEService.class);
@@ -79,8 +94,7 @@ public class ThirdpageFragment extends Fragment {
             public void onServiceDisconnected(ComponentName name) {
             }
         }, Context.BIND_AUTO_CREATE);
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
-        localBroadcastManager.registerReceiver(new LocalReceiver(), util.makeGattUpdateIntentFilter());
+       localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
     private void initUI(){
         spinner0 = (Spinner)getActivity().findViewById(R.id.spinner0);
@@ -141,18 +155,18 @@ public class ThirdpageFragment extends Fragment {
                 if(state.equals("read"))
                     currentValue.setText(message.substring(9,15));
                 if(state.equals("write"))
-                    Toast.makeText(getContext(),"succeed!",Toast.LENGTH_SHORT).show();
+                    util.centerToast(context,"succeed!",Toast.LENGTH_SHORT);
 
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
-                Toast.makeText(context, "Bluetooth disconnected!", Toast.LENGTH_SHORT).show();
+                util.centerToast(context,"Bluetooth disconnected!", Toast.LENGTH_SHORT);
             }
             else if(action.equals(BLEService.ACTION_DATA_LENGTH_FALSE)) {
                 Toast.makeText(context, "Length error!", Toast.LENGTH_SHORT).show();
             }
             else if(action.equals(BLEService.ACTION_ERROR_CODE)) {
                 String message = intent.getStringExtra(BLEService.ACTION_ERROR_CODE);
-                Toast.makeText(context, "error code:"+message, Toast.LENGTH_SHORT).show();
+                util.centerToast(context,"error code:"+message, Toast.LENGTH_SHORT);
             }
         }
     }

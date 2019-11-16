@@ -158,11 +158,11 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.control_bit9_0:
                 //故障复位有效
-                mBluetoothLeService.writeData("0017","0080");
+                mBluetoothLeService.writeData("0017","0280");
                 break;
             case R.id.control_bit9_1:
                 //故障复位无效
-                mBluetoothLeService.writeData("0017","0280");
+                mBluetoothLeService.writeData("0017","0080");
                 break;
 
         }

@@ -2,8 +2,9 @@ package com.example.pagedemo;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.pagedemo.BluetoothService.BLEService;
-import com.example.pagedemo.ui.firstpage.FirstpageFragment;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 
 public class util {
@@ -107,6 +112,30 @@ public class util {
         Toast toast = Toast.makeText(context,message,i);
         toast.setGravity(Gravity.CENTER,0,0);
         toast.show();
+    }
+
+    public static void saveErrorLog(Context context,String filename,String str){
+        FileOutputStream out = null;
+        BufferedWriter writer= null;
+        try{
+            File dir = new File(Environment.getExternalStorageDirectory()+"/KincoLog");
+            dir.mkdir();
+            File fs = new File(Environment.getExternalStorageDirectory()+"/KincoLog/ErrorLog.txt");
+            //out = context.openFileOutput("ErrorLog.txt",Context.MODE_PRIVATE);  //软件内部的目录创建
+            out = new FileOutputStream(fs);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+            writer.write(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try{
+                if(writer!=null)
+                    writer.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            Log.d("BLEService","写入成功!");
+        }
     }
 
 
