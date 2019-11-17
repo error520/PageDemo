@@ -1,13 +1,27 @@
 package com.example.pagedemo;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.pagedemo.BluetoothService.BLEService;
+import com.example.pagedemo.ui.secondpage.SecondpageFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 //import com.example.tabledemo.R;
 
@@ -17,33 +31,44 @@ public class ListTableActivity extends Activity {
     "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
     "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
     "Custom-made version number","Software date"};
+    private BLEService mBluetoothLeService;
+    private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(this);
+    private BroadcastReceiver receiver=new LocalReceiver();
+    private String addressState="0000";
+    TableAdapter adapter;
+    List<Parameter> list = new ArrayList<Parameter>();
+    private int mAddress=100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
-
+        initService();
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup) findViewById(R.id.table_title);
         tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
 
         //！！！数据每次点击后都应该刷新数据
-        final List<Parameter> list = new ArrayList<Parameter>();
         for(int i=0;i<15;i++){
-            list.add(new Parameter(  Name[i],"-300.00~300.00Hz"+i));
+            list.add(new Parameter(  Name[i],"null"));
         }
         ListView tableListView = (ListView) findViewById(R.id.list1);
 
-        TableAdapter adapter = new TableAdapter(this, list);
+        adapter = new TableAdapter(this, list);
 
         tableListView.setAdapter(adapter);
 
+
+
 //        // 点击事件
-//        tableListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-//                Parameter parameter=list.get(position);
-//                Toast.makeText(ListTableActivity.this,parameter.getName(),Toast.LENGTH_SHORT).show();
-//
+        tableListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Parameter parameter=list.get(position);
+                //Toast.makeText(ListTableActivity.this,parameter.getName(),Toast.LENGTH_SHORT).show();
+                util.centerToast(ListTableActivity.this,parameter.getName(),0);
+                addressState="010"+Integer.toHexString(position);
+                mAddress=position;
+                mBluetoothLeService.readData(addressState,"0001");
 //                AlertDialog.Builder builder=new AlertDialog.Builder(ListTableActivity.this);
 //                builder.setTitle(parameter.getName());
 //                //切记单选，复选对话框不能设置内容
@@ -72,12 +97,45 @@ public class ListTableActivity extends Activity {
 //                AlertDialog alertDialog=builder.create();
 //                alertDialog.setCanceledOnTouchOutside(false);
 //                alertDialog.show();
-//
-//            }
-//        });
+
+            }
+        });
 
 
 
+    }
+
+
+    private void initService(){
+        //绑定服务
+        Intent BLEIntent = new Intent(ListTableActivity.this, BLEService.class);
+        bindService(BLEIntent,new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mBluetoothLeService = ((BLEService.localBinder) service)
+                        .getService();
+            }
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+        }, Context.BIND_AUTO_CREATE);
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+    }
+
+    private class LocalReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if(action.equals(BLEService.ACTION_DATA_AVAILABLE)){
+                    String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                    if(mAddress<15)
+                        list.get(mAddress).setDescribe(message.substring(9,15));
+                    mAddress=100;
+                    adapter.notifyDataSetChanged();
+
+
+                }
+        }
     }
 
 }

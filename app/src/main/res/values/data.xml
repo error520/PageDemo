@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ControlMode">
+        <string-array>
+            <item>00010000</item>
+            <item>00010001</item>
+            <item>00010002</item>
+        </string-array>
+    </string>
+    <string name="MainRFS">
+        <string-array>
+            <item>00020000</item>
+            <item>00020001</item>
+            <item>00020002</item>
+            <item>00020002</item>
+        </string-array>
+    </string>
+</resources>

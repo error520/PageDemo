@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="android.myapplication.MainActivity">
     <item
+        android:id="@+id/item00"
+        android:title="Device Connection" />
+    <item
             android:id="@+id/item01"
-            android:title="参数列表" />
+            android:title="Parameter List" />
     <item
         android:id="@+id/item02"
-        android:title="厂商联系方式" />
+        android:title="Contract" />
 </menu>

@@ -1,8 +1,11 @@
 package com.example.pagedemo.edittext;
 
 
+import android.location.Address;
 
 public class Text {
+
+    public String address;
 
     private String title;
 
@@ -11,6 +14,18 @@ public class Text {
     private String[] content;
 
     private int id;
+
+    public String getAddress() {
+
+        return address;
+
+    }
+
+    public void setAddress(String address) {
+
+        this.address = address;
+
+    }
 
     public int getId() {
 
@@ -59,5 +74,6 @@ public class Text {
         this.content = content;
 
     }
+
 
 }
