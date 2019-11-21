@@ -15,6 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import com.example.pagedemo.sys.MyApplication;
 
 import com.example.pagedemo.ui.DeviceList;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

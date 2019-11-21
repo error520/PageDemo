@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Binder;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.pagedemo.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,6 +69,10 @@ public class BLEService extends Service {
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBtAdapter = bluetoothManager.getAdapter();
         mHandler = new Handler();
+        //创建日志文件夹
+        File dir = new File(Environment.getExternalStorageDirectory()+"/KincoLog");
+        if(!dir.exists())
+            dir.mkdir();
         //检查手机是否支持BLE
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.d("BLEService","不支持BLE!");

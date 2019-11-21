@@ -1,5 +1,6 @@
 package com.example.pagedemo.ui.secondpage;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import com.example.pagedemo.Parameter;
 import com.example.pagedemo.R;
 import com.example.pagedemo.TableAdapter;
 import com.example.pagedemo.util;
+import com.example.pagedemo.alertdialog.ErrorDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ import java.util.List;
 public class SecondpageFragment extends Fragment {
     private View view;//得到碎片对应的布局文件,方便后续使用
     private BLEService mBluetoothLeService;
+    private Handler mHandler=new Handler();
     private String TAG = "second";
     private String addressState="0000";
     private BroadcastReceiver receiver=new LocalReceiver();
@@ -73,6 +77,10 @@ public class SecondpageFragment extends Fragment {
         Button button1 = (Button) getActivity().findViewById(R.id.SecondpageReload);
         button1.setOnClickListener(new SecondpageFragment.ButtonListener());
     }
+
+    /**
+     * 初始化广播和服务
+     */
     private void initService(){
         //绑定服务
         Intent BLEIntent = new Intent(getActivity(), BLEService.class);
@@ -128,7 +136,8 @@ public class SecondpageFragment extends Fragment {
                 String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
                 Log.d(TAG,message);
                 try {
-                    int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
+                    final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
+                    //String str = message.substring(100);   //错误测试
                     if (addressState.equals("0100")) {
                         list0.get(0).setDescribe(((float) ((short) info) / 100) + "Hz");
                         addressState = "0101";
@@ -138,13 +147,15 @@ public class SecondpageFragment extends Fragment {
                     if (addressState.equals("0101")) {
                         list0.get(1).setDescribe(info + "V");
                         addressState = "0103";
-                        mBluetoothLeService.readData("0103", "0001");
+                        adapter.notifyDataSetChanged();
+                        delayRead(addressState);
                         return;
                     }
                     if (addressState.equals("0103")) {
                         list0.get(2).setDescribe((float) info / 10 + "%");
                         addressState = "0110";
-                        mBluetoothLeService.readData("0110", "0001");
+                        adapter.notifyDataSetChanged();
+                        delayRead(addressState);
                         return;
                     }
                     if (addressState.equals("0110")) {
@@ -177,21 +188,24 @@ public class SecondpageFragment extends Fragment {
                             else
                                 list0.get(8).setDescribe("Normal");
                         }
+                        util.centerToast(getContext(),"Reload completed!",0);
+                        adapter.notifyDataSetChanged();
+                        addressState="0000";
+                        return;
                     }
+
                 }catch(Exception e){
-                        util.saveErrorLog(getContext(),e.toString());
+                            ErrorDialog ed = new ErrorDialog(getContext());
+                            ed.show();
+                            String errorText=message+"\n"+e.toString();
+                            util.saveLog(getContext(),"ErrorLog.txt",errorText);
                 }
 
-                    adapter.notifyDataSetChanged();
-                    addressState="0000";
-                    util.centerToast(getContext(),"Reload completed!",0);
-                    return;
-
-               }
+            }
 
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
-                util.saveErrorLog(getContext(),"jieshoucuowu");
+                util.saveLog(getContext(),"ErrorLog.txt","咯咯咯");
             }
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){
                 util.centerToast(getContext(),"Read error:"
@@ -200,5 +214,14 @@ public class SecondpageFragment extends Fragment {
 
             }
         }
+    }
+
+    private void delayRead(final String address){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBluetoothLeService.readData(address, "0001");
+            }
+        },1000);
     }
 }

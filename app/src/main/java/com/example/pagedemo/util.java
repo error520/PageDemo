@@ -114,13 +114,14 @@ public class util {
         toast.show();
     }
 
-    public static void saveErrorLog(Context context,String filename,String str){
+    public static void saveLog(Context context,String filename,String str){
         FileOutputStream out = null;
         BufferedWriter writer= null;
         try{
             File dir = new File(Environment.getExternalStorageDirectory()+"/KincoLog");
-            dir.mkdir();
-            File fs = new File(Environment.getExternalStorageDirectory()+"/KincoLog/ErrorLog.txt");
+            if(!dir.exists())
+                dir.mkdir();
+            File fs = new File(Environment.getExternalStorageDirectory()+"/KincoLog/"+filename);
             //out = context.openFileOutput("ErrorLog.txt",Context.MODE_PRIVATE);  //软件内部的目录创建
             out = new FileOutputStream(fs);
             writer = new BufferedWriter(new OutputStreamWriter(out));
