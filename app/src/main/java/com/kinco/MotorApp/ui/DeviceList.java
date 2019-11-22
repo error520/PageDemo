@@ -3,6 +3,7 @@ package com.kinco.MotorApp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -33,10 +34,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.alertdialog.PasswordDialog;
 import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.R;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 //远程推送
 
@@ -245,9 +248,16 @@ public class DeviceList extends AppCompatActivity{
                             connected_list.clear();
                             connected_list.add(slaveAddress);
                             mPairedDevicesArrayAdapter.notifyDataSetChanged();
-                            finish();
+                            PasswordDialog dialog = new PasswordDialog(DeviceList.this, mBluetoothLeService);
+                            AlertDialog dd = dialog.show();
+                            Field field = dd.getClass().getSuperclass().getDeclaredField("mShowing");
+                            field.setAccessible(true);
+                            field.set(dd, false);// false表示不关闭
+                            //finish();
                         }catch(Exception e){
                             util.centerToast(DeviceList.this,"Failed to get SlaveAddress",0);
+                            e.printStackTrace();
+                            Log.d(TAG,e.toString());
                         }
 
                     }
@@ -259,6 +269,8 @@ public class DeviceList extends AppCompatActivity{
                 Toast toast = Toast.makeText(getApplicationContext(),"Connection failed!",Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER,0,0);
                 toast.show();
+                connected_list.clear();
+                mPairedDevicesArrayAdapter.notifyDataSetChanged();
             }
         }
     }
