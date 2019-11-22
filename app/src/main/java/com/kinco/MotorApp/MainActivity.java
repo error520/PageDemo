@@ -18,7 +18,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.kinco.MotorApp.sys.MyApplication;
 import com.kinco.MotorApp.ui.DeviceList;
-import com.kinco.MotorApp.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

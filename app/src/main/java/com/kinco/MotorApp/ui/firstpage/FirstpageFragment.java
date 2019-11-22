@@ -1,11 +1,15 @@
 package com.kinco.MotorApp.ui.firstpage;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -134,8 +139,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.FirstpageMore:
-                Intent intent=new Intent(getContext(), FirstMoreActivity.class);
-                getActivity().startActivity(intent);//当然也可以写成getContext()
+//                showLoginDialog();
+                //Intent intent=new Intent(getContext(), FirstMoreActivity.class);
+                //getActivity().startActivity(intent);//当然也可以写成getContext()
                 break;
             case R.id.control_110B:
                 //方式0停车
@@ -206,5 +212,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+
+
+
 
 }

@@ -74,7 +74,16 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         paint.setStrokeWidth(3);
     }
 
-        private void InitData() {
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(!(task==null)){
+            task.cancel();
+            task=null;
+        }
+    }
+
+    private void InitData() {
             Resources resources = this.getResources();
             DisplayMetrics dm = resources.getDisplayMetrics();
             //获取屏幕的宽度作为示波器的边长

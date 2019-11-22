@@ -45,7 +45,7 @@ public class SecondMoreActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main1);
+        setContentView(R.layout.condition_2);
         initService();
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup) findViewById(R.id.table_title);
