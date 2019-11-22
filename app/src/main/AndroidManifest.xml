@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.pagedemo">
+    package="com.kinco.MotorApp">
 
     <application
-        android:name=".MyApplication"
+        android:name="com.kinco.MotorApp.sys.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ReadAndWrite"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.kinco.MotorApp.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,15 +20,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ListTableActivity"
+            android:name="com.kinco.MotorApp.ui.secondpage.SecondMoreActivity"
             android:configChanges="orientation|keyboard|keyboardHidden"
             android:theme="@style/AppTheme"></activity>
-        <activity android:name=".ui.DeviceList" />
-        <activity android:name=".edittext.ListView_SpinnerActivity" />
-        <activity android:name=".OSCActivity" />
+        <activity android:name="com.kinco.MotorApp.ui.DeviceList" />
+        <activity android:name="com.kinco.MotorApp.ui.firstpage.FirstMoreActivity" />
+        <activity android:name="com.kinco.MotorApp.OSCActivity" />
 
         <service
-            android:name=".BluetoothService.BLEService"
+            android:name="com.kinco.MotorApp.BluetoothService.BLEService"
             android:enabled="true"
             android:exported="true" />
     </application>
