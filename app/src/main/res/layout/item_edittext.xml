@@ -37,26 +37,28 @@
                     android:text="Name"
                     android:textColor="#110202" />
 
-                <EditText
-                    android:id="@+id/edit_text"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/edit_name"
-                    android:layout_toLeftOf="@id/button_write"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:digits="0123456789abcdefABCDEF"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:padding="8dp"
-                    android:paddingBottom="8dip"
-                    android:paddingTop="8dip"
-                    android:textSize="15sp" />
+            <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/button_write"
+                android:layout_toEndOf="@id/edit_name"
+                android:layout_weight="1"
+                android:digits="0123456789abcdefABCDEF"
+                android:gravity="center"
+                android:hint="0~30000.00Hz"
+                android:inputType="number"
+                android:maxLength="4"
+                android:padding="8dp"
+                android:paddingTop="8dip"
+                android:paddingBottom="8dip"
+                android:textSize="15sp" />
 
                 <Button
                     android:id="@+id/button_write"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
+
                     android:layout_alignParentRight="true"
                     android:text="SET" />
 

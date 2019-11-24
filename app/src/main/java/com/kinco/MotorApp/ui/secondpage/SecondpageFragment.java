@@ -192,17 +192,14 @@ public class SecondpageFragment extends Fragment {
                     }
 
                 }catch(Exception e){
-                            ErrorDialog ed = new ErrorDialog(getContext());
+                            ErrorDialog ed = new ErrorDialog(getContext(),message+"\n"+e.toString());
                             ed.show();
-                            String errorText=message+"\n"+e.toString();
-                            util.saveLog(getContext(),"ErrorLog.txt",errorText);
                 }
 
             }
 
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
-                util.saveLog(getContext(),"ErrorLog.txt","咯咯咯");
             }
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){
                 util.centerToast(getContext(),"Read error:"

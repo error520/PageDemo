@@ -1,73 +1,119 @@
 package com.kinco.MotorApp.alertdialog;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 
+import java.lang.reflect.Field;
+
 
 //TODO 密码输入框
-public class PasswordDialog extends AlertDialog.Builder {
+public class PasswordDialog{
     private String password="";
-    private final BLEService mBleService;
-    public PasswordDialog(final Context context, BLEService bleService){
-        super(context);
-        super.setCancelable(false);
-        super.setTitle("Please enter the password");
-        final EditText edit = new EditText(getContext());
-        this.mBleService = bleService;
+    final private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    private Field field;
+    Button btnPos;
+    Button btnNeg;
+    public OnClickBottomListener onClickBottomListener;
+    Context context;
+    public PasswordDialog(final Context context){
+        this.context=context;
+        builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+        builder.setTitle("Please enter the password");
+        final EditText edit = new EditText(context);
         edit.setHeight(150);
+        edit.setWidth(30);
+        edit.setFocusable(true);
+        edit.setFocusableInTouchMode(true);
         edit.setInputType(InputType.TYPE_CLASS_NUMBER);
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-        edit.setHint("0~65536");
-        super.setView(edit);
-        super.setPositiveButton("connect", new DialogInterface.OnClickListener() {
+        edit.setHint("4 digits password");
+        builder.setView(edit);
+        builder.setPositiveButton("connect", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int which) {
-                String password = edit.getText().toString();
-                if (password.length()==4) {
-                    mBleService.readData("0000","0001");
-                } else {
-                    Toast.makeText(context, "please enter complete password!", Toast.LENGTH_SHORT).show();
-                }
+                password=edit.getText().toString();
+                onClickBottomListener.onPositiveClick();
 
             }
         });
 
-        super.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                mBleService.close();
+                onClickBottomListener.onNegativeClick();
             }
         });
 
-
+        dialog = builder.show();
+        btnPos = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        btnPos.setText("Connect");
+        btnNeg.setText("Cancel");
+        btnPos.setTextColor(Color.BLUE);
+        btnNeg.setTextColor(Color.BLUE);
+        //设置不可消失
+        try {
+            field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+            field.setAccessible(true);
+            field.set(dialog,false);
+        }catch (Exception e){
+            ErrorDialog errorDialog = new ErrorDialog(context,e.toString());
+            errorDialog.show();
+        }
 
     }
+    public interface OnClickBottomListener{
+        void onPositiveClick();
+        void onNegativeClick();
+    }
+
+    /**
+     * 提供给外界设置监听接口的方法
+     * @param onClickBottomListener
+     * @return
+     */
+    public PasswordDialog setOnClickBottomListener(OnClickBottomListener onClickBottomListener) {
+        this.onClickBottomListener = onClickBottomListener;
+        return this;
+    }
+
+    /**
+     * 展示dialog
+     */
+    public void show(){
+        builder.show();
+    }
+
+    /**
+     * 取消dialog
+     */
+    public void gone(){
+        try {
+            field.set(dialog,true);
+            dialog.dismiss();
+        } catch (Exception e) {
+            ErrorDialog errorDialog = new ErrorDialog(context,e.toString());
+            errorDialog.show();
+        }
+    };
 
     public String getPassword(){return password;}
 
-//    public void showLoginDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle("请输入终端登录密码");
-//
-//        // String digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-//        //edit.setKeyListener(DigitsKeyListener.getInstance(digits));
-//
-//
-//
-//
-//
-//        Button btnPos = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
-//        Button btnNeg = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
-//        btnPos.setTextColor(Color.BLUE);
-//        btnNeg.setTextColor(Color.BLUE);
-//    }
 //    private void setRegion(final EditText et) {
 //        et.addTextChangedListener(new TextWatcher() {
 //            @Override

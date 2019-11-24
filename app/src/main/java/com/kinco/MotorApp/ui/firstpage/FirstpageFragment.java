@@ -139,9 +139,8 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.FirstpageMore:
-//                showLoginDialog();
-                //Intent intent=new Intent(getContext(), FirstMoreActivity.class);
-                //getActivity().startActivity(intent);//当然也可以写成getContext()
+                Intent intent=new Intent(getContext(), FirstMoreActivity.class);
+                getActivity().startActivity(intent);//当然也可以写成getContext()
                 break;
             case R.id.control_110B:
                 //方式0停车
@@ -173,6 +172,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    /**
+     * 得到服务实例
+     */
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -199,6 +201,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             Log.d(TAG,action);
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                util.centerToast(getContext(),"succeed!",0);
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
