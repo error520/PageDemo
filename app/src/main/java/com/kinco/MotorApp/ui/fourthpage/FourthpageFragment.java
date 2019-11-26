@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -63,6 +64,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
     private boolean mDrawing=false;
+    private Handler mHnadler;
+
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -91,6 +94,17 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         paint = new Paint();
         paint.setColor(Color.GREEN);
         paint.setStrokeWidth(3);
+
+        mHnadler=new Handler();
+//        mHnadler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                for(int i=0;i<10;i++)
+//                    drawData(100);
+//                //showBrokenLine();
+//            }
+//        },1000);
+
     }
 
     @Override
@@ -117,9 +131,17 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnShowSin:
-                    mBluetoothLeService.writeData("0202","0001");
-                    mDrawing=true;
+//                    mBluetoothLeService.writeData("0202","0001");
+//                    mDrawing=true;
                     //showSineCord(view);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i=0;i<1024;i++)
+                                drawData(100);
+                        }
+                    });
+
                     break;
                 case R.id.btnShowCos:
                     showSineCord(view);
@@ -255,33 +277,40 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     /**
      * 画数据
      * @param data
-     * @param cx
+     *
      */
-    private void drawData(int data,int cx){
+    private void drawData(int data){
         drawBackGround(holder);
         cx = X_OFFSET;
             int startX = 0;
             int startY = 200;
 
-                int cy = data;
+                final int cy = data;
 
-                Canvas canvas = holder.lockCanvas(new Rect(cx-10, cy - 900,
-                        cx + 10, cy + 900));
+                mHnadler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Canvas canvas = holder.lockCanvas(new Rect(cx, cy - 2,
+                                cx+2, cy + 2));
+                        //       Canvas canvas = holder.lockCanvas(null);
+                        cx+=3;
+                        // 根据Ｘ，Ｙ坐标画线
+                        canvas.drawPoint(cx, cy, paint);
 
-                // 根据Ｘ，Ｙ坐标画线
-                canvas.drawPoint(cx, cy, paint);
+                        //结束点作为下一次折线的起始点
 
-                //结束点作为下一次折线的起始点
-                startX = cx;
-                startY = cy;
-                // 超过指定宽度，线程取消，停止画曲线
-                if (cx > WIDTH) {
-                    task.cancel();
-                    task = null;
-                }
-                // 提交修改
-                holder.unlockCanvasAndPost(canvas);
-            }
+                        // 超过指定宽度，线程取消，停止画曲线
+                        if (cx > WIDTH) {
+                            task.cancel();
+                            task = null;
+                        }
+                        // 提交修改
+                        holder.unlockCanvasAndPost(canvas);
+                    
+                    }
+                },15);
+
+    }
 
 
     /**
@@ -303,7 +332,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            drawData(info,count);
+                            drawData(info);
                         }
                     });
                 }
