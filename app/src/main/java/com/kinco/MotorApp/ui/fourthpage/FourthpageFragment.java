@@ -18,6 +18,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.kinco.MotorApp.R;
+import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
 
 import java.util.Random;
 import java.util.Timer;
@@ -208,5 +209,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             holder.lockCanvas(new Rect(0, 0, 0, 0));
             holder.unlockCanvasAndPost(canvas);
         }
+
+    public FourthpageFragment newInstance(int i) {
+        Bundle args = new Bundle();
+        args.putInt("int", i);
+        FourthpageFragment fragment = new FourthpageFragment();
+//        fragment.setArguments(args);
+        return fragment;
+    }
 }
 

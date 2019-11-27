@@ -1,51 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    android:layout_width="match_parent"
+
+
+
+    android:layout_height="match_parent"
+
+    android:padding="5dp"
+
+    android:orientation="horizontal" >
+
+
+
+    <LinearLayout
 
         android:layout_width="match_parent"
 
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
 
-        android:orientation="horizontal" >
+        android:background="@drawable/lin">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
         <TextView
+
             android:id="@+id/title"
+
             android:padding="12dp"
-            android:paddingTop="10dip"
-            android:paddingBottom="10dip"
+
+
+
             android:layout_weight="3"
+
             android:layout_width="100dp"
+
             android:gravity="left"
+
             android:layout_height="wrap_content"
+
+            android:layout_gravity="fill_horizontal"
+
             android:textColor="#110202"
+
             android:textSize="20sp" />
 
 
-            <Spinner
-                android:id="@+id/content"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/title"
-                android:layout_weight="1"
-                android:padding="12dp"
-                android:paddingBottom="10dip"
-                android:paddingTop="10dip" />
 
-            <Button
-                android:id="@+id/current"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.8"
-                android:padding="12dp"
-                android:paddingBottom="10dip"
-                android:paddingTop="10dip"
-                android:text=""
-                android:textColor="#3838AC"
-                android:textSize="20sp" />
 
-        </LinearLayout>
+
+        <Spinner
+
+            android:id="@+id/content"
+
+            android:layout_width="100dp"
+
+            android:layout_height="match_parent"
+
+            android:layout_toRightOf="@+id/title"
+
+            android:layout_weight="1"
+
+            android:padding="12dp"
+
+            android:paddingBottom="10dip"
+
+            android:paddingTop="10dip" />
+
+
+
+        <Button
+
+            android:id="@+id/current"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="30dp"
+
+            android:layout_weight="0.3"
+
+            android:text="SET"
+
+            android:textColor="#3838AC"
+
+            android:textSize="15sp"
+
+            android:background="@drawable/button"/>
+
+
 
     </LinearLayout>
 
+
+
+</LinearLayout>

@@ -34,7 +34,7 @@
         android:paddingTop="10dip"
         android:paddingBottom="10dip"
         android:text="Describe"
-        android:textColor="#3838AC"
+        android:textColor="#000000"
         android:textSize="15sp" />
 
     <View

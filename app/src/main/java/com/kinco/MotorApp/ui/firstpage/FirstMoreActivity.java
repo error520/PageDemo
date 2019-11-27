@@ -351,7 +351,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
             listView = (ListView) findViewById(R.id.mylist);
             listView.setAdapter(textAdapter);//传值到ListView中
         }
-        util.setListViewHeightBasedOnChildren(listView);
+//        util.setListViewHeightBasedOnChildren(listView);
 
 
     }

@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.kinco.MotorApp.DemoFragment;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
@@ -126,7 +127,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             });
             listView = (ListView) getActivity().findViewById(R.id.mylist0);
             listView.setAdapter(textAdapter);//传值到ListView中
-            util.setListViewHeightBasedOnChildren(listView);
+//            util.setListViewHeightBasedOnChildren(listView);
         }
     }
 
@@ -184,6 +185,14 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     public void onPause() {
         super.onPause();
         localBroadcastManager.unregisterReceiver(receiver);
+    }
+
+    public FirstpageFragment newInstance(int i) {
+        Bundle args = new Bundle();
+        args.putInt("int", i);
+        FirstpageFragment fragment = new FirstpageFragment();
+//        fragment.setArguments(args);
+        return fragment;
     }
 
     private class LocalReceiver extends BroadcastReceiver {

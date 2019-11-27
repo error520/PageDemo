@@ -22,6 +22,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
+import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.edittext.Parameter;
 import com.kinco.MotorApp.R;
@@ -37,7 +38,7 @@ public class SecondpageFragment extends Fragment {
     private String TAG = "second";
     private String addressState="0000";
     private BroadcastReceiver receiver=new LocalReceiver();
-    LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+//    LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
     List<Parameter> list0;
     TableAdapter adapter;
     int count = 0;
@@ -60,7 +61,7 @@ public class SecondpageFragment extends Fragment {
 
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup)getActivity(). findViewById(R.id.table_title);
-        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
+//        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
         //！！！数据每次点击后都应该刷新数据
         list0 = new ArrayList<Parameter>();
         for(int i=0;i<9;i++){
@@ -91,7 +92,7 @@ public class SecondpageFragment extends Fragment {
             public void onServiceDisconnected(ComponentName name) {
             }
         }, Context.BIND_AUTO_CREATE);
-        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+//        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
     @Override
@@ -103,7 +104,15 @@ public class SecondpageFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        localBroadcastManager.unregisterReceiver(receiver);
+//        localBroadcastManager.unregisterReceiver(receiver);
+    }
+
+    public SecondpageFragment newInstance(int i) {
+        Bundle args = new Bundle();
+        args.putInt("int", i);
+        SecondpageFragment fragment = new SecondpageFragment();
+//        fragment.setArguments(args);
+        return fragment;
     }
 
     private class ButtonListener implements View.OnClickListener {

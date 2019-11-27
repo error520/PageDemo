@@ -16,21 +16,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="正玄曲线" />
+            android:text="正玄曲线"
+            android:background="@drawable/button"/>
 
         <Button
             android:id="@+id/btnShowCos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="余玄曲线" />
+            android:text="余玄曲线"
+            android:background="@drawable/button"/>
 
         <Button
             android:id="@+id/btnShowBrokenLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="折线曲线" />
+            android:text="折线曲线"
+            android:background="@drawable/button"/>
     </LinearLayout>
 
     <SurfaceView

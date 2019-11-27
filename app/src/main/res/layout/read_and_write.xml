@@ -53,7 +53,8 @@
                 android:id="@+id/btnRead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="read" />
+                android:text="read"
+                android:background="@drawable/button"/>
         </TableRow>
 
 
@@ -112,7 +113,8 @@
                 android:id="@+id/btnWrite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="write" />
+                android:text="write"
+                android:background="@drawable/button"/>
         </TableRow>
 
         <TableRow

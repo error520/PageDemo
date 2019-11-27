@@ -146,7 +146,7 @@ public class TextAdapter extends BaseAdapter  {
         currentView.setTextSize(13);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,text.getContent());
         contentView.setAdapter(adapter);
-        arg1.setBackgroundColor(colors[arg0 % 2]);// 每隔item之间颜色不同
+//        arg1.setBackgroundColor(colors[arg0 % 2]);// 每隔item之间颜色不同
         return arg1;
 
     }

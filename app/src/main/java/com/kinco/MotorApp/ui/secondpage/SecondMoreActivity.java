@@ -49,7 +49,7 @@ public class SecondMoreActivity extends Activity {
         initService();
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup) findViewById(R.id.table_title);
-        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
+//        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
 
         //！！！数据每次点击后都应该刷新数据
         for(int i=0;i<15;i++){
