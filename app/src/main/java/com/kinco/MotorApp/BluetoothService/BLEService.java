@@ -310,9 +310,15 @@ public class BLEService extends Service {
         super.onCreate();
         init();
         Log.d(TAG,"创建了服务");
-//        //调试用
-//        scanLeDevice(true);
-//        connect("78:DB:2F:C7:63:A8");
+////        //调试用
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //scanLeDevice(true);
+//                connect("78:DB:2F:C7:63:A8");
+//            }
+//        },2000);
+
 
     }
 

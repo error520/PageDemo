@@ -33,6 +33,7 @@ import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.util;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,13 +60,14 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private int centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
-    private int count=0;
+    private int packageCount=0;
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
     private boolean mDrawing=false;
     private Handler mHnadler;
-
+    private int data[] = new int[1024];
+    private ArrayList<String> packageList = new ArrayList();
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -131,16 +133,18 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnShowSin:
-//                    mBluetoothLeService.writeData("0202","0001");
-//                    mDrawing=true;
+                    mBluetoothLeService.writeData("0203","0001");
+                    packageCount=0;
+                    packageList.clear();
+                    mDrawing=true;
                     //showSineCord(view);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for(int i=0;i<1024;i++)
-                                drawData(100);
-                        }
-                    });
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for(int i=0;i<1024;i++)
+//                                drawData(100);
+//                        }
+//                    });
 
                     break;
                 case R.id.btnShowCos:
@@ -312,6 +316,52 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
     }
 
+    private void draw(){
+            drawBackGround(holder);
+            cx = X_OFFSET;
+            if (task != null) {
+                task.cancel();
+            }
+            task = new TimerTask() {
+                int startX = 0;
+                int startY = 200;
+                Random random = new Random();
+                @Override
+                public void run() {
+
+                    int cy = random.nextInt(100)+200;
+
+                    Canvas canvas = holder.lockCanvas(new Rect(cx-10, cy - 900,
+                            cx + 10, cy + 900));
+
+                    // 根据Ｘ，Ｙ坐标画线
+                    canvas.drawLine(startX, startY ,cx, cy, paint);
+
+                    //结束点作为下一次折线的起始点
+                    startX = cx;
+                    startY = cy;
+
+                    cx+=10;
+                    // 超过指定宽度，线程取消，停止画曲线
+                    if (cx > WIDTH) {
+                        task.cancel();
+                        task = null;
+                    }
+                    // 提交修改
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            };
+            timer.schedule(task, 0, 30);
+    }
+
+    private void packageToData(){
+        int data[] = new int[1024];
+        String dataString = packageList.get(1).substring(23);
+        for(int i=0; i<5; i++){
+            ;
+        }
+
+    }
 
     /**
      * 接收到广播后的行为
@@ -323,18 +373,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 if (mDrawing) {
                     String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                    if(count>=1023)
-                        count=0;
-                    else
-                        count++;
-                    Log.d("ff",count+"");
-                    final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            drawData(info);
-                        }
-                    });
+                    packageList.add(message);
+                    if(packageCount==102)
+                        draw();
+                    packageCount++;
+
+                    Log.d("ff",message+"\n"+packageCount+"");
+                    //final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
                 }
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {

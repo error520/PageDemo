@@ -69,6 +69,34 @@ public class util {
         }
         return hexString.toString().toUpperCase();
     }
+
+    /**
+     * byte数组转换为无符号short整数
+     *
+     * @param bytes
+     *            byte数组
+     * @return short整数
+     */
+    public static int byte2ToUnsignedShort(byte[] bytes) {
+        return byte2ToUnsignedShort(bytes, 0);
+    }
+
+    /**
+     * byte数组转换为无符号short整数
+     *
+     * @param bytes
+     *            byte数组
+     * @param off
+     *            开始位置
+     * @return short整数
+     */
+    public static int byte2ToUnsignedShort(byte[] bytes, int off) {
+        int high = bytes[off];
+        int low = bytes[off + 1];
+        return (high << 8 & 0xFF00) | (low & 0xFF);
+    }
+
+
     //广播过滤器
     public static IntentFilter makeGattUpdateIntentFilter()
     {

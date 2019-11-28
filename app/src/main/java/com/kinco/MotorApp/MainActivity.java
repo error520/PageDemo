@@ -21,16 +21,20 @@ import com.kinco.MotorApp.ui.DeviceList;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.StringBuffer;
+
 public class MainActivity extends AppCompatActivity  {
     private TextView textview;
     private Button mButton3;
     private Button mButton4;
+    StringBuffer ss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ss = new StringBuffer();
+        ss.append("coming soon");
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

@@ -133,7 +133,7 @@ public class SecondpageFragment extends Fragment {
                 String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
                 Log.d(TAG,message);
                 try {
-                    final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
+                    final int info = Integer.valueOf(message.substring(9, 11),16) + Integer.valueOf(message.substring(12, 14),16) * 256;
                     //String str = message.substring(100);   //错误测试
                     if (addressState.equals("0100")) {
                         list0.get(0).setDescribe(((float) ((short) info) / 100) + "Hz");
