@@ -1,25 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/fragment1_text"
+    <LinearLayout
+        android:id="@+id/myfragment1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="This is the first fragment!"/>
-
-    <Button
-        android:id="@+id/FirstpageMore"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More"
-        tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="170dp"
-        tools:ignore="MissingConstraints" />
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="60dp"
+        android:orientation="vertical"
+        >
+
+        <!--    <View-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="20dp"-->
+        <!--        android:background="#DBEEF4" />-->
+
+        <ListView
+
+            android:id="@+id/mylist0"
+
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            />
+        <!--            android:layout_height="wrap_content"-->
+        <ListView
+            android:id="@+id/list_view0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fragment1_text"
+            android:descendantFocusability="beforeDescendants"
+            android:divider="@null"
+            />
+        <!--    <Button-->
+        <!--        android:id="@+id/FirstpageSubmit"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:text="Submit"-->
+        <!--        tools:layout_editor_absoluteX="153dp"-->
+        <!--        tools:layout_editor_absoluteY="170dp"-->
+        <!--        />-->
+
+        <TextView
+            android:id="@+id/fragment1_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Control command word 1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/control_bit2"
+            android:text="bit2~bit10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <!--       <Button
+                       android:id="@+id/control_111B"
+                       android:layout_width="fill_parent"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1"
+                       android:text="Running command"
+                       android:textAllCaps="false"/>
+                       -->
+
+            <Button
+                android:id="@+id/control_110B"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Stop mode 0"
+                android:textAllCaps="false"
+                android:background="@drawable/button"/>
+
+            <Button
+                android:id="@+id/control_101B"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Stop mode 1"
+                android:textAllCaps="false"
+                android:background="@drawable/button"/>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/control_bit3"
+            android:text="bit3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/control_bit3_0"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Forward"
+                android:textAllCaps="false"
+                android:background="@drawable/button"/>
+
+            <Button
+                android:id="@+id/control_bit3_1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Backward"
+                android:textAllCaps="false"
+                android:background="@drawable/button"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/control_bit9"
+            android:text="bit9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/control_bit9_0"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Fault reset enable"
+                android:textAllCaps="false"
+                android:background="@drawable/button"/>
+
+            <Button
+                android:id="@+id/control_bit9_1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Fault reset disable"
+                android:textAllCaps="false"
+                android:background="@drawable/button"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="#00A7A5A5"
+
+            />
+        <Button
+            android:id="@+id/FirstpageMore"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="More"
+            tools:layout_editor_absoluteX="153dp"
+            tools:layout_editor_absoluteY="170dp"
+            android:textAllCaps="false"
+            android:background="@drawable/button"
+            />
+
+
+    </LinearLayout></ScrollView>

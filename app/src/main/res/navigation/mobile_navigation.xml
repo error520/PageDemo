@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_first"
-        android:name="com.example.pagedemo.ui.firstpage.FirstpageFragment"
+        android:name="com.kinco.MotorApp.ui.firstpage.FirstpageFragment"
         android:label="@string/title_Setting"
         tools:layout="@layout/fragment_first" />
 
     <fragment
         android:id="@+id/navigation_second"
-        android:name="com.example.pagedemo.ui.secondpage.SecondpageFragment"
+        android:name="com.kinco.MotorApp.ui.secondpage.SecondpageFragment"
         android:label="@string/title_Condition"
         tools:layout="@layout/fragment_second" />
 
     <fragment
         android:id="@+id/navigation_third"
-        android:name="com.example.pagedemo.ui.thirdpage.ThirdpageFragment"
+        android:name="com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment"
         android:label="@string/title_ReadWrite"
         tools:layout="@layout/fragment_third" />
 
     <fragment
         android:id="@+id/navigation_fourth"
-        android:name="com.example.pagedemo.ui.fourthpage.FourthpageFragment"
+        android:name="com.kinco.MotorApp.ui.fourthpage.FourthpageFragment"
         android:label="@string/title_OSC"
         tools:layout="@layout/fragment_fourth" />
 </navigation>

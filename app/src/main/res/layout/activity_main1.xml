@@ -23,13 +23,12 @@
         android:id="@+id/list1"
         android:divider="#B4B3B3"
         android:dividerHeight="1.0dip"
-
         android:descendantFocusability="beforeDescendants"
-        android:background="@drawable/listview_bg"
+
         android:cacheColorHint="@android:color/transparent"
         android:fadingEdge="none"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
     </ListView>
-
+<!--        android:background="@drawable/listview_bg"-->
 </LinearLayout>
