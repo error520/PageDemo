@@ -35,6 +35,7 @@ public class SecondMoreActivity extends Activity {
     "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
     "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
     "Custom-made version number","Software date"};
+    String[] Unit={"0.01Hz","1V","0.1A","0.1%","0.01Hz","1","1","1","0.01V","0.1℃","","1V","0.1A","0.01Hz","1"};
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(this);
     private BroadcastReceiver receiver=new LocalReceiver();
@@ -53,7 +54,7 @@ public class SecondMoreActivity extends Activity {
 
         //！！！数据每次点击后都应该刷新数据
         for(int i=0;i<15;i++){
-            list.add(new Parameter(  Name[i],"null"));
+            list.add(new Parameter(  Name[i],"null","("+Unit[i]+")"));
         }
         ListView tableListView = (ListView) findViewById(R.id.list1);
 

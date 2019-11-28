@@ -63,7 +63,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
-        mData.add(new ItemBean( "Digital reference frequency", "","","0003"));
+        mData.add(new ItemBean( "Digital reference frequency","0.01HZ","","","0003"));
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override

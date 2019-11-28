@@ -45,6 +45,7 @@ public class SecondpageFragment extends Fragment {
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
     String[] Name={"Output frequency","Output voltage","Motor power","VFD","VFD rotation","Main reference","Serial port control",
         "Serial port setting","State"};
+    String[] unit={"0.01Hz","1V","0.1%","","","","","",""};
 
     //记住一定要重写onCreateView方法
     @Nullable
@@ -65,7 +66,7 @@ public class SecondpageFragment extends Fragment {
         //！！！数据每次点击后都应该刷新数据
         list0 = new ArrayList<Parameter>();
         for(int i=0;i<9;i++){
-            list0.add(new Parameter( Name[i],"null"));
+            list0.add(new Parameter( Name[i],"null",""));
         }
         ListView tableListView = (ListView) getActivity().findViewById(R.id.list0);
         adapter = new TableAdapter(this.getActivity(),list0);
