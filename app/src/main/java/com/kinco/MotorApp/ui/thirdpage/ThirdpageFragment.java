@@ -47,14 +47,14 @@ public class ThirdpageFragment extends Fragment {
     private ArrayAdapter<String> arr_adapter0;
     private ArrayAdapter<String> arr_adapter1;
     private String address;
-//    private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(getContext());
+    private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
 
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_third, container, false);//得到对应的布局文件
+        view = inflater.inflate(R.layout.read_and_write, container, false);//得到对应的布局文件
         return view;
     }
 
@@ -68,13 +68,13 @@ public class ThirdpageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        localBroadcastManager.unregisterReceiver(receiver);
+        localBroadcastManager.unregisterReceiver(receiver);
     }
 
     private void initService(){
@@ -90,7 +90,8 @@ public class ThirdpageFragment extends Fragment {
             public void onServiceDisconnected(ComponentName name) {
             }
         }, Context.BIND_AUTO_CREATE);
-//       localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+        localBroadcastManager =LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
     private void initUI(){
         spinner0 = (Spinner)getActivity().findViewById(R.id.spinner0);

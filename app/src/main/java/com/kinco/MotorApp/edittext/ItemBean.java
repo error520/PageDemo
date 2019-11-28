@@ -5,7 +5,7 @@ package com.kinco.MotorApp.edittext;
  */
 public class ItemBean {
     private String Name;
-    private String Current;
+    private String Hint;
     private String text;
     private String Unit;
     private String address;
@@ -13,12 +13,12 @@ public class ItemBean {
     public ItemBean() {
         super();
     }
-    public ItemBean(String Name,String Unit,String Current, String text, String address) {
+    public ItemBean(String Name,String Unit, String text,String Hint ,String address) {
         super();
 
         this.Name = Name;
         this.Unit=Unit;
-        this.Current=Current;
+        this.Hint=Hint;
         this.text=text;
         this.address=address;
 
@@ -47,13 +47,14 @@ public class ItemBean {
         this.Unit = Unit;
     }
 
-    public String getCurrent() {
-        return Current;
+    public String getHint() {
+        return Hint;
     }
 
-    public void setCurrent(String Current) {
-        this.Current = Current;
+    public void setHint(String Hint) {
+        this.Hint = Hint;
     }
+
 
 
     public String getText() {

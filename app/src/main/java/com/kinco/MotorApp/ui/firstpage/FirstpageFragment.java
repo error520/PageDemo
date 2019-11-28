@@ -68,7 +68,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
-        mData.add(new ItemBean( "Digital reference frequency","0.01HZ","","","0003"));
+        mData.add(new ItemBean( "Digital reference frequency","HZ","","0.0~300.00","0003"));
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
@@ -80,8 +80,6 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         util.setListViewHeightBasedOnChildren(mListView);
         Button button0 = (Button) getActivity().findViewById(R.id.FirstpageMore);
         button0.setOnClickListener(this);
-//        Button button1 = (Button) getActivity().findViewById(R.id.FirstpageSubmit);
-//        button1.setOnClickListener(this);
         Button button3 = (Button) getActivity().findViewById(R.id.control_110B);
         button3.setOnClickListener(this);
         Button button4 = (Button) getActivity().findViewById(R.id.control_101B);
@@ -132,7 +130,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             });
             listView = (ListView) getActivity().findViewById(R.id.mylist0);
             listView.setAdapter(textAdapter);//传值到ListView中
-//            util.setListViewHeightBasedOnChildren(listView);
+            util.setListViewHeightBasedOnChildren(listView);
         }
     }
 

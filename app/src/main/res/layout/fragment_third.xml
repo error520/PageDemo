@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/currentValue"
+                android:id="@+id/currentValue2"
                 android:layout_width="178dp"
                 android:layout_height="wrap_content"
                 android:ems="10" />

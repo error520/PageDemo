@@ -245,7 +245,8 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     private String writeAddressList[] = {"0000","0003","0006","0007","0010","0012","0013","0014","0015","0016"};
     private String chooseAddressList[] = {"0001","0002","0004","0005","0008","0009","000A","000B","000C","000D",
             "000E","000F","0011"};
-    private String Unit[]={"1","0.01HZ","0.1S","0.1S","","0.1KW","","0.1KW","1","1"};
+    private String Unit[]={"","HZ","S","S","","KW","","KW","",""};
+    private String Hint[]={"4 digits","0.0~300.00","0.0~6000.0","0.0~6000.0","1~10000","0.2~999.9","2~24","0.4~999.9","1~40","0~1"};
     private ListView listView;
     private Button button;
     private ListView mListView;
@@ -264,7 +265,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         mData = new ArrayList<ItemBean>();
         //输入型
         for(int i=0;i<10;i++){
-            mData.add(new ItemBean( GroupArray[i], Unit[i],"","",writeAddressList[i]));
+            mData.add(new ItemBean( GroupArray[i], Unit[i],"",Hint[i],writeAddressList[i]));
         }
         mAdapter = new ListViewAdapter(this, mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {

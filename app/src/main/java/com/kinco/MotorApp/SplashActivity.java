@@ -61,7 +61,7 @@ public class SplashActivity extends Activity {
 
 
 
-                    sleep(5000);//使程序休眠五秒
+                    sleep(500);//使程序休眠500ms
 
 
 

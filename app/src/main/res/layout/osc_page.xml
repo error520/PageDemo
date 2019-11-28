@@ -20,7 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="正玄曲线"
+            android:textAllCaps="false"
+            android:text="Output frequency"
+            android:padding="10dp"
             android:background="@drawable/button"/>
 
         <Button
@@ -28,7 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="余玄曲线"
+            android:text="Output voltage"
+            android:padding="10dp"
+            android:textAllCaps="false"
             android:background="@drawable/button"/>
 
         <Button
@@ -36,7 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="折线曲线"
+            android:textAllCaps="false"
+            android:text="Output current"
+            android:padding="10dp"
             android:background="@drawable/button"/>
     </LinearLayout>
 

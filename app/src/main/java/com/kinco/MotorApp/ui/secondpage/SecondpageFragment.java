@@ -38,14 +38,16 @@ public class SecondpageFragment extends Fragment {
     private String TAG = "second";
     private String addressState="0000";
     private BroadcastReceiver receiver=new LocalReceiver();
-//    LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+    LocalBroadcastManager localBroadcastManager;
     List<Parameter> list0;
     TableAdapter adapter;
     int count = 0;
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
     String[] Name={"Output frequency","Output voltage","Motor power","VFD","VFD rotation","Main reference","Serial port control",
         "Serial port setting","State"};
-    String[] unit={"0.01Hz","1V","0.1%","","","","","",""};
+    String[] unit={"Hz","V","%","","","","","",""};
+    boolean[] sign={true, false, false, false, false, false, false, false, false};
+    double[] min={0.01, 1, 0.1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
     //记住一定要重写onCreateView方法
     @Nullable
@@ -66,7 +68,7 @@ public class SecondpageFragment extends Fragment {
         //！！！数据每次点击后都应该刷新数据
         list0 = new ArrayList<Parameter>();
         for(int i=0;i<9;i++){
-            list0.add(new Parameter( Name[i],"null",""));
+            list0.add( new Parameter( Name[i],"(null)",unit[i],sign[i],min[i]));
         }
         ListView tableListView = (ListView) getActivity().findViewById(R.id.list0);
         adapter = new TableAdapter(this.getActivity(),list0);
@@ -93,7 +95,8 @@ public class SecondpageFragment extends Fragment {
             public void onServiceDisconnected(ComponentName name) {
             }
         }, Context.BIND_AUTO_CREATE);
-//        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
     @Override
@@ -142,30 +145,29 @@ public class SecondpageFragment extends Fragment {
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 //String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
                 final byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
-                Log.d(TAG,message+"");
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            //final int info = Integer.valueOf(message.substring(9, 11),16) + Integer.valueOf(message.substring(12, 14),16) * 256;
                             int info = util.byte2ToUnsignedShort(message,3);
                             //String str = message.substring(100);   //错误测试
                             if (addressState.equals("0100")) {
-                                list0.get(0).setDescribe(((float) ((short) info) / 100) + "Hz");
+                                list0.get(0).setDescribe(((float) ((short) info) / 100) +"");
                                 addressState = "0101";
                                 adapter.notifyDataSetChanged();
                                 delayRead(addressState);
+                                mBluetoothLeService.readData(addressState,"0001");
                                 return;
                             }
                             if (addressState.equals("0101")) {
-                                list0.get(1).setDescribe(info + "V");
+                                list0.get(1).setDescribe(info + "");
                                 addressState = "0103";
                                 adapter.notifyDataSetChanged();
                                 delayRead(addressState);
                                 return;
                             }
                             if (addressState.equals("0103")) {
-                                list0.get(2).setDescribe((float) info / 10 + "%");
+                                list0.get(2).setDescribe((float) info / 10 + "");
                                 addressState = "0110";
                                 adapter.notifyDataSetChanged();
                                 delayRead(addressState);

@@ -73,6 +73,7 @@ public class ListViewAdapter extends BaseAdapter {
             holder = new ViewHolder(convertView);
             holder.edit_name=(TextView)convertView.findViewById(R.id.edit_name);//1
             holder.edit_unit=(TextView)convertView.findViewById(R.id.edit_unit);
+            holder.editText.setHint(itemObj.getHint());
             holder.edit_current=(Button)convertView.findViewById(R.id.button_write) ;
             holder.edit_current.setOnClickListener(new View.OnClickListener(){
                 @Override

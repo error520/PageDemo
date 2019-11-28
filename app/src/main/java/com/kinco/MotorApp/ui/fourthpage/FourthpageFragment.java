@@ -101,14 +101,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         paint.setStrokeWidth(3);
 
         mHnadler=new Handler();
-//        mHnadler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                for(int i=0;i<10;i++)
-//                    drawData(100);
-//                //showBrokenLine();
-//            }
-//        },1000);
+
 
     }
 
@@ -127,6 +120,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         localBroadcastManager.unregisterReceiver(receiver);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+    }
+
     private void InitData() {
             Resources resources = this.getResources();
             DisplayMetrics dm = resources.getDisplayMetrics();
@@ -142,25 +141,25 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnShowSin:
+                    mBluetoothLeService.writeData("0202","0001");
+                    packageCount=0;
+                    packageList.clear();
+                    mDrawing=true;
+
+                    break;
+                case R.id.btnShowCos:
+                    //showSineCord(view);
                     mBluetoothLeService.writeData("0203","0001");
                     packageCount=0;
                     packageList.clear();
                     mDrawing=true;
-                    //showSineCord(view);
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            for(int i=0;i<1024;i++)
-//                                drawData(100);
-//                        }
-//                    });
-
-                    break;
-                case R.id.btnShowCos:
-                    showSineCord(view);
                     break;
                 case R.id.btnShowBrokenLine:
-                    showBrokenLine();
+                    //showBrokenLine();
+                    mBluetoothLeService.writeData("0204","0001");
+                    packageCount=0;
+                    packageList.clear();
+                    mDrawing=true;
                     break;
             }
 

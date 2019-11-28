@@ -35,7 +35,9 @@ public class SecondMoreActivity extends Activity {
     "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
     "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
     "Custom-made version number","Software date"};
-    String[] Unit={"0.01Hz","1V","0.1A","0.1%","0.01Hz","1","1","1","0.01V","0.1℃","","1V","0.1A","0.01Hz","1"};
+    String[] Unit={"Hz","V","A","%","Hz","","","","V","℃","","V","A","Hz","",""};
+    boolean[] sign={true, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false};
+    double[] min={0.01, 1, 0.1, 0.1, 0.01, 1, 1, 1, 0.01, 0.1, 1, 1, 0.1, 0.01, 1, 1};
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(this);
     private BroadcastReceiver receiver=new LocalReceiver();
@@ -53,8 +55,8 @@ public class SecondMoreActivity extends Activity {
 //        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
 
         //！！！数据每次点击后都应该刷新数据
-        for(int i=0;i<15;i++){
-            list.add(new Parameter(  Name[i],"null","("+Unit[i]+")"));
+        for(int i=0;i<16;i++){
+            list.add(new Parameter(  Name[i],"(null)",Unit[i],sign[i],min[i]));
         }
         ListView tableListView = (ListView) findViewById(R.id.list1);
 
@@ -64,7 +66,7 @@ public class SecondMoreActivity extends Activity {
 
 
 
-//        // 点击事件
+        // 点击事件
         tableListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -73,34 +75,6 @@ public class SecondMoreActivity extends Activity {
                 addressState="010"+Integer.toHexString(position);
                 mAddress=position;
                 mBluetoothLeService.readData(addressState,"0001");
-//                AlertDialog.Builder builder=new AlertDialog.Builder(SecondMoreActivity.this);
-//                builder.setTitle(parameter.getName());
-//                //切记单选，复选对话框不能设置内容
-//                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(SecondMoreActivity.this,"你点击了确认按钮",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(SecondMoreActivity.this,"你点击了取消按钮",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                //！！！创建单选的数据，改善后应该为说明书中的各个选项
-//                final String[] str=new String[]{"0","1","2","3","4"};
-//                //设置单选对话框的监听
-//                //！！！初始选中位置为第一个 完善后应为原来没有改变前的选项
-//                builder.setSingleChoiceItems(str, 0, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(SecondMoreActivity.this,"你选中了"+str[which],Toast.LENGTH_SHORT).show();//！！！被选中的值应该被返回致数据库
-//                    }
-//                });
-//                AlertDialog alertDialog=builder.create();
-//                alertDialog.setCanceledOnTouchOutside(false);
-//                alertDialog.show();
 
             }
         });
@@ -131,11 +105,22 @@ public class SecondMoreActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 if(action.equals(BLEService.ACTION_DATA_AVAILABLE)){
-                    String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                    if(mAddress<15)
-                        list.get(mAddress).setDescribe(message.substring(9,15));
-                    mAddress=100;
-                    adapter.notifyDataSetChanged();
+                    final byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(mAddress<15) {
+                                Parameter pp = list.get(mAddress);
+                                if(pp.getSign())
+                                    pp.setDescribe((short)(util.byte2ToUnsignedShort(message, 3))*pp.getMin()+"");
+                                else
+                                    pp.setDescribe(util.byte2ToUnsignedShort(message, 3)*pp.getMin()+"");
+                            }
+                            mAddress=100;
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
 
 
                 }
