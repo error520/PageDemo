@@ -2,6 +2,7 @@ package com.kinco.MotorApp.ui.firstpage;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.alertdialog.ErrorDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
@@ -311,7 +313,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         button19.setOnClickListener(this);
         Button button20 = (Button) findViewById(R.id.Control_bit9_1);
         button20.setOnClickListener(this);
-//
+
     }
     private void initService(){
         //绑定服务

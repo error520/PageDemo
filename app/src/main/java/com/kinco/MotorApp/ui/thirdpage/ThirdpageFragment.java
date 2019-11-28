@@ -54,7 +54,7 @@ public class ThirdpageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.read_and_write, container, false);//得到对应的布局文件
+        view = inflater.inflate(R.layout.fragment_third, container, false);//得到对应的布局文件
         return view;
     }
 
@@ -154,10 +154,9 @@ public class ThirdpageFragment extends Fragment {
             String action = intent.getAction();
             Log.d(TAG,action);
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                Log.d(TAG,message);
+                byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                 if(state.equals("read"))
-                    currentValue.setText(message.substring(9,15));
+                    currentValue.setText(util.toHexString(message,3));
                 if(state.equals("write"))
                     util.centerToast(context,"succeed!",Toast.LENGTH_SHORT);
 

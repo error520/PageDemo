@@ -1,30 +1,47 @@
 package com.kinco.MotorApp.ui.fourthpage;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.R;
+import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
+import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class FourthpageFragment extends Fragment implements View.OnClickListener{
+    private  String TAG="ff";
     private View view;//得到碎片对应的布局文件,方便后续使用
     private SurfaceHolder holder;
     private SurfaceView showSurfaceView;
@@ -46,6 +63,14 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private int centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
+    private int packageCount=0;
+    private BLEService mBluetoothLeService;
+    private LocalBroadcastManager localBroadcastManager;
+    private BroadcastReceiver receiver=new LocalReceiver();
+    private boolean mDrawing=false;
+    private Handler mHnadler;
+    private int data[] = new int[1024];
+    private ArrayList<byte[]> packageList = new ArrayList();
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -56,6 +81,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initService();
             // 获得SurfaceView对象
         showSurfaceView = (SurfaceView) getActivity().findViewById(R.id.showSurfaceView);
         btnShowSin = (Button) getActivity().findViewById(R.id.btnShowSin);
@@ -73,9 +99,35 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         paint = new Paint();
         paint.setColor(Color.GREEN);
         paint.setStrokeWidth(3);
+
+        mHnadler=new Handler();
+//        mHnadler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                for(int i=0;i<10;i++)
+//                    drawData(100);
+//                //showBrokenLine();
+//            }
+//        },1000);
+
     }
 
-        private void InitData() {
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(!(task==null)){
+            task.cancel();
+            task=null;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        localBroadcastManager.unregisterReceiver(receiver);
+    }
+
+    private void InitData() {
             Resources resources = this.getResources();
             DisplayMetrics dm = resources.getDisplayMetrics();
             //获取屏幕的宽度作为示波器的边长
@@ -90,7 +142,19 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnShowSin:
-                    showSineCord(view);
+                    mBluetoothLeService.writeData("0203","0001");
+                    packageCount=0;
+                    packageList.clear();
+                    mDrawing=true;
+                    //showSineCord(view);
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for(int i=0;i<1024;i++)
+//                                drawData(100);
+//                        }
+//                    });
+
                     break;
                 case R.id.btnShowCos:
                     showSineCord(view);
@@ -101,6 +165,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             }
 
         }
+
+
 
         /**
          * 折线曲线
@@ -217,5 +283,124 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 //        fragment.setArguments(args);
         return fragment;
     }
+
+    /**
+     * 初始化服务和广播
+     */
+    private void initService(){
+        //绑定服务
+        Intent BLEIntent = new Intent(getActivity(), BLEService.class);
+        getActivity().bindService(BLEIntent,connection, Context.BIND_AUTO_CREATE);
+        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+    }
+
+
+    private void draw(){
+            drawBackGround(holder);
+            cx = X_OFFSET;
+            if (task != null) {
+                task.cancel();
+            }
+            final Iterator<Integer> data=packageToData(packageList).iterator();
+            task = new TimerTask() {
+                int startX = 0;
+                int startY = centerY;
+                @Override
+                public void run() {
+                    if(!data.hasNext()){
+                        task.cancel();
+                        task = null;
+                    }
+
+                    int cy = centerY-data.next();
+                   // Log.d(TAG,cy+"");
+                    Canvas canvas = holder.lockCanvas(new Rect(cx-10, cy - 900,
+                            cx + 10, cy + 900));
+
+                    // 根据Ｘ，Ｙ坐标画线
+                    canvas.drawLine(startX, startY ,cx, cy, paint);
+
+                    //结束点作为下一次折线的起始点
+                    startX = cx;
+                    startY = cy;
+
+                    cx+=10;
+                    // 超过指定宽度，线程取消，停止画曲线
+                    if (cx > WIDTH) {
+                        task.cancel();
+                        task = null;
+                    }
+                    // 提交修改
+                    holder.unlockCanvasAndPost(canvas);
+                }
+            };
+            timer.schedule(task, 0, 30);
+    }
+
+    private ArrayList<Integer> packageToData(ArrayList<byte[]> packageList){
+        ArrayList<Integer> data = new ArrayList<>();
+        byte[] package1 = new byte[12];
+        System.arraycopy(packageList.get(0), 8, package1, 0, 12);
+        for(byte i: package1)
+            Log.d(TAG,i+"");
+        packageList.set(0,package1);
+        for(byte[] i:packageList){
+              for(int j=0; j<i.length; j+=2){
+                  data.add(util.byte2ToUnsignedShort(i[j],i[j+1]));
+              }
+        }
+        return data;
+
+    }
+
+    /**
+     * 接收到广播后的行为
+      */
+    private class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
+                if (mDrawing) {
+                    byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
+                    packageList.add(message);
+                    if(packageCount==102)
+                        draw();
+                    packageCount++;
+
+                    Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
+                    //final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
+                }
+            }
+            else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
+                util.centerToast(getContext(),"Bluetooth disconnected!",0);
+            }
+            else if(action.equals(BLEService.ACTION_ERROR_CODE)){
+                String errorCode = intent.getStringExtra(BLEService.ACTION_ERROR_CODE);
+                Toast toast = Toast.makeText(getContext(),"error code:"+errorCode,Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
+
+            }
+        }
+    }
+
+    /**
+     * 得到服务实例
+     */
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mBluetoothLeService = ((BLEService.localBinder) service)
+                    .getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 }
 

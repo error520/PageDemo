@@ -1,11 +1,15 @@
 package com.kinco.MotorApp.ui.firstpage;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -168,6 +173,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    /**
+     * 得到服务实例
+     */
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -202,6 +210,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             Log.d(TAG,action);
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                util.centerToast(getContext(),"succeed!",0);
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
@@ -215,5 +224,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+
+
+
 
 }

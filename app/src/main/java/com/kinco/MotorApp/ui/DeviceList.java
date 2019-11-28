@@ -3,6 +3,7 @@ package com.kinco.MotorApp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -33,11 +34,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.alertdialog.PasswordDialog;
 import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.R;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 //远程推送
 
 /**
@@ -53,6 +57,8 @@ public class DeviceList extends AppCompatActivity{
     private ProgressBar progressBar;
     private Button BLEScan;
     private Switch Filter;
+    private PasswordDialog dialog;
+    private String password="";
     private boolean mScanning;//是否正在搜索
     private Handler mHandler;
     private TextView count;
@@ -65,6 +71,7 @@ public class DeviceList extends AppCompatActivity{
     ArrayList<String> connected_list = new ArrayList<String>();
     private LocalReceiver localReceiver;
     private BLEService mBluetoothLeService;
+    private String editPassword;
 
     private void initUI(){
         setContentView(R.layout.device_list);
@@ -170,11 +177,7 @@ public class DeviceList extends AppCompatActivity{
             toast.setGravity(Gravity.CENTER,0,0);
             toast.show();
             mBluetoothLeService.connect(address);
-//            finish();
-//            Intent intent2 = new Intent(DeviceList.this,ChatActivity.class);
-//            intent2.putExtra(EXTRA_DEVICE_ADDRESS,address);
 
-//            startActivity(intent2);
         }
     };
 
@@ -245,9 +248,12 @@ public class DeviceList extends AppCompatActivity{
                             connected_list.clear();
                             connected_list.add(slaveAddress);
                             mPairedDevicesArrayAdapter.notifyDataSetChanged();
-                            finish();
+                            showPasswordDialog();
+                            //finish();
                         }catch(Exception e){
                             util.centerToast(DeviceList.this,"Failed to get SlaveAddress",0);
+                            e.printStackTrace();
+                            Log.d(TAG,e.toString());
                         }
 
                     }
@@ -259,6 +265,22 @@ public class DeviceList extends AppCompatActivity{
                 Toast toast = Toast.makeText(getApplicationContext(),"Connection failed!",Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER,0,0);
                 toast.show();
+                connected_list.clear();
+                mPairedDevicesArrayAdapter.notifyDataSetChanged();
+            }
+            else if(action.equals(BLEService.ACTION_DATA_AVAILABLE)){
+                byte[] message = new byte[2];
+                message[0]=intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA)[3];
+                message[1]=intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA)[4];
+                String password=util.toHexString(message,false);
+                if(editPassword.equals(password)) {
+                    if (!(dialog == null)) {
+                        util.centerToast(DeviceList.this, "Correct!", 0);
+                        dialog.gone();
+                        finish();
+                    }
+                }else
+                      util.centerToast(DeviceList.this, "Wrong!", 0);
             }
         }
     }
@@ -278,7 +300,42 @@ public class DeviceList extends AppCompatActivity{
     };
 
 
+    private void showPasswordDialog(){
+        try {
+              dialog = new PasswordDialog(this);
+              dialog.setOnClickBottomListener(new PasswordDialog.OnClickBottomListener(){
+                  @Override
+                  public void onPositiveClick() {
+                      mBluetoothLeService.readData("0000","0001");
+                      editPassword = dialog.getPassword();
 
+                  }
+                  @Override
+                  public void onNegativeClick() {
+                      mBluetoothLeService.close();
+                      dialog.gone();
+
+                  }
+              });
+              //dialog.show();
+//            final PasswordDialog dialog = new PasswordDialog(DeviceList.this, mBluetoothLeService);
+//            dd = dialog.show();
+//            field = dd.getClass().getSuperclass().getDeclaredField("mShowing");
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        if (password.equals(dialog.getPassword()))
+//                            field.set(dd, true);
+//                    }catch (Exception e){}
+//                }
+//            },1000);
+//            field.setAccessible(true);
+//            field.set(dd, false);// false表示不关闭
+        }catch(Exception e){
+            Log.d(TAG,"PasswordDialog error");
+        }
+    }
 
 
 }
