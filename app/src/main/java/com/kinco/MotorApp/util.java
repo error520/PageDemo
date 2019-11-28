@@ -57,7 +57,7 @@ public class util {
         return targets;
     }
     //字节数组转字节样式的字符串
-    public static String toHexString(byte[] byteArray) {
+    public static String toHexString(byte[] byteArray, boolean addGap) {
         if (byteArray == null || byteArray.length < 1)
             throw new IllegalArgumentException("this byteArray must not be null or empty");
 
@@ -65,7 +65,21 @@ public class util {
         for (int i = 0; i < byteArray.length; i++) {
             if ((byteArray[i] & 0xff) < 0x10)//0~F前面不零
                 hexString.append("0");
-            hexString.append(Integer.toHexString(0xFF & byteArray[i])+" ");
+            hexString.append(Integer.toHexString(0xFF & byteArray[i])+(addGap?" ":""));
+        }
+        return hexString.toString().toUpperCase();
+    }
+
+    //只要有效数据
+    public static String toHexString(byte[] byteArray,int off) {
+        if (byteArray == null || byteArray.length < 1)
+            throw new IllegalArgumentException("this byteArray must not be null or empty");
+
+        final StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < 2; i++) {
+            if ((byteArray[i+off] & 0xff) < 0x10)//0~F前面不零
+                hexString.append("0");
+            hexString.append(Integer.toHexString(0xFF & byteArray[i+off])+" ");
         }
         return hexString.toString().toUpperCase();
     }
@@ -74,7 +88,7 @@ public class util {
      * byte数组转换为无符号short整数
      *
      * @param bytes
-     *            byte数组
+     *
      * @return short整数
      */
     public static int byte2ToUnsignedShort(byte[] bytes) {
@@ -83,11 +97,8 @@ public class util {
 
     /**
      * byte数组转换为无符号short整数
-     *
      * @param bytes
-     *            byte数组
      * @param off
-     *            开始位置
      * @return short整数
      */
     public static int byte2ToUnsignedShort(byte[] bytes, int off) {
@@ -95,6 +106,27 @@ public class util {
         int low = bytes[off + 1];
         return (high << 8 & 0xFF00) | (low & 0xFF);
     }
+
+    /**
+     * 两个byte合成转换为无符号short整数
+     * @param bt1
+     * @param bt2
+     * @return short整数
+     */
+    public static int byte2ToUnsignedShort(byte bt1, byte bt2){
+        int high = bt1;
+        int low = bt2;
+        return (high << 8 & 0xFF00) | (low & 0xFF);
+    }
+
+
+    public static byte[] byteMerger(byte[] bt1, byte[] bt2){
+        byte[] bt3 = new byte[bt1.length+bt2.length];
+        System.arraycopy(bt1, 0, bt3, 0, bt1.length);
+        System.arraycopy(bt2, 0, bt3, bt1.length, bt2.length);
+        return bt3;
+    }
+
 
 
     //广播过滤器

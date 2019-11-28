@@ -130,71 +130,80 @@ public class SecondpageFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                Log.d(TAG,message);
-                try {
-                    final int info = Integer.valueOf(message.substring(9, 11),16) + Integer.valueOf(message.substring(12, 14),16) * 256;
-                    //String str = message.substring(100);   //错误测试
-                    if (addressState.equals("0100")) {
-                        list0.get(0).setDescribe(((float) ((short) info) / 100) + "Hz");
-                        addressState = "0101";
-                        mBluetoothLeService.readData("0101", "0001");
-                        return;
-                    }
-                    if (addressState.equals("0101")) {
-                        list0.get(1).setDescribe(info + "V");
-                        addressState = "0103";
-                        adapter.notifyDataSetChanged();
-                        delayRead(addressState);
-                        return;
-                    }
-                    if (addressState.equals("0103")) {
-                        list0.get(2).setDescribe((float) info / 10 + "%");
-                        addressState = "0110";
-                        adapter.notifyDataSetChanged();
-                        delayRead(addressState);
-                        return;
-                    }
-                    if (addressState.equals("0110")) {
-                        //Log.d(TAG,info+"");
-                        if ((info & 0x1) > 0)
-                            list0.get(3).setDescribe("Running");
-                        else
-                            list0.get(3).setDescribe("Stop");
-                        if ((info & 0x02) > 0)
-                            list0.get(4).setDescribe("Reverse");
-                        else
-                            list0.get(4).setDescribe("Forward");
-                        if ((info & 0x04) > 0)
-                            list0.get(5).setDescribe("Reach");
-                        else
-                            list0.get(5).setDescribe("Not Reach");
-                        if ((info & 0x08) > 0)
-                            list0.get(6).setDescribe("Enable");
-                        else
-                            list0.get(6).setDescribe("Disable");
-                        if ((info & 0x10) > 0)
-                            list0.get(7).setDescribe("Enable");
-                        else
-                            list0.get(7).setDescribe("Disable");
-                        if ((info & 0x20) > 0)
-                            list0.get(8).setDescribe("Alarm");
-                        else {
-                            if ((info & 0xff00) > 0)
-                                list0.get(8).setDescribe("Fault");
-                            else
-                                list0.get(8).setDescribe("Normal");
-                        }
-                        util.centerToast(getContext(),"Reload completed!",0);
-                        adapter.notifyDataSetChanged();
-                        addressState="0000";
-                        return;
-                    }
+                //String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                final byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
+                Log.d(TAG,message+"");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            //final int info = Integer.valueOf(message.substring(9, 11),16) + Integer.valueOf(message.substring(12, 14),16) * 256;
+                            int info = util.byte2ToUnsignedShort(message,3);
+                            //String str = message.substring(100);   //错误测试
+                            if (addressState.equals("0100")) {
+                                list0.get(0).setDescribe(((float) ((short) info) / 100) + "Hz");
+                                addressState = "0101";
+                                adapter.notifyDataSetChanged();
+                                delayRead(addressState);
+                                return;
+                            }
+                            if (addressState.equals("0101")) {
+                                list0.get(1).setDescribe(info + "V");
+                                addressState = "0103";
+                                adapter.notifyDataSetChanged();
+                                delayRead(addressState);
+                                return;
+                            }
+                            if (addressState.equals("0103")) {
+                                list0.get(2).setDescribe((float) info / 10 + "%");
+                                addressState = "0110";
+                                adapter.notifyDataSetChanged();
+                                delayRead(addressState);
+                                return;
+                            }
+                            if (addressState.equals("0110")) {
+                                //Log.d(TAG,info+"");
+                                if ((info & 0x1) > 0)
+                                    list0.get(3).setDescribe("Running");
+                                else
+                                    list0.get(3).setDescribe("Stop");
+                                if ((info & 0x02) > 0)
+                                    list0.get(4).setDescribe("Reverse");
+                                else
+                                    list0.get(4).setDescribe("Forward");
+                                if ((info & 0x04) > 0)
+                                    list0.get(5).setDescribe("Reach");
+                                else
+                                    list0.get(5).setDescribe("Not Reach");
+                                if ((info & 0x08) > 0)
+                                    list0.get(6).setDescribe("Enable");
+                                else
+                                    list0.get(6).setDescribe("Disable");
+                                if ((info & 0x10) > 0)
+                                    list0.get(7).setDescribe("Enable");
+                                else
+                                    list0.get(7).setDescribe("Disable");
+                                if ((info & 0x20) > 0)
+                                    list0.get(8).setDescribe("Alarm");
+                                else {
+                                    if ((info & 0xff00) > 0)
+                                        list0.get(8).setDescribe("Fault");
+                                    else
+                                        list0.get(8).setDescribe("Normal");
+                                }
+                                util.centerToast(getContext(),"Reload completed!",0);
+                                adapter.notifyDataSetChanged();
+                                addressState="0000";
+                                return;
+                            }
 
-                }catch(Exception e){
+                        }catch(Exception e){
                             ErrorDialog ed = new ErrorDialog(getContext(),message+"\n"+e.toString());
                             ed.show();
-                }
+                        }
+                    }
+                });
+
 
             }
 

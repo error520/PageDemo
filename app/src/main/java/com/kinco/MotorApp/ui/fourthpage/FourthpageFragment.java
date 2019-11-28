@@ -34,11 +34,13 @@ import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class FourthpageFragment extends Fragment implements View.OnClickListener{
+    private  String TAG="ff";
     private View view;//得到碎片对应的布局文件,方便后续使用
     private SurfaceHolder holder;
     private SurfaceView showSurfaceView;
@@ -67,7 +69,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private boolean mDrawing=false;
     private Handler mHnadler;
     private int data[] = new int[1024];
-    private ArrayList<String> packageList = new ArrayList();
+    private ArrayList<byte[]> packageList = new ArrayList();
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -116,6 +118,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             task.cancel();
             task=null;
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        localBroadcastManager.unregisterReceiver(receiver);
     }
 
     private void InitData() {
@@ -278,43 +286,6 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
-    /**
-     * 画数据
-     * @param data
-     *
-     */
-    private void drawData(int data){
-        drawBackGround(holder);
-        cx = X_OFFSET;
-            int startX = 0;
-            int startY = 200;
-
-                final int cy = data;
-
-                mHnadler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Canvas canvas = holder.lockCanvas(new Rect(cx, cy - 2,
-                                cx+2, cy + 2));
-                        //       Canvas canvas = holder.lockCanvas(null);
-                        cx+=3;
-                        // 根据Ｘ，Ｙ坐标画线
-                        canvas.drawPoint(cx, cy, paint);
-
-                        //结束点作为下一次折线的起始点
-
-                        // 超过指定宽度，线程取消，停止画曲线
-                        if (cx > WIDTH) {
-                            task.cancel();
-                            task = null;
-                        }
-                        // 提交修改
-                        holder.unlockCanvasAndPost(canvas);
-                    
-                    }
-                },15);
-
-    }
 
     private void draw(){
             drawBackGround(holder);
@@ -322,15 +293,19 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             if (task != null) {
                 task.cancel();
             }
+            final Iterator<Integer> data=packageToData(packageList).iterator();
             task = new TimerTask() {
                 int startX = 0;
-                int startY = 200;
-                Random random = new Random();
+                int startY = centerY;
                 @Override
                 public void run() {
+                    if(!data.hasNext()){
+                        task.cancel();
+                        task = null;
+                    }
 
-                    int cy = random.nextInt(100)+200;
-
+                    int cy = centerY-data.next();
+                   // Log.d(TAG,cy+"");
                     Canvas canvas = holder.lockCanvas(new Rect(cx-10, cy - 900,
                             cx + 10, cy + 900));
 
@@ -354,12 +329,19 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             timer.schedule(task, 0, 30);
     }
 
-    private void packageToData(){
-        int data[] = new int[1024];
-        String dataString = packageList.get(1).substring(23);
-        for(int i=0; i<5; i++){
-            ;
+    private ArrayList<Integer> packageToData(ArrayList<byte[]> packageList){
+        ArrayList<Integer> data = new ArrayList<>();
+        byte[] package1 = new byte[12];
+        System.arraycopy(packageList.get(0), 8, package1, 0, 12);
+        for(byte i: package1)
+            Log.d(TAG,i+"");
+        packageList.set(0,package1);
+        for(byte[] i:packageList){
+              for(int j=0; j<i.length; j+=2){
+                  data.add(util.byte2ToUnsignedShort(i[j],i[j+1]));
+              }
         }
+        return data;
 
     }
 
@@ -372,13 +354,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 if (mDrawing) {
-                    String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                    byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                     packageList.add(message);
                     if(packageCount==102)
                         draw();
                     packageCount++;
 
-                    Log.d("ff",message+"\n"+packageCount+"");
+                    Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
                     //final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
                 }
             }

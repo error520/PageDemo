@@ -145,10 +145,9 @@ public class ThirdpageFragment extends Fragment {
             String action = intent.getAction();
             Log.d(TAG,action);
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                Log.d(TAG,message);
+                byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                 if(state.equals("read"))
-                    currentValue.setText(message.substring(9,15));
+                    currentValue.setText(util.toHexString(message,3));
                 if(state.equals("write"))
                     util.centerToast(context,"succeed!",Toast.LENGTH_SHORT);
 

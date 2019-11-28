@@ -177,11 +177,7 @@ public class DeviceList extends AppCompatActivity{
             toast.setGravity(Gravity.CENTER,0,0);
             toast.show();
             mBluetoothLeService.connect(address);
-//            finish();
-//            Intent intent2 = new Intent(DeviceList.this,ChatActivity.class);
-//            intent2.putExtra(EXTRA_DEVICE_ADDRESS,address);
 
-//            startActivity(intent2);
         }
     };
 
@@ -273,9 +269,11 @@ public class DeviceList extends AppCompatActivity{
                 mPairedDevicesArrayAdapter.notifyDataSetChanged();
             }
             else if(action.equals(BLEService.ACTION_DATA_AVAILABLE)){
-                String message=intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA).substring(9,15).replace(" ","");
-                util.centerToast(DeviceList.this,password,0);
-                if(editPassword.equals(message)) {
+                byte[] message = new byte[2];
+                message[0]=intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA)[3];
+                message[1]=intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA)[4];
+                String password=util.toHexString(message,false);
+                if(editPassword.equals(password)) {
                     if (!(dialog == null)) {
                         util.centerToast(DeviceList.this, "Correct!", 0);
                         dialog.gone();

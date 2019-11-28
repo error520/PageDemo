@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '29.0.2'
     defaultConfig {
-        applicationId "com.example.pagedemo"
+        applicationId "com.kinco.MotorApp"
         minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
