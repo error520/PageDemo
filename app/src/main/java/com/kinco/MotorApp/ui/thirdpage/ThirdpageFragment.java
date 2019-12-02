@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.ui.secondpage.SecondpageFragment;
 import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.R;
 
@@ -46,7 +47,7 @@ public class ThirdpageFragment extends Fragment {
     private ArrayAdapter<String> arr_adapter0;
     private ArrayAdapter<String> arr_adapter1;
     private String address;
-    private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(getContext());
+    private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
 
     //记住一定要重写onCreateView方法
@@ -89,7 +90,8 @@ public class ThirdpageFragment extends Fragment {
             public void onServiceDisconnected(ComponentName name) {
             }
         }, Context.BIND_AUTO_CREATE);
-       localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+        localBroadcastManager =LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
     private void initUI(){
         spinner0 = (Spinner)getActivity().findViewById(R.id.spinner0);
@@ -139,16 +141,23 @@ public class ThirdpageFragment extends Fragment {
         });
     }
 
+    public ThirdpageFragment newInstance(int i) {
+        Bundle args = new Bundle();
+        args.putInt("int", i);
+        ThirdpageFragment fragment = new ThirdpageFragment();
+//        fragment.setArguments(args);
+        return fragment;
+    }
+
     private class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.d(TAG,action);
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                Log.d(TAG,message);
+                byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                 if(state.equals("read"))
-                    currentValue.setText(message.substring(9,15));
+                    currentValue.setText(util.toHexString(message,3));
                 if(state.equals("write"))
                     util.centerToast(context,"succeed!",Toast.LENGTH_SHORT);
 

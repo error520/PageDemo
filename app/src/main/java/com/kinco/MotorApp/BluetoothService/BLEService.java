@@ -115,6 +115,25 @@ public class BLEService extends Service {
         }
     }
 
+    /**
+     * @description 传递byte数组到前台
+     * @param message
+     * @param i
+     */
+    public void broadcastUpdate(byte[] message, int i){
+        switch(i){
+            case 0:{Intent intent = new Intent(ACTION_DATA_AVAILABLE);
+                intent.putExtra(EXTRA_MESSAGE_DATA, message);
+                localBroadcastManager.sendBroadcast(intent);}break;
+            case 1:{Intent intent = new Intent(ACTION_ERROR_CODE);
+                intent.putExtra(ACTION_ERROR_CODE, message);
+                localBroadcastManager.sendBroadcast(intent);}break;
+            case 2:{Intent intent = new Intent(ACTION_DATA_LENGTH_FALSE);
+                intent.putExtra(ACTION_DATA_LENGTH_FALSE, message);
+                localBroadcastManager.sendBroadcast(intent);}break;
+        }
+    }
+
     public void scanLeDevice(final boolean enable) {
         if (enable) {//true
 
@@ -274,11 +293,11 @@ public class BLEService extends Service {
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             byte bb2[] = characteristic.getValue();
-            Log.d(TAG, "Slave:"+util.toHexString(bb2));
+            Log.d(TAG, "Slave:"+util.toHexString(bb2,true));
             if(bb2.length>5) {
-                broadcastUpdate(util.toHexString(bb2),0);//收到的消息进行广播
+                broadcastUpdate(bb2,0);//收到的消息进行广播
             }else if((bb2.length==5)){
-                broadcastUpdate(util.toHexString(bb2),1);//广播错误码
+                broadcastUpdate(util.toHexString(bb2,true),1);//广播错误码
             }
             else{
                 Log.e(TAG,"长度错误!当前长度为"+bb2.length+"");
@@ -310,9 +329,15 @@ public class BLEService extends Service {
         super.onCreate();
         init();
         Log.d(TAG,"创建了服务");
-//        //调试用
-//        scanLeDevice(true);
-//        connect("78:DB:2F:C7:63:A8");
+////        //调试用
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //scanLeDevice(true);
+//                connect("78:DB:2F:C7:63:A8");
+//            }
+//        },2000);
+
 
     }
 
@@ -375,7 +400,7 @@ public class BLEService extends Service {
         try {
             writeCharacteristic.setValue(send);
             mBluetoothGatt.writeCharacteristic(writeCharacteristic);
-            Log.d(TAG,"Master:"+util.toHexString(send));
+            Log.d(TAG,"Master:"+util.toHexString(send,true));
         } catch (Exception e) {
             Log.d("data", e.toString());
         }

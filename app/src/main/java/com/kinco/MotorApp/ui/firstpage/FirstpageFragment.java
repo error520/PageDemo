@@ -1,11 +1,15 @@
 package com.kinco.MotorApp.ui.firstpage;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.kinco.MotorApp.DemoFragment;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
@@ -62,7 +68,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
-        mData.add(new ItemBean( "Digital reference frequency", "","","0003"));
+        mData.add(new ItemBean( "Digital reference frequency","HZ","","0.0~300.00","0003"));
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
@@ -74,8 +80,6 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         util.setListViewHeightBasedOnChildren(mListView);
         Button button0 = (Button) getActivity().findViewById(R.id.FirstpageMore);
         button0.setOnClickListener(this);
-//        Button button1 = (Button) getActivity().findViewById(R.id.FirstpageSubmit);
-//        button1.setOnClickListener(this);
         Button button3 = (Button) getActivity().findViewById(R.id.control_110B);
         button3.setOnClickListener(this);
         Button button4 = (Button) getActivity().findViewById(R.id.control_101B);
@@ -167,6 +171,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    /**
+     * 得到服务实例
+     */
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -186,6 +193,14 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         localBroadcastManager.unregisterReceiver(receiver);
     }
 
+    public FirstpageFragment newInstance(int i) {
+        Bundle args = new Bundle();
+        args.putInt("int", i);
+        FirstpageFragment fragment = new FirstpageFragment();
+//        fragment.setArguments(args);
+        return fragment;
+    }
+
     private class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -193,6 +208,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             Log.d(TAG,action);
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                util.centerToast(getContext(),"succeed!",0);
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
@@ -206,5 +222,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+
+
+
 
 }

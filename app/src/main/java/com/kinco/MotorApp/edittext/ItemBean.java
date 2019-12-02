@@ -5,18 +5,20 @@ package com.kinco.MotorApp.edittext;
  */
 public class ItemBean {
     private String Name;
-    private String Current;
+    private String Hint;
     private String text;
+    private String Unit;
     private String address;
 
     public ItemBean() {
         super();
     }
-    public ItemBean(String Name,String Current, String text, String address) {
+    public ItemBean(String Name,String Unit, String text,String Hint ,String address) {
         super();
 
         this.Name = Name;
-        this.Current=Current;
+        this.Unit=Unit;
+        this.Hint=Hint;
         this.text=text;
         this.address=address;
 
@@ -37,14 +39,22 @@ public class ItemBean {
     public void setName(String Name) {
         this.Name = Name;
     }
-
-    public String getCurrent() {
-        return Current;
+    public String getUnit() {
+        return Unit;
     }
 
-    public void setCurrent(String Current) {
-        this.Current = Current;
+    public void setUnit(String Name) {
+        this.Unit = Unit;
     }
+
+    public String getHint() {
+        return Hint;
+    }
+
+    public void setHint(String Hint) {
+        this.Hint = Hint;
+    }
+
 
 
     public String getText() {

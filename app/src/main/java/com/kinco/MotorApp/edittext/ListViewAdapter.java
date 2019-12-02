@@ -72,6 +72,8 @@ public class ListViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_edittext, null);
             holder = new ViewHolder(convertView);
             holder.edit_name=(TextView)convertView.findViewById(R.id.edit_name);//1
+            holder.edit_unit=(TextView)convertView.findViewById(R.id.edit_unit);
+            holder.editText.setHint(itemObj.getHint());
             holder.edit_current=(Button)convertView.findViewById(R.id.button_write) ;
             holder.edit_current.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -90,6 +92,8 @@ public class ListViewAdapter extends BaseAdapter {
 
         holder.edit_name.setText(ItemBean.getName());
         holder.edit_name.setTextSize(13);
+        holder.edit_unit.setText(ItemBean.getUnit());
+        holder.edit_unit.setTextSize(13);
 //        holder.edit_current.setText(ItemBean.getCurrent());
         //This is important. Remove TextWatcher first.
         if (holder.editText.getTag() instanceof TextWatcher) {
@@ -120,7 +124,7 @@ public class ListViewAdapter extends BaseAdapter {
         holder.editText.addTextChangedListener(watcher);
         holder.editText.setTag(watcher);
 
-        convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
+//        convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
 
         return convertView;
 
@@ -129,6 +133,7 @@ public class ListViewAdapter extends BaseAdapter {
     private class ViewHolder {
         public TextView edit_name;
         public Button edit_current;
+        public TextView edit_unit;
         private EditText editText;//1
 
         public ViewHolder(View convertView) {

@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="60dp"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -16,21 +20,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="正玄曲线" />
+            android:textAllCaps="false"
+            android:text="Output frequency"
+            android:padding="10dp"
+            android:background="@drawable/button"/>
 
         <Button
             android:id="@+id/btnShowCos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="余玄曲线" />
+            android:text="Output voltage"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:background="@drawable/button"/>
 
         <Button
             android:id="@+id/btnShowBrokenLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="click"
-            android:text="折线曲线" />
+            android:textAllCaps="false"
+            android:text="Output current"
+            android:padding="10dp"
+            android:background="@drawable/button"/>
     </LinearLayout>
 
     <SurfaceView

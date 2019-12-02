@@ -2,6 +2,7 @@ package com.kinco.MotorApp.ui.firstpage;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.alertdialog.ErrorDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
@@ -243,6 +245,8 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     private String writeAddressList[] = {"0000","0003","0006","0007","0010","0012","0013","0014","0015","0016"};
     private String chooseAddressList[] = {"0001","0002","0004","0005","0008","0009","000A","000B","000C","000D",
             "000E","000F","0011"};
+    private String Unit[]={"","HZ","S","S","","KW","","KW","",""};
+    private String Hint[]={"4 digits","0.0~300.00","0.0~6000.0","0.0~6000.0","1~10000","0.2~999.9","2~24","0.4~999.9","1~40","0~1"};
     private ListView listView;
     private Button button;
     private ListView mListView;
@@ -261,7 +265,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         mData = new ArrayList<ItemBean>();
         //输入型
         for(int i=0;i<10;i++){
-            mData.add(new ItemBean( GroupArray[i], "","",writeAddressList[i]));
+            mData.add(new ItemBean( GroupArray[i], Unit[i],"",Hint[i],writeAddressList[i]));
         }
         mAdapter = new ListViewAdapter(this, mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
@@ -310,7 +314,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         button19.setOnClickListener(this);
         Button button20 = (Button) findViewById(R.id.Control_bit9_1);
         button20.setOnClickListener(this);
-//
+
     }
     private void initService(){
         //绑定服务
@@ -351,7 +355,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
             listView = (ListView) findViewById(R.id.mylist);
             listView.setAdapter(textAdapter);//传值到ListView中
         }
-        util.setListViewHeightBasedOnChildren(listView);
+//        util.setListViewHeightBasedOnChildren(listView);
 
 
     }
