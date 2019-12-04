@@ -1,26 +1,20 @@
 package com.kinco.MotorApp.alertdialog;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.bluetooth.BluetoothGatt;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.kinco.MotorApp.BluetoothService.BLEService;
-
 import java.lang.reflect.Field;
 
 
-//TODO 密码输入框
+/**
+ * 密码输入框
+ */
 public class PasswordDialog{
     private String password="";
     final private AlertDialog.Builder builder;
@@ -64,8 +58,8 @@ public class PasswordDialog{
         btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         btnPos.setText("Connect");
         btnNeg.setText("Cancel");
-        btnPos.setTextColor(Color.BLUE);
-        btnNeg.setTextColor(Color.BLUE);
+        btnPos.setTextColor(Color.RED);
+        btnNeg.setTextColor(Color.RED);
         //设置不可消失
         try {
             field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");

@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 
 import com.kinco.MotorApp.util;
 
+/**
+ * 错误提示框
+ */
 public class ErrorDialog extends AlertDialog.Builder{
     public ErrorDialog(Context context,String text) {
         super(context);

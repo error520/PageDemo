@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.PasswordDialog;
 import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.R;
@@ -58,6 +59,7 @@ public class DeviceList extends AppCompatActivity{
     private Button BLEScan;
     private Switch Filter;
     private PasswordDialog dialog;
+    private LoadingDialog loadingDialog;
     private String password="";
     private boolean mScanning;//是否正在搜索
     private Handler mHandler;
@@ -173,9 +175,13 @@ public class DeviceList extends AppCompatActivity{
                 connected_list.clear();
                 mPairedDevicesArrayAdapter.notifyDataSetChanged();
             }
-            Toast toast = Toast.makeText(DeviceList.this,"Connecting...please wait", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER,0,0);
-            toast.show();
+            loadingDialog = new LoadingDialog(DeviceList.this,"","Connecting...please wait",true);
+            loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener(){
+                public void onNegativeClick(){
+                    loadingDialog.gone();
+                    mBluetoothLeService.close();
+                }
+            });
             mBluetoothLeService.connect(address);
 
         }
@@ -243,6 +249,7 @@ public class DeviceList extends AppCompatActivity{
                         toast.show();
                         mBluetoothLeService.slaveAddress = slaveAddress;
                         try {
+                            loadingDialog.gone();
                             mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
                             Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
                             connected_list.clear();
