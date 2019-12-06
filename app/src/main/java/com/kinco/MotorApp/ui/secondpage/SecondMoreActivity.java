@@ -36,6 +36,9 @@ public class SecondMoreActivity extends Activity {
     "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
     "Custom-made version number","Software date"};
     String[] Unit={"Hz","V","A","%","Hz","","","","V","℃","","V","A","Hz","",""};
+    String[] Inverter={"bit0:Run/Stop ","bit1:Reverse/Forward ","bit2:Operating at zero frequency ","bit3:Accelerating"," bit4:Decelerating",
+            "bit5:Operating at constant speed ","bit6:Pre-commutation " , "bit7:Tuning" , "bit8:Over-current limiting ", "bit9:DC over-voltage limiting", " bit10:Torque limiting ","bit11:Speed limiting " , "bit12:Drive fault" , "bit13:Speed control" , "bit14:Torque control"," bit15:Position control(Reserved)"};
+    String[] This={"hhhhhhhh","","","","","","","","","","","","","","",""};
     boolean[] sign={true, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false};
     double[] min={0.01, 1, 0.1, 0.1, 0.01, 1, 1, 1, 0.01, 0.1, 1, 1, 0.1, 0.01, 1, 1};
     private BLEService mBluetoothLeService;
@@ -44,6 +47,8 @@ public class SecondMoreActivity extends Activity {
     private String addressState="0000";
     TableAdapter adapter;
     List<Parameter> list = new ArrayList<Parameter>();
+    TableAdapter adapter1;
+    List<Parameter> list1= new ArrayList<Parameter>();
     private int mAddress=100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,15 @@ public class SecondMoreActivity extends Activity {
         adapter = new TableAdapter(this, list);
 
         tableListView.setAdapter(adapter);
+
+        for(int i=0;i<16;i++){
+            list1.add(new Parameter(  Inverter[i],This[i],"",sign[i],min[i]));
+        }
+        ListView tableListView1 = (ListView) findViewById(R.id.list2);
+
+        adapter1 = new TableAdapter(this, list1);
+
+        tableListView1.setAdapter(adapter1);
 
 
 
