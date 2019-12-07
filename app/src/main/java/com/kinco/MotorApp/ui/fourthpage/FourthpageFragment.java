@@ -22,6 +22,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -46,9 +47,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private SurfaceHolder holder;
     private SurfaceView showSurfaceView;
     //按钮
-    private Button btnShowSin;
-    private Button btnShowCos;
     private Button btnShowBrokenLine;
+    private Spinner spinner;
 
     private Paint paint;
 
@@ -70,6 +70,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private boolean mDrawing=false;
     private Handler mHnadler;
     private int data[] = new int[1024];
+    private String[] addressList = {"0202","0203","0204"};
     private ArrayList<byte[]> packageList = new ArrayList();
     //记住一定要重写onCreateView方法
     @Nullable
@@ -84,13 +85,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         initService();
             // 获得SurfaceView对象
         showSurfaceView = (SurfaceView) getActivity().findViewById(R.id.showSurfaceView);
-        btnShowSin = (Button) getActivity().findViewById(R.id.btnShowSin);
-        btnShowCos = (Button) getActivity().findViewById(R.id.btnShowCos);
         btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
-
-        btnShowSin.setOnClickListener(this);
-        btnShowCos.setOnClickListener(this);
         btnShowBrokenLine.setOnClickListener(this);
+        spinner = getActivity().findViewById(R.id.OSCspinner);
 
         InitData();
 
@@ -112,17 +109,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             task.cancel();
             task=null;
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
         localBroadcastManager.unregisterReceiver(receiver);
     }
 
+
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
@@ -140,23 +133,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.btnShowSin:
-                    mBluetoothLeService.writeData("0202","0001");
-                    packageCount=0;
-                    packageList.clear();
-                    mDrawing=true;
-
-                    break;
-                case R.id.btnShowCos:
-                    //showSineCord(view);
-                    mBluetoothLeService.writeData("0203","0001");
-                    packageCount=0;
-                    packageList.clear();
-                    mDrawing=true;
-                    break;
                 case R.id.btnShowBrokenLine:
                     //showBrokenLine();
-                    mBluetoothLeService.writeData("0204","0001");
+                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
                     packageCount=0;
                     packageList.clear();
                     mDrawing=true;
@@ -209,40 +188,40 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             timer.schedule(task, 0, 300);
         }
 
-        /**
-         * 正余弦曲线函数
-         */
-        private void showSineCord(final View view){
-            drawBackGround(holder);
-            cx = X_OFFSET;
-            if (task != null) {
-                task.cancel();
-            }
-            task = new TimerTask() {
-
-                @Override
-                public void run() {
-                    // 根据是正玄还是余玄和X坐标确定Y坐标
-                    int cy = view.getId()==R.id.btnShowSin?
-                            centerY- (int) (100 * Math.sin((cx - 5) * 2 * Math.PI/ 150))
-                            :centerY- (int) (100 * Math.cos((cx - 5) * 2 * Math.PI/ 150));
-
-                    Canvas canvas = holder.lockCanvas(new Rect(cx, cy - 2,
-                            cx + 2, cy + 2));
-                    // 根据Ｘ，Ｙ坐标画点
-                    canvas.drawPoint(cx, cy, paint);
-                    cx++;
-                    // 超过指定宽度，线程取消，停止画曲线
-                    if (cx > WIDTH) {
-                        task.cancel();
-                        task = null;
-                    }
-                    // 提交修改
-                    holder.unlockCanvasAndPost(canvas);
-                }
-            };
-            timer.schedule(task, 0, 30);
-        }
+//        /**
+//         * 正余弦曲线函数
+//         */
+//        private void showSineCord(final View view){
+//            drawBackGround(holder);
+//            cx = X_OFFSET;
+//            if (task != null) {
+//                task.cancel();
+//            }
+//            task = new TimerTask() {
+//
+//                @Override
+//                public void run() {
+//                    // 根据是正玄还是余玄和X坐标确定Y坐标
+//                    int cy = view.getId()==R.id.btnShowSin?
+//                            centerY- (int) (100 * Math.sin((cx - 5) * 2 * Math.PI/ 150))
+//                            :centerY- (int) (100 * Math.cos((cx - 5) * 2 * Math.PI/ 150));
+//
+//                    Canvas canvas = holder.lockCanvas(new Rect(cx, cy - 2,
+//                            cx + 2, cy + 2));
+//                    // 根据Ｘ，Ｙ坐标画点
+//                    canvas.drawPoint(cx, cy, paint);
+//                    cx++;
+//                    // 超过指定宽度，线程取消，停止画曲线
+//                    if (cx > WIDTH) {
+//                        task.cancel();
+//                        task = null;
+//                    }
+//                    // 提交修改
+//                    holder.unlockCanvasAndPost(canvas);
+//                }
+//            };
+//            timer.schedule(task, 0, 30);
+//        }
 
         private void drawBackGround(SurfaceHolder holder) {
             Canvas canvas = holder.lockCanvas();
@@ -369,7 +348,6 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     packageCount++;
 
                     Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
-                    //final int info = Integer.valueOf(message.substring(9, 11)) + Integer.valueOf(message.substring(12, 14)) * 256;
                 }
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {

@@ -348,7 +348,6 @@ public class BLEService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        close();
         return super.onUnbind(intent);
     }
     public void close() {

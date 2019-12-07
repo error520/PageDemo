@@ -66,30 +66,21 @@ public class ThirdpageFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+    public void onStart() {
+        super.onStart();
+        initService();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         localBroadcastManager.unregisterReceiver(receiver);
     }
 
     private void initService(){
         //绑定服务
         Intent BLEIntent = new Intent(getActivity(), BLEService.class);
-        getActivity().bindService(BLEIntent,new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                mBluetoothLeService = ((BLEService.localBinder) service)
-                        .getService();
-            }
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-            }
-        }, Context.BIND_AUTO_CREATE);
+        getActivity().bindService(BLEIntent,connection,Context.BIND_AUTO_CREATE);
         localBroadcastManager =LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
@@ -159,7 +150,7 @@ public class ThirdpageFragment extends Fragment {
                 if(state.equals("read"))
                     currentValue.setText(util.toHexString(message,3));
                 if(state.equals("write"))
-                    util.centerToast(context,"succeed!",Toast.LENGTH_SHORT);
+                    util.centerToast(context,"succeed!!!",Toast.LENGTH_SHORT);
 
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
@@ -174,4 +165,20 @@ public class ThirdpageFragment extends Fragment {
             }
         }
     }
+
+    /**
+     * 得到服务实例
+     */
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mBluetoothLeService = ((BLEService.localBinder) service)
+                    .getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 }

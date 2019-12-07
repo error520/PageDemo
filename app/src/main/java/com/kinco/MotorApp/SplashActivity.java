@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import android.view.WindowManager;
 
+import com.kinco.MotorApp.ui.DeviceList;
 
 
 public class SplashActivity extends Activity {
@@ -31,6 +32,11 @@ public class SplashActivity extends Activity {
 
         super.onCreate(savedInstanceState);
 
+        //避免重复加载
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            finish();
+            return;
+        }
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
@@ -65,7 +71,7 @@ public class SplashActivity extends Activity {
 
 
 
-                    Intent it=new Intent(getApplicationContext(),MainActivity.class);//启动MainActivity
+                    Intent it=new Intent(getApplicationContext(), DeviceList.class);//启动MainActivity
 
 
 

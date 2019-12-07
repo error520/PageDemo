@@ -10,7 +10,7 @@
         android:layout_height="47dp"
         android:gravity="center|right|center_horizontal"
         android:paddingStart="30dp"
-        android:text="Loading"
+        android:text="Connecting...please wait"
         android:textAlignment="gravity"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="18sp" />

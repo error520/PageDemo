@@ -15,35 +15,24 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/btnShowSin"
+        <Spinner
+            android:id="@+id/OSCspinner"
+            style="@android:style/Widget.Material.Spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="click"
-            android:textAllCaps="false"
-            android:text="Output frequency"
-            android:padding="10dp"
-            android:background="@drawable/button"/>
-
-        <Button
-            android:id="@+id/btnShowCos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="click"
-            android:text="Output voltage"
-            android:padding="10dp"
-            android:textAllCaps="false"
-            android:background="@drawable/button"/>
+            android:layout_height="match_parent"
+            android:entries="@array/osc_item"
+            android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/btnShowBrokenLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button"
             android:onClick="click"
-            android:textAllCaps="false"
-            android:text="Output current"
             android:padding="10dp"
-            android:background="@drawable/button"/>
+            android:text="Show"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 
     <SurfaceView

@@ -188,8 +188,14 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     };
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStart() {
+        super.onStart();
+        initService();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         localBroadcastManager.unregisterReceiver(receiver);
     }
 

@@ -3,6 +3,7 @@ package com.kinco.MotorApp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,9 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
-    private TextView textview;
-    private Button mButton3;
-    private Button mButton4;
     private FirstpageFragment firstpageFragment=new FirstpageFragment(); ;
     private SecondpageFragment secondpageFragment=new SecondpageFragment();
     private ThirdpageFragment thirdpageFragment=new ThirdpageFragment();
@@ -83,6 +81,19 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+    //返回键不会销毁程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 
     @Override
@@ -97,7 +108,7 @@ public class MainActivity extends AppCompatActivity  {
                 }
              break;
             case R.id.item01:
-                Toast.makeText(MyApplication.getContext(),"Coming soon",Toast.LENGTH_SHORT);
+                Toast.makeText(MainActivity.this,"Coming soon",Toast.LENGTH_SHORT);
                 break;
             case R.id.item02:
                 Toast.makeText(MyApplication.getContext(),"Coming soon",Toast.LENGTH_SHORT);
