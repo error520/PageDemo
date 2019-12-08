@@ -75,6 +75,7 @@ public class ThirdpageFragment extends Fragment {
     public void onStop() {
         super.onStop();
         localBroadcastManager.unregisterReceiver(receiver);
+        util.centerToast(getContext(),"我被停啦",0);
     }
 
     private void initService(){

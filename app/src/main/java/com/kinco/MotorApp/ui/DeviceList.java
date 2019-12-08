@@ -252,20 +252,23 @@ public class DeviceList extends AppCompatActivity{
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                         mBluetoothLeService.slaveAddress = slaveAddress;
-                        try {
-                            loadingDialog.gone();
-                            mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
-                            Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
-                            connected_list.clear();
-                            connected_list.add(slaveAddress);
-                            mPairedDevicesArrayAdapter.notifyDataSetChanged();
-                            showPasswordDialog();
-                            //finish();
-                        }catch(Exception e){
-                            util.centerToast(DeviceList.this,"Failed to get SlaveAddress",0);
-                            e.printStackTrace();
-                            Log.d(TAG,e.toString());
-                        }
+//                        try {
+//                            loadingDialog.gone();
+//                            mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
+//                            Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
+//                            connected_list.clear();
+//                            connected_list.add(slaveAddress);
+//                            mPairedDevicesArrayAdapter.notifyDataSetChanged();
+//                            showPasswordDialog();
+//
+//
+//
+//                        }catch(Exception e){
+//                            util.centerToast(DeviceList.this,"Failed to get SlaveAddress",0);
+//                            e.printStackTrace();
+//                            Log.d(TAG,e.toString());
+//                        }
+                        debug();
 
                     }
                 });
@@ -335,6 +338,13 @@ public class DeviceList extends AppCompatActivity{
         }catch(Exception e){
             Log.d(TAG,"PasswordDialog error");
         }
+    }
+
+    private void debug(){
+        mBluetoothLeService.slaveCode=0x05;
+        Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
+        startActivity(activityIntent);
+        finish();
     }
 
 

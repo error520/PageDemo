@@ -31,6 +31,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.R;
+import com.kinco.MotorApp.alertdialog.ErrorDialog;
 import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
@@ -60,6 +61,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     // 初始化X坐标
     private int cx = X_OFFSET;
     // 实际的Y轴的位置
+    private int maxData = 0;
     private int centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
@@ -98,6 +100,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         paint.setStrokeWidth(3);
 
         mHnadler=new Handler();
+        mHnadler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawBackGround(holder);
+            }
+        },300);
 
 
     }
@@ -116,7 +124,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
+        initService();
     }
 
     private void InitData() {
@@ -125,6 +133,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             //获取屏幕的宽度作为示波器的边长
             HEIGHT = dm.widthPixels;
             WIDTH = dm.widthPixels;
+            Log.d("ff",HEIGHT+" "+WIDTH);
             //Y轴的中心就是高的一半
             centerY = HEIGHT / 2;
 
@@ -233,18 +242,25 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
             // 画网格8*8
             Paint mPaint = new Paint();
-            mPaint.setColor(Color.GRAY);// 网格为黄色
+            mPaint.setTextSize(50);
+            mPaint.setColor(Color.GRAY);// 网格为灰色
             mPaint.setStrokeWidth(1);// 设置画笔粗细
             int oldY = 0;
             for (int i = 0; i <= 8; i++) {// 绘画横线
                 canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
+                canvas.drawText(maxData+"",10,oldY,mPaint);
                 oldY = oldY + WIDTH/8;
+
             }
             int oldX = 0;
             for (int i = 0; i <= 8; i++) {// 绘画纵线
                 canvas.drawLine(oldX, 0, oldX, HEIGHT, mPaint);
+                canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
                 oldX = oldX + HEIGHT/8;
+
             }
+
+
 
             // 绘制坐标轴
             canvas.drawLine(X_OFFSET, centerY, WIDTH, centerY, p);
@@ -289,12 +305,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     if(!data.hasNext()){
                         task.cancel();
                         task = null;
+                        return;
                     }
 
                     int cy = centerY-data.next();
                    // Log.d(TAG,cy+"");
-                    Canvas canvas = holder.lockCanvas(new Rect(cx-10, cy - 900,
-                            cx + 10, cy + 900));
+                    Canvas canvas = holder.lockCanvas(new Rect(cx-1, cy - 900,
+                            cx + 1, cy + 900));
 
                     // 根据Ｘ，Ｙ坐标画线
                     canvas.drawLine(startX, startY ,cx, cy, paint);
@@ -303,7 +320,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     startX = cx;
                     startY = cy;
 
-                    cx+=10;
+                    cx+=1;
                     // 超过指定宽度，线程取消，停止画曲线
                     if (cx > WIDTH) {
                         task.cancel();
@@ -313,21 +330,35 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     holder.unlockCanvasAndPost(canvas);
                 }
             };
-            timer.schedule(task, 0, 30);
+            timer.schedule(task, 0, 5);
     }
 
     private ArrayList<Integer> packageToData(ArrayList<byte[]> packageList){
         ArrayList<Integer> data = new ArrayList<>();
         byte[] package1 = new byte[12];
-        System.arraycopy(packageList.get(0), 8, package1, 0, 12);
+        try {
+            System.arraycopy(packageList.get(0), 8, package1, 0, 12);
+        }catch(Exception e){
+            ErrorDialog ed = new ErrorDialog(getContext(),"");
+            ed.show();
+            Log.d("ff",e.toString());
+        }
+
         for(byte i: package1)
             Log.d(TAG,i+"");
         packageList.set(0,package1);
+        int current;
         for(byte[] i:packageList){
               for(int j=0; j<i.length; j+=2){
-                  data.add(util.byte2ToUnsignedShort(i[j],i[j+1]));
+                  current=util.byte2ToUnsignedShort(i[j],i[j+1]);
+                  maxData=current>maxData?current:maxData;
+                  data.add(current);
               }
         }
+        for(int i : data){
+            Log.d(TAG,i+"");
+        }
+
         return data;
 
     }
@@ -343,11 +374,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                 if (mDrawing) {
                     byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                     packageList.add(message);
-                    if(packageCount==102)
+                    Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
+                    if(packageCount==102){//102
                         draw();
+
+                    }
                     packageCount++;
 
-                    Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
                 }
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
