@@ -62,7 +62,6 @@ public class SecondpageFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
 
-       // initService();
         //设置表格标题的背景颜色
         ViewGroup tableTitle = (ViewGroup)getActivity(). findViewById(R.id.table_title);
 //        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));

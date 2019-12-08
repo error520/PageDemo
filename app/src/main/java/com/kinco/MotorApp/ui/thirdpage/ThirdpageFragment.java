@@ -62,7 +62,6 @@ public class ThirdpageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initUI();
-        initService();
     }
 
     @Override

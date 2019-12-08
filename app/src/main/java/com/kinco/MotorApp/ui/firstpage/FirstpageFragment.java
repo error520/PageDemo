@@ -63,7 +63,6 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initService();
         show();
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);

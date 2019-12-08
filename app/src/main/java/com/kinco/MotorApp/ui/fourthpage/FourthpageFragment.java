@@ -84,7 +84,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initService();
+
             // 获得SurfaceView对象
         showSurfaceView = (SurfaceView) getActivity().findViewById(R.id.showSurfaceView);
         btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
@@ -291,12 +291,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
 
     private void draw(){
-            drawBackGround(holder);
+        final Iterator<Integer> data=packageToData(packageList).iterator();
+        drawBackGround(holder);
             cx = X_OFFSET;
             if (task != null) {
                 task.cancel();
             }
-            final Iterator<Integer> data=packageToData(packageList).iterator();
             task = new TimerTask() {
                 int startX = 0;
                 int startY = centerY;
@@ -355,10 +355,10 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                   data.add(current);
               }
         }
-        for(int i : data){
+        Log.d("ff","data长度"+data.size());
+        for(int i: data){
             Log.d(TAG,i+"");
         }
-
         return data;
 
     }
@@ -377,7 +377,6 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
                     if(packageCount==102){//102
                         draw();
-
                     }
                     packageCount++;
 
