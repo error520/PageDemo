@@ -291,6 +291,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
 
     private void draw(){
+        maxData=0;
         final Iterator<Integer> data=packageToData(packageList).iterator();
         drawBackGround(holder);
             cx = X_OFFSET;

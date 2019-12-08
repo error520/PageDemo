@@ -68,6 +68,7 @@ public class ThirdpageFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initService();
+        util.centerToast(getContext(),"3的服务被开启",0);
     }
 
     @Override

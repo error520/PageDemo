@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import android.content.BroadcastReceiver;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 
@@ -19,6 +21,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author: Nicholas
@@ -199,6 +204,39 @@ public class util {
             }
             Log.d("BLEService","写入成功!");
         }
+    }
+
+    public static boolean isRegister(LocalBroadcastManager manager,String action) {
+        boolean isRegister = false;
+        try {
+            Field mReceiversField = manager.getClass().getDeclaredField("mReceivers");
+            mReceiversField.setAccessible(true);
+//            String name = mReceiversField.getName();
+            HashMap<BroadcastReceiver, ArrayList<IntentFilter>> mReceivers = (HashMap<BroadcastReceiver, ArrayList<IntentFilter>>) mReceiversField.get(manager);
+
+            for (BroadcastReceiver key : mReceivers.keySet()) {
+                ArrayList<IntentFilter> intentFilters = mReceivers.get(key);
+//                MyLogUtil.e("Key: " + key + " Value: " + intentFilters);
+                for (int i = 0; i < intentFilters.size(); i++) {
+                    IntentFilter intentFilter = (IntentFilter) intentFilters.get(i);
+                    Field mActionsField = intentFilter.getClass().getDeclaredField("mActions");
+                    mActionsField.setAccessible(true);
+                    ArrayList<String> mActions = (ArrayList<String>) mActionsField.get(intentFilter);
+                    for (int j = 0; j < mActions.size(); j++) {
+                        if (mActions.get(i).equals(action)) {
+                            isRegister = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return isRegister;
     }
 
 
