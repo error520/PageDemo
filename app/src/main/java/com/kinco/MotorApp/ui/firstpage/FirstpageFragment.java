@@ -100,7 +100,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         Intent BLEIntent = new Intent(getActivity(),BLEService.class);
         getActivity().bindService(BLEIntent,connection, Context.BIND_AUTO_CREATE);
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
-        if(!util.isRegister(localBroadcastManager,BLEService.ACTION_DATA_AVAILABLE))
+        //if(!util.isRegister(localBroadcastManager,BLEService.ACTION_DATA_AVAILABLE))
             localBroadcastManager.registerReceiver(receiver,util.makeGattUpdateIntentFilter());
     }
     private void show() {

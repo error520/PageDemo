@@ -57,11 +57,11 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     // 要绘制的曲线的水平宽度
     private int WIDTH;
     // 离屏幕左边界的起始距离
-    private final int X_OFFSET = 5;
+    private final int X_OFFSET = 2;
     // 初始化X坐标
     private int cx = X_OFFSET;
     // 实际的Y轴的位置
-    private int maxData = 0;
+    private float maxData = 0;
     private int centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
@@ -100,12 +100,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         paint.setStrokeWidth(3);
 
         mHnadler=new Handler();
-        mHnadler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawBackGround(holder);
-            }
-        },300);
+
 
 
     }
@@ -125,6 +120,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     public void onStart() {
         super.onStart();
         initService();
+        mHnadler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawBackGround(holder);
+            }
+        },300);
     }
 
     private void InitData() {
@@ -248,14 +249,19 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             int oldY = 0;
             for (int i = 0; i <= 8; i++) {// 绘画横线
                 canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
-                canvas.drawText(maxData+"",10,oldY,mPaint);
-                oldY = oldY + WIDTH/8;
+                if(spinner.getSelectedItemPosition()==0) {
+                    if (i != 4)
+                        canvas.drawText(maxData / 4 * (4 - i) + "", 10, oldY, mPaint);
+                }else
+                    canvas.drawText(maxData / 4 * (4 - i) + "", 10, oldY, mPaint);
+                oldY = oldY + WIDTH / 8;
 
             }
             int oldX = 0;
             for (int i = 0; i <= 8; i++) {// 绘画纵线
                 canvas.drawLine(oldX, 0, oldX, HEIGHT, mPaint);
-                canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
+                if(i%2==0)
+                    canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
                 oldX = oldX + HEIGHT/8;
 
             }
@@ -292,7 +298,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
     private void draw(){
         maxData=0;
-        final Iterator<Integer> data=packageToData(packageList).iterator();
+        final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
         drawBackGround(holder);
             cx = X_OFFSET;
             if (task != null) {
@@ -300,7 +306,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             }
             task = new TimerTask() {
                 int startX = 0;
-                int startY = centerY;
+                float startY = centerY;
                 @Override
                 public void run() {
                     if(!data.hasNext()){
@@ -309,10 +315,10 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                         return;
                     }
 
-                    int cy = centerY-data.next();
+                    float cy = centerY-(data.next()/maxData)*centerY;
                    // Log.d(TAG,cy+"");
-                    Canvas canvas = holder.lockCanvas(new Rect(cx-1, cy - 900,
-                            cx + 1, cy + 900));
+                    Canvas canvas = holder.lockCanvas(new Rect(cx-1, (int)cy - 900,
+                            cx + 1, (int)cy + 900));
 
                     // 根据Ｘ，Ｙ坐标画线
                     canvas.drawLine(startX, startY ,cx, cy, paint);
@@ -334,8 +340,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             timer.schedule(task, 0, 5);
     }
 
-    private ArrayList<Integer> packageToData(ArrayList<byte[]> packageList){
-        ArrayList<Integer> data = new ArrayList<>();
+    private ArrayList<Float> packageToData(ArrayList<byte[]> packageList){
+        ArrayList<Float> data = new ArrayList<>();
         byte[] package1 = new byte[12];
         try {
             System.arraycopy(packageList.get(0), 8, package1, 0, 12);
@@ -348,16 +354,31 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         for(byte i: package1)
             Log.d(TAG,i+"");
         packageList.set(0,package1);
-        int current;
+        float current;
         for(byte[] i:packageList){
               for(int j=0; j<i.length; j+=2){
-                  current=util.byte2ToUnsignedShort(i[j],i[j+1]);
-                  maxData=current>maxData?current:maxData;
-                  data.add(current);
+                  switch(spinner.getSelectedItemPosition()){
+                      case 0:{
+                          current = ((float) (short) (util.byte2ToUnsignedShort(i[j], i[j + 1]))) / 100;
+                          maxData = Math.abs(current) > Math.abs(maxData) ? Math.abs(current) : Math.abs(maxData);
+                          data.add(current);
+                      }break;
+                      case 1:{
+                          current=util.byte2ToUnsignedShort(i[j], i[j + 1]);
+                          maxData = current > maxData ? current : maxData;
+                          data.add(current);
+                      }break;
+                      case 2:{
+                          current=util.byte2ToUnsignedShort(i[j], i[j + 1])/10;
+                          maxData = current > maxData ? current : maxData;
+                          data.add(current);
+                      }break;
+                  }
+
               }
         }
         Log.d("ff","data长度"+data.size());
-        for(int i: data){
+        for(float i: data){
             Log.d(TAG,i+"");
         }
         return data;
