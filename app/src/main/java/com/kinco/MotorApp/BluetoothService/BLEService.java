@@ -242,6 +242,9 @@ public class BLEService extends Service {
                 broadcastUpdate(ACTION_GATT_CONNECTED);
                 //得到所有Service
                 List<BluetoothGattService> supportedGattServices = gatt.getServices();
+                Log.d("ga6tt",supportedGattServices.size()+"");
+//                supportedGattServices.remove(0);
+//                supportedGattServices.remove(2);
                 for (BluetoothGattService gattService : supportedGattServices) {
                     //得到每个Service的Characteristics
                     gattCharacteristics = gattService.getCharacteristics();
@@ -265,6 +268,7 @@ public class BLEService extends Service {
                             Log.d(TAG, "gattCharacteristic的属性为:  具备通知属性");
                             notifyUuid.add(gattCharacteristic.getUuid());
                             notify_UUID_service = gattService.getUuid();
+
                             notify_UUID_chara = gattCharacteristic.getUuid();
                         }
                     }
@@ -273,6 +277,9 @@ public class BLEService extends Service {
 
             mBluetoothGatt.setCharacteristicNotification(mBluetoothGatt
                     .getService(notify_UUID_service).getCharacteristic(notify_UUID_chara),true);
+
+//            mBluetoothGatt.setCharacteristicNotification(UUID.fromString("00002b13-0000-1000-8000-00805f9b34fb"),true);
+
 
         }
 
@@ -330,13 +337,13 @@ public class BLEService extends Service {
         init();
         Log.d(TAG,"创建了服务");
 //        //调试用
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //scanLeDevice(true);
-                connect("78:DB:2F:C7:63:A8");
-            }
-        },2000);
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //scanLeDevice(true);
+//                connect("78:DB:2F:C7:63:A8");
+//            }
+//        },2000);
 
 
     }
