@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -285,40 +286,6 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             timer.schedule(task, 0, 300);
         }
 
-//        /**
-//         * 正余弦曲线函数
-//         */
-//        private void showSineCord(final View view){
-//            drawBackGround(holder);
-//            cx = X_OFFSET;
-//            if (task != null) {
-//                task.cancel();
-//            }
-//            task = new TimerTask() {
-//
-//                @Override
-//                public void run() {
-//                    // 根据是正玄还是余玄和X坐标确定Y坐标
-//                    int cy = view.getId()==R.id.btnShowSin?
-//                            centerY- (int) (100 * Math.sin((cx - 5) * 2 * Math.PI/ 150))
-//                            :centerY- (int) (100 * Math.cos((cx - 5) * 2 * Math.PI/ 150));
-//
-//                    Canvas canvas = holder.lockCanvas(new Rect(cx, cy - 2,
-//                            cx + 2, cy + 2));
-//                    // 根据Ｘ，Ｙ坐标画点
-//                    canvas.drawPoint(cx, cy, paint);
-//                    cx++;
-//                    // 超过指定宽度，线程取消，停止画曲线
-//                    if (cx > WIDTH) {
-//                        task.cancel();
-//                        task = null;
-//                    }
-//                    // 提交修改
-//                    holder.unlockCanvasAndPost(canvas);
-//                }
-//            };
-//            timer.schedule(task, 0, 30);
-//        }
 
         private void drawBackGround(SurfaceHolder holder) {
             Canvas canvas = holder.lockCanvas();
@@ -394,18 +361,26 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             task = new TimerTask() {
                 int startX = 0;
                 float startY = centerY;
+                Bitmap mbmpTest = Bitmap.createBitmap(WIDTH,HEIGHT, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(mbmpTest);
                 @Override
                 public void run() {
+
                     if(!data.hasNext()){
                         task.cancel();
                         task = null;
+                        Canvas cv = holder.lockCanvas();
+                        cv.drawBitmap(mbmpTest,10,10,null);
+                        holder.unlockCanvasAndPost(cv);
                         return;
                     }
 
-                    float cy = centerY-(data.next()/maxData)*centerY;
+                    float cy = 10;//centerY-(data.next()/maxData)*centerY;
                    // Log.d(TAG,cy+"");
-                    Canvas canvas = holder.lockCanvas(new Rect(cx-1, (int)cy - 900,
-                            cx + 1, (int)cy + 900));
+//                    Canvas canvas = holder.lockCanvas(new Rect(cx-1, (int)cy - 900,
+//                            cx + 1, (int)cy + 900));
+
+
 
                     // 根据Ｘ，Ｙ坐标画线
                     canvas.drawLine(startX, startY ,cx, cy, paint);
@@ -421,7 +396,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                         task = null;
                     }
                     // 提交修改
-                    holder.unlockCanvasAndPost(canvas);
+                   // holder.unlockCanvasAndPost(canvas);
                 }
             };
             timer.schedule(task, 0, 5);
