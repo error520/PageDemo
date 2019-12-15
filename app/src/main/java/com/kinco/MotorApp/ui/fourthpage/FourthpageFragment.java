@@ -48,7 +48,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class FourthpageFragment extends Fragment implements View.OnClickListener{
-
+    private String TAG = "fourth";
     private static final int NONE = 0;
     private static final int MOVE = 1;
     private static final int ZOOM = 2;
@@ -64,7 +64,6 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private float oldDistance;
     private int rotate = NONE;
 
-    private  String TAG="ff";
     private View view;//得到碎片对应的布局文件,方便后续使用
     private SurfaceHolder holder;
     private SurfaceView showSurfaceView;
@@ -99,8 +98,10 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.osc_page, container, false);//得到对应的布局文件
-        return view;
+        //view = inflater.inflate(R.layout.osc_page, container, false);//得到对应的布局文件
+        DragImage dragImage = new DragImage(getContext());
+        //return view;
+        return dragImage;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -108,14 +109,14 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
             // 获得SurfaceView对象
         showSurfaceView = (SurfaceView) getActivity().findViewById(R.id.showSurfaceView);
-        btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
-        btnShowBrokenLine.setOnClickListener(this);
+        //btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
+        //btnShowBrokenLine.setOnClickListener(this);
         spinner = getActivity().findViewById(R.id.OSCspinner);
 
         InitData();
 
         // 初始化SurfaceHolder对象
-        holder = showSurfaceView.getHolder();
+//        holder = showSurfaceView.getHolder();
 //        showSurfaceView.setOnTouchListener(new View.OnTouchListener()
 //        {
 //
@@ -208,12 +209,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     public void onStart() {
         super.onStart();
         initService();
-        mHnadler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawBackGround(holder);
-            }
-        },300);
+//        mHnadler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                drawBackGround(holder);
+//            }
+//        },300);
     }
 
     private void InitData() {
@@ -222,7 +223,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             //获取屏幕的宽度作为示波器的边长
             HEIGHT = dm.widthPixels;
             WIDTH = dm.widthPixels;
-            Log.d("ff",HEIGHT+" "+WIDTH);
+            Log.d(TAG,HEIGHT+" "+WIDTH);
             //Y轴的中心就是高的一半
             centerY = HEIGHT / 2;
 
@@ -233,10 +234,11 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             switch (view.getId()) {
                 case R.id.btnShowBrokenLine:
                     //showBrokenLine();
-                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
-                    packageCount=0;
-                    packageList.clear();
-                    mDrawing=true;
+                    testDraw();
+//                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+//                    packageCount=0;
+//                    packageList.clear();
+//                    mDrawing=true;
                     break;
             }
 
@@ -349,7 +351,32 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
-
+    void testDraw(){
+        Canvas canvas = holder.lockCanvas();
+        canvas.drawColor(Color.BLACK);
+        Paint mpaint = new Paint();
+        mpaint.setColor(Color.GREEN);
+        mpaint.setStrokeWidth(5);
+        int oldY=0;
+        int oldX=0;
+        int cx = 0;
+        int []data = createRandomData();
+        canvas.scale(1,2);
+        for(int i=0;i<1024;i++) {
+            cx+=5;
+            canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
+            oldX=cx;
+            oldY = data[i];
+        }
+        holder.unlockCanvasAndPost(canvas);
+    }
+    int[] createRandomData(){
+        int []data = new int[1024];
+        Random random = new Random();
+        for(int i=0;i<1024;i++)
+            data[i] = random.nextInt(500);
+        return data;
+    }
     private void draw(){
         maxData=0;
         final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
@@ -410,7 +437,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         }catch(Exception e){
             ErrorDialog ed = new ErrorDialog(getContext(),"");
             ed.show();
-            Log.d("ff",e.toString());
+            Log.d(TAG,e.toString());
         }
 
         for(byte i: package1)
@@ -439,7 +466,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
               }
         }
-        Log.d("ff","data长度"+data.size());
+        Log.d(TAG,"data长度"+data.size());
         for(float i: data){
             Log.d(TAG,i+"");
         }
@@ -458,7 +485,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                 if (mDrawing) {
                     byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                     packageList.add(message);
-                    Log.d("ff",util.toHexString(message,true)+"\n"+packageCount+"");
+                    Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
                     if(packageCount==102){//102
                         draw();
                     }
