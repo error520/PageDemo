@@ -25,6 +25,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -66,7 +67,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
     private View view;//得到碎片对应的布局文件,方便后续使用
     private SurfaceHolder holder;
-    private SurfaceView showSurfaceView;
+    private MySurfaceView3 showSurfaceView;
     //按钮
     private Button btnShowBrokenLine;
     private Spinner spinner;
@@ -82,7 +83,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private int cx = X_OFFSET;
     // 实际的Y轴的位置
     private float maxData = 0;
-    private int centerY ;
+    private float centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
     private int packageCount=0;
@@ -98,91 +99,27 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //view = inflater.inflate(R.layout.osc_page, container, false);//得到对应的布局文件
-        DragImage dragImage = new DragImage(getContext());
-        //return view;
-        return dragImage;
+        view = inflater.inflate(R.layout.osc_page, container, false);//得到对应的布局文件
+        return view;
+        //DragImage dragImage = new DragImage(getContext());
+        //return dragImage;
     }
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
             // 获得SurfaceView对象
-        showSurfaceView = (SurfaceView) getActivity().findViewById(R.id.showSurfaceView);
-        //btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
-        //btnShowBrokenLine.setOnClickListener(this);
+        showSurfaceView = (MySurfaceView3)getActivity().findViewById(R.id.MySV3);
+        btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
+        btnShowBrokenLine.setOnClickListener(this);
         spinner = getActivity().findViewById(R.id.OSCspinner);
 
         InitData();
 
         // 初始化SurfaceHolder对象
-//        holder = showSurfaceView.getHolder();
-//        showSurfaceView.setOnTouchListener(new View.OnTouchListener()
-//        {
-//
-//            @Override
-//            public boolean onTouch(View view, MotionEvent event) {
-//                SurfaceView imageView = (SurfaceView) view;
-//                switch (event.getAction()&MotionEvent.ACTION_MASK) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        savedMatrix.set(matrix);
-//                        start.set(event.getX(), event.getY());
-//                        mode = MOVE;
-//                        rotate = NONE;
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                    case MotionEvent.ACTION_POINTER_UP:
-//                        mode = NONE;
-//                        break;
-//                    case MotionEvent.ACTION_POINTER_DOWN:
-//                        oldDistance = (float)Math.sqrt((event.getX(0)-event.getX(1))*(event.getX(0)-event.getX(1))+(event.getY(0)-event.getY(1))*(event.getY(0)-event.getY(1)));
-//                        if (oldDistance > 10f) {
-//                            savedMatrix.set(matrix);
-//                            mid.set((event.getX(0)+event.getX(1))/2, (event.getY(0)+event.getY(1))/2);
-//                            mode = ZOOM;
-//                        }
-//                    case MotionEvent.ACTION_MOVE:
-//                        if (mode == MOVE)
-//                        {
-//                            if(rotate == NONE) {
-//                                savedMatrix.set(matrix);
-//                                mid.set(event.getX(), event.getY());
-//                                rotate = ROTATION;
-//                            }
-//                            else {
-//                                matrix.set(savedMatrix);
-//                                double a = Math.atan((mid.y-start.y)/(mid.x-start.x));
-//                                double b = Math.atan((event.getY()-mid.y)/(event.getX()-mid.x));
-//                                if ((b - a < Math.PI/2 && b - a > Math.PI / 18)||((b + Math.PI) % Math.PI - a < Math.PI/2 && (b + Math.PI) % Math.PI - a > Math.PI / 18)) {
-//                                    matrix.postScale((float)0.9, (float)0.9);
-//                                }
-//                                else if ((a - b < Math.PI / 2 && a - b > Math.PI / 18)||((a + Math.PI) % Math.PI - b < Math.PI/2 && (a + Math.PI) % Math.PI - b > Math.PI / 18)) {
-//                                    matrix.postScale((float)1.1, (float)1.1);
-//                                }
-//                                start.set(event.getX(), event.getY());
-//                                rotate = NONE;
-//                            }
-//                        }
-//                        else if(mode == ZOOM)
-//                        {
-//                            float newDistance;
-//                            newDistance = (float)Math.sqrt((event.getX(0)-event.getX(1))*(event.getX(0)-event.getX(1))+(event.getY(0)-event.getY(1))*(event.getY(0)-event.getY(1)));
-//                            if(newDistance > 10f) {
-//                                matrix.set(savedMatrix);
-//                                matrix.postScale(newDistance/oldDistance, newDistance/oldDistance, mid.x, mid.y);
-//                                oldDistance = newDistance;
-//                                savedMatrix.set(matrix);
-//                            }
-//                        }
-//                        break;
-//                }
-//                imageView.
-//                imageView.setImageMatrix(matrix);
-//                return true;
-//            }
-//
-//        });
-
+        holder = showSurfaceView.getHolder();
 
         paint = new Paint();
         paint.setColor(Color.GREEN);
@@ -209,21 +146,25 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     public void onStart() {
         super.onStart();
         initService();
-//        mHnadler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                drawBackGround(holder);
-//            }
-//        },300);
+        mHnadler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawBackGround(holder);
+            }
+        },300);
     }
+
+
 
     private void InitData() {
             Resources resources = this.getResources();
             DisplayMetrics dm = resources.getDisplayMetrics();
             //获取屏幕的宽度作为示波器的边长
             HEIGHT = dm.widthPixels;
+//            HEIGHT = dm.heightPixels;
             WIDTH = dm.widthPixels;
-            Log.d(TAG,HEIGHT+" "+WIDTH);
+
+            Log.d(TAG,showSurfaceView.getHeight()+" "+showSurfaceView.getWidth());
             //Y轴的中心就是高的一半
             centerY = HEIGHT / 2;
 
@@ -234,11 +175,11 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             switch (view.getId()) {
                 case R.id.btnShowBrokenLine:
                     //showBrokenLine();
-                    testDraw();
-//                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
-//                    packageCount=0;
-//                    packageList.clear();
-//                    mDrawing=true;
+                    //testDraw();
+                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+                    packageCount=0;
+                    packageList.clear();
+                    mDrawing=true;
                     break;
             }
 
@@ -295,13 +236,13 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             canvas.drawColor(Color.BLACK);
             Paint p = new Paint();
             p.setColor(Color.WHITE);
-            p.setStrokeWidth(2);
+            p.setStrokeWidth(5);
 
             // 画网格8*8
             Paint mPaint = new Paint();
             mPaint.setTextSize(50);
             mPaint.setColor(Color.GRAY);// 网格为灰色
-            mPaint.setStrokeWidth(1);// 设置画笔粗细
+            mPaint.setStrokeWidth(3);// 设置画笔粗细
             int oldY = 0;
             for (int i = 0; i <= 8; i++) {// 绘画横线
                 canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
@@ -318,7 +259,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                 canvas.drawLine(oldX, 0, oldX, HEIGHT, mPaint);
                 if(i%2==0)
                     canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
-                oldX = oldX + HEIGHT/8;
+                oldX = oldX + WIDTH/8;
 
             }
 
@@ -331,6 +272,44 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             holder.lockCanvas(new Rect(0, 0, 0, 0));
             holder.unlockCanvasAndPost(canvas);
         }
+
+    private void drawBackGround(Canvas canvas) {
+            // 绘制黑色背景
+        canvas.drawColor(Color.BLACK);
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        p.setStrokeWidth(5);
+        p.setTextSize(50);
+
+        // 画网格8*8
+        Paint mPaint = new Paint();
+        mPaint.setTextSize(50);
+        mPaint.setColor(Color.GRAY);// 网格为灰色
+        mPaint.setStrokeWidth(3);// 设置画笔粗细
+        int oldY = 0;
+        for (int i = 0; i <= 8; i++) {// 绘画横线
+            canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
+            if(spinner.getSelectedItemPosition()==0) {
+                if (i != 4)
+                    canvas.drawText(maxData / 4 * (4 - i) + "", 10, oldY, p);
+            }else
+                canvas.drawText(maxData / 4 * (4 - i) + "", 10, oldY, p);
+            oldY = oldY + WIDTH / 8;
+
+        }
+        int oldX = 0;
+        for (int i = 0; i <= 8; i++) {// 绘画纵线
+            canvas.drawLine(oldX, 0, oldX, HEIGHT, mPaint);
+            if(i%2==0)
+                canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
+            oldX = oldX + WIDTH/8;
+
+        }
+
+        // 绘制坐标轴
+        canvas.drawLine(X_OFFSET, centerY, WIDTH, centerY, p);
+        canvas.drawLine(X_OFFSET, 40, X_OFFSET, HEIGHT, p);
+    }
 
     public FourthpageFragment newInstance(int i) {
         Bundle args = new Bundle();
@@ -352,23 +331,35 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     }
 
     void testDraw(){
-        Canvas canvas = holder.lockCanvas();
-        canvas.drawColor(Color.BLACK);
+        maxData=0;
+        final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH,HEIGHT, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(whiteBgBitmap);
+        drawBackGround(canvas);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(5);
-        int oldY=0;
-        int oldX=0;
-        int cx = 0;
-        int []data = createRandomData();
-        canvas.scale(1,2);
-        for(int i=0;i<1024;i++) {
-            cx+=5;
-            canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
-            oldX=cx;
-            oldY = data[i];
+        mpaint.setStrokeWidth(3);
+        float oldY=0;
+        float oldX=0;
+        float cx = 0;
+        while(data.hasNext()){
+            float cy = centerY-(data.next()/maxData)*centerY;
+            //Log.d(TAG,"这是cy:"+cy+"");
+            canvas.drawLine(oldX,oldY+5,cx,cy+5,mpaint);
+            oldX = cx;
+            cx+=1;
+            oldY = cy;
         }
-        holder.unlockCanvasAndPost(canvas);
+//        for(int i=0;i<1024;i++) {
+//            cx+=10;
+//
+//            canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
+//            oldX=cx;
+//            oldY = data[i];
+//        }
+        canvas.drawBitmap(whiteBgBitmap,0,0,null);
+        showSurfaceView.setBitmap(whiteBgBitmap);
+
     }
     int[] createRandomData(){
         int []data = new int[1024];
@@ -450,6 +441,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                       case 0:{
                           current = ((float) (short) (util.byte2ToUnsignedShort(i[j], i[j + 1]))) / 100;
                           maxData = Math.abs(current) > Math.abs(maxData) ? Math.abs(current) : Math.abs(maxData);
+                          Log.d(TAG,"这是current"+current);
                           data.add(current);
                       }break;
                       case 1:{
@@ -467,9 +459,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
               }
         }
         Log.d(TAG,"data长度"+data.size());
-        for(float i: data){
-            Log.d(TAG,i+"");
-        }
+//        for(float i: data){
+//            Log.d(TAG,i+"");
+//        }
         return data;
 
     }
@@ -487,7 +479,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                     packageList.add(message);
                     Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
                     if(packageCount==102){//102
-                        draw();
+                        //draw();
+                        testDraw();
                     }
                     packageCount++;
 

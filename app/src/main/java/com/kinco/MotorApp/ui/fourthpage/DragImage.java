@@ -103,6 +103,7 @@ class DragImage extends SurfaceView implements SurfaceHolder.Callback, View.OnTo
             preScale = scale;
     }
 
+
     //@Override
         public void run() {
             int SLEEP_TIME=100;

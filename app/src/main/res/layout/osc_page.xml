@@ -35,8 +35,12 @@
 
     </LinearLayout>
 
-    <SurfaceView
-        android:id="@+id/showSurfaceView"
+<!--    <SurfaceView-->
+<!--        android:id="@+id/showSurfaceView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+    <com.kinco.MotorApp.ui.fourthpage.MySurfaceView3
+        android:id="@+id/MySV3"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
