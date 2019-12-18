@@ -26,7 +26,7 @@ public class TabFragmentUtils implements RadioGroup.OnCheckedChangeListener{
         //设置radiobutton的点事件
         radioGroup.setOnCheckedChangeListener(this);
         //默认选择0 页面
-        ((RadioButton) radioGroup.getChildAt(0)).setChecked(true);
+        ((RadioButton) radioGroup.getChildAt(3)).setChecked(true);
     }
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {

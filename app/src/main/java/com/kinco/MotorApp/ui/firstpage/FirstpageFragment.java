@@ -188,13 +188,14 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     public void onStart() {
         super.onStart();
         initService();
-        //util.centerToast(getContext(),"1被开启",0);
+        util.centerToast(getContext(),"1被开启",0);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        localBroadcastManager.unregisterReceiver(receiver);
+        if(!(localBroadcastManager==null))
+            localBroadcastManager.unregisterReceiver(receiver);
     }
 
     public FirstpageFragment newInstance(int i) {

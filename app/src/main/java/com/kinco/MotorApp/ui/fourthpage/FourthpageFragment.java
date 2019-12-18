@@ -38,9 +38,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
-import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.util;
-import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,20 +48,6 @@ import java.util.TimerTask;
 
 public class FourthpageFragment extends Fragment implements View.OnClickListener{
     private String TAG = "fourth";
-    private static final int NONE = 0;
-    private static final int MOVE = 1;
-    private static final int ZOOM = 2;
-
-    private static final int ROTATION = 1;
-
-    private int mode = NONE;
-    private Matrix matrix = new Matrix();
-    private Matrix savedMatrix = new Matrix();
-    private PointF start = new PointF();
-    private PointF mid = new PointF();
-    private float s = 0;
-    private float oldDistance;
-    private int rotate = NONE;
 
     private View view;//得到碎片对应的布局文件,方便后续使用
     private SurfaceHolder holder;
@@ -82,7 +66,6 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     // 初始化X坐标
     private int cx = X_OFFSET;
     // 实际的Y轴的位置
-    private float maxData = 0;
     private float centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
@@ -93,8 +76,12 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     private boolean mDrawing=false;
     private Handler mHnadler;
     private int data[] = new int[1024];
-    private String[] addressList = {"0202","0203","0204"};
+    private String[] addressList = {"0204","0202","0203"};
     private ArrayList<byte[]> packageList = new ArrayList();
+    private float maxData = 0;
+    private float minData=0;
+    private float average = 0;
+
     //记住一定要重写onCreateView方法
     @Nullable
     @Override
@@ -112,14 +99,22 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
             // 获得SurfaceView对象
         showSurfaceView = (MySurfaceView3)getActivity().findViewById(R.id.MySV3);
+        showSurfaceView.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = showSurfaceView.getWidth();
+                int height = showSurfaceView.getHeight();
+                Log.i(TAG, "showSurfaceView Height is " + height + ", Width is " + width);
+            }
+        });
         btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
         btnShowBrokenLine.setOnClickListener(this);
         spinner = getActivity().findViewById(R.id.OSCspinner);
 
         InitData();
 
-        // 初始化SurfaceHolder对象
-        holder = showSurfaceView.getHolder();
+        // 初始化SurfaceHolder对象,被获取后会被锁住
+        //holder = showSurfaceView.getHolder();
 
         paint = new Paint();
         paint.setColor(Color.GREEN);
@@ -146,15 +141,20 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     public void onStart() {
         super.onStart();
         initService();
-        mHnadler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawBackGround(holder);
-            }
-        },300);
+        util.centerToast(getContext(),"4被开启",0);
+//        mHnadler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                drawBackGround(holder);
+//            }
+//        },300);
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("fourth","真实的高:"+showSurfaceView.getMeasuredHeight());
+    }
 
     private void InitData() {
             Resources resources = this.getResources();
@@ -175,8 +175,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             switch (view.getId()) {
                 case R.id.btnShowBrokenLine:
                     //showBrokenLine();
-                    //testDraw();
-                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+                    testRandomDraw();
+                    //mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
                     packageCount=0;
                     packageList.clear();
                     mDrawing=true;
@@ -273,7 +273,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             holder.unlockCanvasAndPost(canvas);
         }
 
-    private void drawBackGround(Canvas canvas) {
+    private void drawBackGround(Canvas canvas,int scale) {
             // 绘制黑色背景
         canvas.drawColor(Color.BLACK);
         Paint p = new Paint();
@@ -298,7 +298,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
         }
         int oldX = 0;
-        for (int i = 0; i <= 8; i++) {// 绘画纵线
+        for (int i = 0; i <= 8*scale; i++) {// 绘画纵线
             canvas.drawLine(oldX, 0, oldX, HEIGHT, mPaint);
             if(i%2==0)
                 canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
@@ -330,12 +330,33 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
+    void testRandomDraw(){
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*5,HEIGHT*5, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(whiteBgBitmap);
+        int scale=5;
+        drawBackGround(canvas,scale);
+        Paint mpaint = new Paint();
+        mpaint.setColor(Color.GREEN);
+        mpaint.setStrokeWidth(3);
+        int data[] = createRandomData();
+        float oldY=0;
+        float oldX=0;
+        float cx = 0;
+        for(int i=0;i<1024;i++) {
+            cx+=5;
+            canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
+            oldX=cx;
+            oldY = data[i];
+        }
+        showSurfaceView.setBitmap(whiteBgBitmap);
+    }
+
     void testDraw(){
         maxData=0;
         final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH,HEIGHT, Bitmap.Config.ARGB_8888);
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*5,HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(whiteBgBitmap);
-        drawBackGround(canvas);
+        drawBackGround(canvas,1);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
         mpaint.setStrokeWidth(3);
@@ -347,20 +368,19 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             //Log.d(TAG,"这是cy:"+cy+"");
             canvas.drawLine(oldX,oldY+5,cx,cy+5,mpaint);
             oldX = cx;
-            cx+=1;
+            cx+=5;
             oldY = cy;
         }
-//        for(int i=0;i<1024;i++) {
-//            cx+=10;
-//
-//            canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
-//            oldX=cx;
-//            oldY = data[i];
-//        }
+
         canvas.drawBitmap(whiteBgBitmap,0,0,null);
         showSurfaceView.setBitmap(whiteBgBitmap);
 
     }
+
+    /**
+     * 生成随机数据数组用于测试
+     * @return
+     */
     int[] createRandomData(){
         int []data = new int[1024];
         Random random = new Random();
@@ -368,6 +388,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             data[i] = random.nextInt(500);
         return data;
     }
+
     private void draw(){
         maxData=0;
         final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
@@ -420,6 +441,11 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
             timer.schedule(task, 0, 5);
     }
 
+    /**
+     * 剔除应答报文并将数据包转为可用数据
+     * @param packageList
+     * @return
+     */
     private ArrayList<Float> packageToData(ArrayList<byte[]> packageList){
         ArrayList<Float> data = new ArrayList<>();
         byte[] package1 = new byte[12];
@@ -440,7 +466,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
                   switch(spinner.getSelectedItemPosition()){
                       case 0:{
                           current = ((float) (short) (util.byte2ToUnsignedShort(i[j], i[j + 1]))) / 100;
-                          maxData = Math.abs(current) > Math.abs(maxData) ? Math.abs(current) : Math.abs(maxData);
+                          maxData = current>maxData?current:maxData;
+                          minData = current<minData?current:minData;
                           Log.d(TAG,"这是current"+current);
                           data.add(current);
                       }break;
@@ -458,6 +485,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
               }
         }
+        average = (maxData-minData)/2;
         Log.d(TAG,"data长度"+data.size());
 //        for(float i: data){
 //            Log.d(TAG,i+"");
