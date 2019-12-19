@@ -34,7 +34,7 @@ public class ListViewAdapter extends BaseAdapter {
 
 
     public interface AddressNoListener{
-         void clickListener(String Sth,String value);  //确定传出的值
+        void clickListener(String Sth,String value,String name,String Unit,String Hint);  //确定传出的值
     }
     //    public AddressNoListener getAddressNoListener(){return addressNoListener;}
     public void setAddressNoListener(ListViewAdapter.AddressNoListener addressNoListener)
@@ -78,7 +78,7 @@ public class ListViewAdapter extends BaseAdapter {
             holder.edit_current.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    addressNoListener.clickListener(itemObj.getAddress(),itemObj.getText());
+                    addressNoListener.clickListener(itemObj.getAddress(),itemObj.getText(),itemObj.getName(),itemObj.getUnit(),itemObj.getHint());
                 }
             });
             convertView.setTag(holder);
@@ -134,10 +134,10 @@ public class ListViewAdapter extends BaseAdapter {
         public TextView edit_name;
         public Button edit_current;
         public TextView edit_unit;
-        private EditText editText;//1
+        private TextView editText;//1
 
         public ViewHolder(View convertView) {
-            editText = (EditText) convertView.findViewById(R.id.edit_text);
+            editText = (TextView) convertView.findViewById(R.id.edit_text);
 
         }
     }

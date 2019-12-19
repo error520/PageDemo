@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.DemoFragment;
+import com.kinco.MotorApp.alertdialog.SetDataDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
@@ -51,6 +52,8 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
+    private SetDataDialog setDatadialog;
+    private String editSetData="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,8 +71,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
-            public void clickListener(String address, String value) {
+            public void clickListener(String address, String value,String name,String Unit,String Hint) {
                 mBluetoothLeService.writeData(address,value);
+                showSetDataDialog();
             }
         });
         mListView.setAdapter(mAdapter);
@@ -127,7 +131,25 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             });
             listView = (ListView) getActivity().findViewById(R.id.mylist0);
             listView.setAdapter(textAdapter);//传值到ListView中
-            util.setListViewHeightBasedOnChildren(listView);
+            //util.setListViewHeightBasedOnChildren(listView);
+        }
+    }
+    private void showSetDataDialog(){
+        try {
+            setDatadialog = new SetDataDialog(this.getActivity(),"Digital reference frequency","HZ","0.0~300.00");
+            setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
+                @Override
+                public void onPositiveClick() {
+                    editSetData = setDatadialog.getSetData();
+                }
+                @Override
+                public void onNegativeClick() {
+                    setDatadialog.gone();
+
+                }
+            });
+        }catch(Exception e){
+            Log.d(TAG,"SetDataDialog error");
         }
     }
 

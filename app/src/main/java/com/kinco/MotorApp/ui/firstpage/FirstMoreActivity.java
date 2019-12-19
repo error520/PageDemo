@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
+import com.kinco.MotorApp.alertdialog.SetDataDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
@@ -29,6 +31,8 @@ import com.kinco.MotorApp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class FirstMoreActivity extends Activity implements View.OnClickListener {
@@ -255,7 +259,8 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     private ListViewAdapter mAdapter;
     private List<ItemBean> mData;
     private BLEService mBluetoothLeService;
-
+    private SetDataDialog setDatadialog;
+    private String editSetData="";
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_2);
@@ -270,8 +275,10 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         mAdapter = new ListViewAdapter(this, mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
-            public void clickListener(String address, String value) {
+            public void clickListener(String address, String value,String name,String Unit,String Hint) {
                 mBluetoothLeService.writeData(address,value);
+//                Toast.makeText(FirstMoreActivity.this,name, Toast.LENGTH_SHORT).show();
+                showSetDataDialog(name,Unit,Hint);
             }
         });
         mListView.setAdapter(mAdapter);
@@ -316,6 +323,27 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         button20.setOnClickListener(this);
 
     }
+
+    private void showSetDataDialog(String title,String Unit,String Hint){
+        try {
+            setDatadialog = new SetDataDialog(this,title,Unit,Hint);
+            setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
+                @Override
+                public void onPositiveClick() {
+                    editSetData = setDatadialog.getSetData();
+                }
+                @Override
+                public void onNegativeClick() {
+                    setDatadialog.gone();
+
+                }
+            });
+        }catch(Exception e){
+            Log.d(TAG,"SetDataDialog error");
+        }
+
+    }
+
     private void initService(){
         //绑定服务
         Intent BLEIntent = new Intent(this, BLEService.class);
