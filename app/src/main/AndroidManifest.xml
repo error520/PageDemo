@@ -20,7 +20,9 @@
             android:configChanges="orientation|keyboard|keyboardHidden"
             android:theme="@style/AppTheme"></activity>
         <activity android:name="com.kinco.MotorApp.ui.DeviceList"/>
-        <activity android:name="com.kinco.MotorApp.ui.firstpage.FirstMoreActivity" />
+        <activity
+            android:name="com.kinco.MotorApp.ui.firstpage.FirstMoreActivity"
+            android:launchMode="singleInstance"/>
         <activity android:name=".SplashActivity" >
 
             <intent-filter>

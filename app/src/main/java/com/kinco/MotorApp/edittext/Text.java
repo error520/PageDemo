@@ -3,6 +3,9 @@ package com.kinco.MotorApp.edittext;
 
 import android.location.Address;
 
+/**
+ * 下拉选项的数据类
+ */
 public class Text {
 
     public String address;

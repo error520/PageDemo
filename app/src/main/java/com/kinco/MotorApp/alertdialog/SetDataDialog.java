@@ -29,9 +29,11 @@ public class SetDataDialog {
     Button btnNeg;
     public SetDataDialog.OnClickBottomListener onClickBottomListener;
     Context context;
+    TextView Default;
+    TextView Current;
 
 
-    public SetDataDialog(final Context context,String title,String Unit,String Hint) {
+    public SetDataDialog(final Context context,String title,String Unit,String Hint,String defaultValue, String currentValue) {
         this.context = context;
         this.title=title;
         this.Unit=Unit;
@@ -61,8 +63,8 @@ public class SetDataDialog {
         final TextView default1= new TextView(context);
         default1.setText("        default:");
         default1.setTextSize(17);
-        final TextView Default = new TextView(context);
-        Default.setText("Default");
+        Default = new TextView(context);
+        Default.setText(defaultValue);
         Default.setTextSize(17);
         Default.setTextColor(Color.BLACK);
         Default.setBackgroundResource(R.drawable.lin);
@@ -75,8 +77,8 @@ public class SetDataDialog {
         final TextView current = new TextView(context);
         current.setText("        current:");
         current.setTextSize(17);
-        final TextView Current = new TextView(context);
-        Current.setText("Current");
+        Current = new TextView(context);
+        Current.setText(currentValue);
         Current.setTextSize(17);
         Current.setTextColor(Color.BLACK);
         Current.setBackgroundResource(R.drawable.lin);
@@ -92,9 +94,9 @@ public class SetDataDialog {
         final EditText edit = new EditText(context);
         edit.setFocusable(true);
         edit.setFocusableInTouchMode(true);
-        edit.setInputType(InputType.TYPE_CLASS_NUMBER);
-        edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(400000)});
-        edit.setHint("SetData");
+        edit.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(7)});
+        edit.setHint("Set data here");
         final TextView unit = new TextView(context);
         unit.setText(Unit);
         unit.setTextSize(17);
@@ -142,7 +144,7 @@ public class SetDataDialog {
         try {
             field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
             field.setAccessible(true);
-            field.set(dialog, false);
+ //           field.set(dialog, false);
         } catch (Exception e) {
             ErrorDialog errorDialog = new ErrorDialog(context, e.toString());
             errorDialog.show();
@@ -192,5 +194,6 @@ public class SetDataDialog {
     public String getSetData() {
         return SetData;
     }
-
+    public void setDefalut(String data){Default.setText(data);}
+    public void setCurrent(String data){Current.setText(data);}
 }

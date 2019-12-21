@@ -28,9 +28,10 @@ import com.kinco.MotorApp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.kinco.MotorApp.sys.MyFragment;
 
 
-public class ThirdpageFragment extends Fragment {
+public class ThirdpageFragment extends MyFragment {
     private View view;//得到碎片对应的布局文件,方便后续使用
     private Spinner spinner0;
     private Spinner spinner1;
@@ -67,7 +68,8 @@ public class ThirdpageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        initService();
+        if(Showing)
+            initService();
         //util.centerToast(getContext(),"3的服务被开启",0);
     }
 
@@ -149,7 +151,7 @@ public class ThirdpageFragment extends Fragment {
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                 if(state.equals("read"))
-                    currentValue.setText(util.toHexString(message,3));
+                    currentValue.setText(util.toHexString(message,3,true));
                 if(state.equals("write"))
                     util.centerToast(context,"succeed!!!",Toast.LENGTH_SHORT);
 

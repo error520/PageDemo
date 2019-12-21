@@ -67,7 +67,6 @@
 
             android:layout_toLeftOf="@id/edit_unit"
 
-
             android:layout_weight="1"
 
             android:gravity="center"
@@ -75,8 +74,6 @@
             android:digits="0123456789abcdefABCDEF"
 
             android:inputType="number"
-
-            android:maxLength="4"
 
             android:padding="8dp"
 

@@ -27,11 +27,12 @@ import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.edittext.Parameter;
 import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.edittext.TableAdapter;
+import com.kinco.MotorApp.sys.MyFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecondpageFragment extends Fragment {
+public class SecondpageFragment extends MyFragment {
     private View view;//得到碎片对应的布局文件,方便后续使用
     private BLEService mBluetoothLeService;
     private Handler mHandler=new Handler();
@@ -93,7 +94,10 @@ public class SecondpageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        initService();
+        if(Showing)
+            initService();
+        //count++;
+        //util.centerToast(getActivity(),"2被启动"+count+"次",0);
     }
 
     @Override
@@ -129,10 +133,14 @@ public class SecondpageFragment extends Fragment {
         }
     }
 
+    /**
+     * 接收广播后具体行为
+     */
     private class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            //有数据来
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 //String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
                 final byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
@@ -208,10 +216,11 @@ public class SecondpageFragment extends Fragment {
 
 
             }
-
+            //蓝牙未连接
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
             }
+            //错误码
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){
                 util.centerToast(getContext(),"Read error:"
                                 +intent.getStringExtra(BLEService.ACTION_ERROR_CODE),0);
@@ -229,6 +238,7 @@ public class SecondpageFragment extends Fragment {
             }
         },1000);
     }
+
     /**
      * 得到服务实例
      */

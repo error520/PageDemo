@@ -384,6 +384,20 @@ public class BLEService extends Service {
             broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
 
+    public void writeData(String address,byte[] data){
+        int numA = Integer.parseInt(address, 16);
+        byte dataA[] = util.intToByte2(numA);
+        byte send[] = {slaveCode, 0X06, dataA[0], dataA[1], data[0], data[1], 0X00, 0X00};
+        byte CRC[] = util.CRC16_Check(send, 6);
+        send[6] = CRC[0];
+        send[7] = CRC[1];
+        if(mConnected) {
+            writeCharacteristic.setValue(send);
+            mBluetoothGatt.writeCharacteristic(writeCharacteristic);
+        } else
+            broadcastUpdate(ACTION_GATT_DISCONNECTED);
+    }
+
     //生成数据包, true为读取数据, false为写数据
     private void sendDataPackage(String data1, String data2, boolean mode){
         if(data2.length()<4)
@@ -393,14 +407,13 @@ public class BLEService extends Service {
         int numB = Integer.parseInt(data2, 16);
         byte dataA[] = util.intToByte2(numA);
         byte dataB[] = util.intToByte2(numB);
-        byte CRC[] = new byte[2];
         byte send[] = {slaveCode, 0X06, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00};
         if(mode)    send[1] = 0x03;
         send[2] = dataA[0];
         send[3] = dataA[1];
         send[4] = dataB[0];
         send[5] = dataB[1];
-        CRC = util.CRC16_Check(send, 6);
+        byte CRC[] = util.CRC16_Check(send, 6);
         send[6] = CRC[0];
         send[7] = CRC[1];
         try {

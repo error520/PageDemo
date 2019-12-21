@@ -67,7 +67,7 @@ public class TextAdapter extends BaseAdapter  {
 
 
 
-    public Object getItem(int arg0) {
+    public Text getItem(int arg0) {
 
         // TODO Auto-generated method stub
 
@@ -110,7 +110,7 @@ public class TextAdapter extends BaseAdapter  {
             }
         });
         contentView.setTag("");
-
+        contentView.setSelection(text.getId(),true);
         contentView.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> arg0, View arg1,

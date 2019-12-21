@@ -39,6 +39,7 @@ import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
 import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.sys.MyFragment;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -46,7 +47,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FourthpageFragment extends Fragment implements View.OnClickListener{
+public class FourthpageFragment extends MyFragment implements View.OnClickListener{
     private String TAG = "fourth";
 
     private View view;//得到碎片对应的布局文件,方便后续使用
@@ -102,9 +103,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         showSurfaceView.post(new Runnable() {
             @Override
             public void run() {
-                int width = showSurfaceView.getWidth();
-                int height = showSurfaceView.getHeight();
-                Log.i(TAG, "showSurfaceView Height is " + height + ", Width is " + width);
+                WIDTH = showSurfaceView.getWidth();
+                HEIGHT = showSurfaceView.getHeight();
+                Log.i(TAG, "showSurfaceView Height is " + HEIGHT + ", Width is " + WIDTH);
             }
         });
         btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
@@ -140,8 +141,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        initService();
-        util.centerToast(getContext(),"4被开启",0);
+        if(Showing)
+            initService();
+        //util.centerToast(getContext(),"4被开启",0);
 //        mHnadler.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -158,13 +160,8 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
 
     private void InitData() {
             Resources resources = this.getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
+            //DisplayMetrics dm = resources.getDisplayMetrics();
             //获取屏幕的宽度作为示波器的边长
-            HEIGHT = dm.widthPixels;
-//            HEIGHT = dm.heightPixels;
-            WIDTH = dm.widthPixels;
-
-            Log.d(TAG,showSurfaceView.getHeight()+" "+showSurfaceView.getWidth());
             //Y轴的中心就是高的一半
             centerY = HEIGHT / 2;
 
@@ -287,7 +284,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         mPaint.setColor(Color.GRAY);// 网格为灰色
         mPaint.setStrokeWidth(3);// 设置画笔粗细
         int oldY = 0;
-        for (int i = 0; i <= 8; i++) {// 绘画横线
+        for (int i = 0; i <= 8*scale; i++) {// 绘画横线
             canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
             if(spinner.getSelectedItemPosition()==0) {
                 if (i != 4)
@@ -330,10 +327,14 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         localBroadcastManager.registerReceiver(receiver, util.makeGattUpdateIntentFilter());
     }
 
+
+    /**
+     * 画随机数据的
+     */
     void testRandomDraw(){
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*5,HEIGHT*5, Bitmap.Config.ARGB_8888);
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*20,HEIGHT*20, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(whiteBgBitmap);
-        int scale=5;
+        int scale=1;
         drawBackGround(canvas,scale);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
@@ -343,7 +344,7 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         float oldX=0;
         float cx = 0;
         for(int i=0;i<1024;i++) {
-            cx+=5;
+            cx+=50;
             canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
             oldX=cx;
             oldY = data[i];
@@ -351,6 +352,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         showSurfaceView.setBitmap(whiteBgBitmap);
     }
 
+    /**
+     * 画正式数据的
+     */
     void testDraw(){
         maxData=0;
         final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
@@ -389,6 +393,9 @@ public class FourthpageFragment extends Fragment implements View.OnClickListener
         return data;
     }
 
+    /**
+     * 动态绘制曲线的
+     */
     private void draw(){
         maxData=0;
         final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData

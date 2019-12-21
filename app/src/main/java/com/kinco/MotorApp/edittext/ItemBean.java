@@ -1,34 +1,39 @@
 package com.kinco.MotorApp.edittext;
 
 /**
- * Created by zengd on 2016/8/17 0017.
+ * Modified by Nicholas on 2019/12/21 0017.
  */
 public class ItemBean {
     private String Name;
-    private String Hint;
     private String text;
     private String Unit;
-    private String address;
+    private String Address;
+    private String Range;
+    private float Min;  //最小单位
+    private String defaultValue="0";
+    private String currentValue="0";
+
 
     public ItemBean() {
         super();
     }
-    public ItemBean(String Name,String Unit, String text,String Hint ,String address) {
+    public ItemBean(String Name,String Unit, String Range, float Min,String currentValue ,String Address) {
         super();
 
         this.Name = Name;
         this.Unit=Unit;
-        this.Hint=Hint;
-        this.text=text;
-        this.address=address;
+        this.currentValue=currentValue;
+        this.Range=Range;
+        this.Min=Min;
+        this.Address=Address;
 
     }
     public String getAddress() {
-        return address;
+        return Address;
     }
 
-    public void setAddress(String address) {
-        this.address=address;
+    public void setAddress(String Address) {
+        this.Address=Address;
     }
 
 
@@ -42,28 +47,31 @@ public class ItemBean {
     public String getUnit() {
         return Unit;
     }
+    public String getRange(){return Range;}
+    public float getMin(){return Min;}
 
-    public void setUnit(String Name) {
-        this.Unit = Unit;
+
+    public String getCurrentValue() {
+        return currentValue;
     }
 
-    public String getHint() {
-        return Hint;
-    }
-
-    public void setHint(String Hint) {
-        this.Hint = Hint;
+    public void setCurrentValue(String currentValue) {
+        this.currentValue = currentValue;
     }
 
 
+//
+//    public String getText() {
+//        return text;
+//    }
+//
+//    public void setText(String text) {
+//        this.text = text;
+//    }
 
-    public String getText() {
-        return text;
-    }
+    public String getDefaultValue(){return defaultValue;}
+    public void setDefaultValue(String defaultValue){this.defaultValue = defaultValue;}
 
-    public void setText(String text) {
-        this.text = text;
-    }
 
 
 }

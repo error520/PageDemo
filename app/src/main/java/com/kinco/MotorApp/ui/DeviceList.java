@@ -44,7 +44,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
-//远程推送
+
 
 /**
  * Created by Excalibur on 2017/6/1.

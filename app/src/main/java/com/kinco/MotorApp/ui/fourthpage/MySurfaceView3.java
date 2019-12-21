@@ -91,7 +91,7 @@ public class MySurfaceView3 extends SurfaceView implements
             mRectSrc.top = mCenterY - h / 2;
             mRectSrc.bottom = mRectSrc.top + h;
         }
-        Log.d("fourth","在计算中心");
+        //Log.d("fourth","在计算中心");
 
     }
 

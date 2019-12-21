@@ -9,9 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,6 +23,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
+import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.SetDataDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
@@ -31,8 +34,6 @@ import com.kinco.MotorApp.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class FirstMoreActivity extends Activity implements View.OnClickListener {
@@ -251,6 +252,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
             "000E","000F","0011"};
     private String Unit[]={"","HZ","S","S","","KW","","KW","",""};
     private String Hint[]={"4 digits","0.0~300.00","0.0~6000.0","0.0~6000.0","1~10000","0.2~999.9","2~24","0.4~999.9","1~40","0~1"};
+    private float[] Min={1, 0.01f, 0.1f, 0.1f, 1, 0.1f, 1, 0.1f, 1, 1};
     private ListView listView;
     private Button button;
     private ListView mListView;
@@ -259,28 +261,36 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     private ListViewAdapter mAdapter;
     private List<ItemBean> mData;
     private BLEService mBluetoothLeService;
+    LocalBroadcastManager localBroadcastManager;
+    private BroadcastReceiver receiver=new LocalReceiver();
     private SetDataDialog setDatadialog;
     private String editSetData="";
+    boolean initialized = false;
+    private int count=0;
+    private Handler mHandler;
+    private LoadingDialog loadingDialog;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_2);
-        initService();
+        mHandler = new Handler();
         show();
         mListView = (ListView) findViewById(R.id.list_view);
         mData = new ArrayList<ItemBean>();
+
         //输入型
         for(int i=0;i<10;i++){
-            mData.add(new ItemBean( GroupArray[i], Unit[i],"",Hint[i],writeAddressList[i]));
+            mData.add(new ItemBean( GroupArray[i], Unit[i],Hint[i],Min[i],Hint[i],writeAddressList[i]));
         }
         mAdapter = new ListViewAdapter(this, mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
-            public void clickListener(String address, String value,String name,String Unit,String Hint) {
-                mBluetoothLeService.writeData(address,value);
-//                Toast.makeText(FirstMoreActivity.this,name, Toast.LENGTH_SHORT).show();
-                showSetDataDialog(name,Unit,Hint);
+            public void clickListener(String Address, String Name,String Unit,
+                                      String Range,float Min,String defaultValue,String currentValue) {
+                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue);
             }
         });
+
         mListView.setAdapter(mAdapter);
         util.setListViewHeightBasedOnChildren(mListView);
         Button button2 = (Button) findViewById(R.id.Control_111B);
@@ -321,16 +331,31 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         button19.setOnClickListener(this);
         Button button20 = (Button) findViewById(R.id.Control_bit9_1);
         button20.setOnClickListener(this);
-
+        initData();
     }
 
-    private void showSetDataDialog(String title,String Unit,String Hint){
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initService();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        localBroadcastManager.unregisterReceiver(receiver);
+        unbindService(connection);
+    }
+
+    private void showSetDataDialog(final String address, String title, String Unit, String Range,
+                                   final float min, String defaultValue,String currentValue){
         try {
-            setDatadialog = new SetDataDialog(this,title,Unit,Hint);
+            setDatadialog = new SetDataDialog(this,title,Unit,Range,defaultValue,currentValue);
             setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
                 @Override
                 public void onPositiveClick() {
-                    editSetData = setDatadialog.getSetData();
+                    byte data[] = util.toByteData(setDatadialog.getSetData(),min);
+                    mBluetoothLeService.writeData(address,data);
                 }
                 @Override
                 public void onNegativeClick() {
@@ -339,7 +364,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
                 }
             });
         }catch(Exception e){
-            Log.d(TAG,"SetDataDialog error");
+            Log.d("FirstMoreActivity","SetDataDialog error");
         }
 
     }
@@ -347,21 +372,17 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     private void initService(){
         //绑定服务
         Intent BLEIntent = new Intent(this, BLEService.class);
-        bindService(BLEIntent,new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                mBluetoothLeService = ((BLEService.localBinder) service)
-                        .getService();
-            }
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-            }
-        }, Context.BIND_AUTO_CREATE);
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        localBroadcastManager.registerReceiver(new LocalReceiver(),util.makeGattUpdateIntentFilter());
+        bindService(BLEIntent,connection, Context.BIND_AUTO_CREATE);
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.registerReceiver(receiver,util.makeGattUpdateIntentFilter());
+    }
+
+    private void initData(){
+
     }
 
     private void show() {
+        //这里初始化的是下拉型数据
         List<Text> texts = new ArrayList<Text>();
         for(int i=0;i<13;i++) {//自定义的Text类存数据
             Text text = new Text();
@@ -384,8 +405,6 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
             listView.setAdapter(textAdapter);//传值到ListView中
         }
 //        util.setListViewHeightBasedOnChildren(listView);
-
-
     }
 
     @Override
@@ -451,13 +470,52 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     //每个活动中对广播的响应不相同
     private class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
+                byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
+                if(!initialized){
+                    ItemBean ib = mData.get(count);
+                    String currentValue = util.parseByteData(message,3,ib.getMin(),false);
+                    ib.setDefaultValue(currentValue);
+                    ib.setCurrentValue(currentValue);
+                    mAdapter.notifyDataSetChanged();
+                    if(count<9){
+                        delayRead(writeAddressList[count+1]);
+                        count++;
+                    }else{
+                        count=0;
+                        initialized = true;
+                    }
+
+                }else{
+                    //setDatadialog.gone();
+                    String address = util.toHexString(message,2,false);
+                    Log.d("FirstMore",address);
+                    int index=0;
+                    for(int i=0;i<10;i++){
+                        if(address.equals(writeAddressList[i])){
+                            index=i;
+                            break;
+                        }
+                    }
+                    ItemBean ib = mData.get(index);
+                    mData.get(index).setCurrentValue(util.parseByteData(message,4,ib.getMin(),false));
+                    mAdapter.notifyDataSetChanged();
+                }
+
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 Toast.makeText(context, "Bluetooth disconnected!", Toast.LENGTH_SHORT).show();
@@ -470,6 +528,35 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
 
             }
         }
+    }
+
+    /**
+    得到服务实例
+     */
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mBluetoothLeService = ((BLEService.localBinder) service)
+                    .getService();
+            if(!initialized) {
+                mBluetoothLeService.readData("0000", "0001");
+
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+    private void delayRead(final String address){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBluetoothLeService.readData(address, "0001");
+            }
+        },500);
     }
 
 

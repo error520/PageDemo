@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,7 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.kinco.MotorApp.DemoFragment;
+import com.kinco.MotorApp.sys.MyFragment;
+import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.SetDataDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
@@ -37,23 +39,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FirstpageFragment extends Fragment implements View.OnClickListener {
+public class FirstpageFragment extends MyFragment implements View.OnClickListener {
     String[] Name =  { "Control mode", "Main reference  frequency selector"};
     String[][] temp = {{"0：Vector control without PG","1: Vector control with PG","2:V/F control"},
             {"0:Digital setting Keyboard UP/DN or terminal UP/DN ","1:AI1","2:AI2","3:AI3","4:Set via DI terminal(PULSE)","5:Reserved"}};
     private String TAG = "FirstpageFragment";
     Text text;
+    TextAdapter textAdapter;
     private View view;//得到碎片对应的布局文件,方便后续使用
     private ListView listView;
     private ListView mListView;
     private ListViewAdapter mAdapter;
     private List<ItemBean> mData;
+    private LoadingDialog loadingDialog;
     //记住一定要重写onCreateView方法
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
+    private Handler mHandler = new Handler();
     private SetDataDialog setDatadialog;
     private String editSetData="";
+    private boolean initialized=false;
+    private String addressState="0000";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,13 +75,13 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
-        mData.add(new ItemBean( "Digital reference frequency","HZ","","0.0~300.00","0003"));
+        mData.add(new ItemBean( "Digital reference frequency","HZ","0.0~300.00",0.01f,"0.0~300.00","0003"));
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
-            public void clickListener(String address, String value,String name,String Unit,String Hint) {
-                mBluetoothLeService.writeData(address,value);
-                showSetDataDialog();
+            public void clickListener(String address, String name,String Unit,String Hint, float min, String defalutValue,String currentValue) {
+                Log.d(TAG,"传出的为"+address);
+                showSetDataDialog(address,defalutValue,currentValue);
             }
         });
         mListView.setAdapter(mAdapter);
@@ -118,7 +126,7 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             text.setContent(temp[i]);
             text.setAddress("000" + (i + 1));
             texts.add(text);
-            TextAdapter textAdapter = new TextAdapter(this.getActivity(), texts, R.layout.main_item);//向自定义的Adapter中传值
+            textAdapter = new TextAdapter(this.getActivity(), texts, R.layout.main_item);//向自定义的Adapter中传值
             textAdapter.setAddressNoListener(new TextAdapter.AddressNoListener() {
                 //操作
                 @Override
@@ -131,25 +139,9 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             });
             listView = (ListView) getActivity().findViewById(R.id.mylist0);
             listView.setAdapter(textAdapter);//传值到ListView中
+            textAdapter.getItem(0).setId(1);
+            textAdapter.notifyDataSetChanged();
             //util.setListViewHeightBasedOnChildren(listView);
-        }
-    }
-    private void showSetDataDialog(){
-        try {
-            setDatadialog = new SetDataDialog(this.getActivity(),"Digital reference frequency","HZ","0.0~300.00");
-            setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
-                @Override
-                public void onPositiveClick() {
-                    editSetData = setDatadialog.getSetData();
-                }
-                @Override
-                public void onNegativeClick() {
-                    setDatadialog.gone();
-
-                }
-            });
-        }catch(Exception e){
-            Log.d(TAG,"SetDataDialog error");
         }
     }
 
@@ -190,6 +182,33 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    private void showSetDataDialog(final String address,String defaultValue, String currentValue){
+        try {
+            setDatadialog = new SetDataDialog(this.getActivity(),"Digital reference frequency",
+                    "HZ","0.0~300.00",defaultValue,currentValue);
+            setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
+                @Override
+                public void onPositiveClick() {
+                    editSetData = setDatadialog.getSetData();
+                    try {
+                        mBluetoothLeService.writeData(address, util.toByteData(editSetData, 0.01));
+                        addressState = address;
+                    }catch (Exception e){
+                        util.centerToast(getActivity(),"Please input correct data",0);
+                    }
+
+                }
+                @Override
+                public void onNegativeClick() {
+                    setDatadialog.gone();
+
+                }
+            });
+        }catch(Exception e){
+            Log.d(TAG,"SetDataDialog error");
+        }
+    }
+
     /**
      * 得到服务实例
      */
@@ -209,8 +228,29 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onStart() {
         super.onStart();
-        initService();
-        util.centerToast(getContext(),"1被开启",0);
+        if(Showing) {
+            initService();
+            //util.centerToast(getActivity(),"1的广播被开启",0);
+        }
+//        if(!initialized){
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mBluetoothLeService.readData("0001","0001");
+//                    addressState="0001";
+//                    loadingDialog = new LoadingDialog(getActivity(),"",
+//                            "loading...",true);
+//                    loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
+//                        @Override
+//                        public void onNegativeClick() {
+//                            initialized = true;
+//                            loadingDialog.gone();
+//                        }
+//                    });
+//                }
+//            },1000);
+//
+//        }
     }
 
     @Override
@@ -228,18 +268,53 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
         return fragment;
     }
 
+    /**
+     * 接收广播后具体行为
+     */
     private class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.d(TAG,action);
+            //有数据来
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                String message = intent.getStringExtra(BLEService.EXTRA_MESSAGE_DATA);
-                util.centerToast(getContext(),"succeed!",0);
+                byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
+                if(!initialized) {
+                    if(addressState=="0001"){
+                        textAdapter.getItem(0).setId(1);
+                        textAdapter.notifyDataSetChanged();
+                        addressState="0002";
+                        delayRead(addressState);
+                    }else if(addressState=="0002"){
+                        textAdapter.getItem(1).setId(message[4]);
+                        textAdapter.notifyDataSetChanged();
+                        addressState="0003";
+                        delayRead(addressState);
+                    }else if(addressState=="0003"){
+                        String defaultValue = util.parseByteData(message,3,0.01f,false);
+                        mData.get(0).setCurrentValue(defaultValue);     //外面显示的值
+                        mData.get(0).setDefaultValue(defaultValue);
+                        mData.get(0).setCurrentValue(defaultValue);
+                        mAdapter.notifyDataSetChanged();
+                        addressState="9999";
+                        initialized = true;
+                        loadingDialog.gone();
+                    }
+                }else {
+                    util.centerToast(getContext(), "succeed!", 0);
+                    if(addressState=="0003")
+                        mData.get(0).setCurrentValue(util.parseByteData(message,4,0.01f,false));
+                        mAdapter.notifyDataSetChanged();
+                        addressState="9999";
+                    if (!(setDatadialog == null))
+                        setDatadialog.gone();
+                }
             }
+            //蓝牙未连接
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
                 util.centerToast(getContext(),"Bluetooth disconnected!",0);
             }
+            //错误码
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){
                 String errorCode = intent.getStringExtra(BLEService.ACTION_ERROR_CODE);
                 Toast toast = Toast.makeText(getContext(),"error code:"+errorCode,Toast.LENGTH_LONG);
@@ -249,6 +324,16 @@ public class FirstpageFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+    private void delayRead(final String address){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBluetoothLeService.readData(address, "0001");
+            }
+        },1000);
+    }
+
 
 
 

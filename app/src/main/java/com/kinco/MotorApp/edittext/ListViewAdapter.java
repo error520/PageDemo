@@ -1,7 +1,5 @@
 package com.kinco.MotorApp.edittext;
 
-//package com.kinco.MotorApp.edittext;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
@@ -20,7 +18,7 @@ import com.kinco.MotorApp.R;;
 import java.util.List;
 
 /**
- * Created by zengd on 2016/8/17 0017.
+ * 设置界面的adapter
  */
 public class ListViewAdapter extends BaseAdapter {
 
@@ -29,12 +27,12 @@ public class ListViewAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
 
-    private ListViewAdapter.AddressNoListener addressNoListener;  //定义
+    //监听器定义
+    private ListViewAdapter.AddressNoListener addressNoListener;
 
-
-
+    //接口定义
     public interface AddressNoListener{
-        void clickListener(String Sth,String value,String name,String Unit,String Hint);  //确定传出的值
+        void clickListener(String Address, String Name,String Unit,String Range,float Min, String defaultValue,String currentValue);  //确定传出的值
     }
     //    public AddressNoListener getAddressNoListener(){return addressNoListener;}
     public void setAddressNoListener(ListViewAdapter.AddressNoListener addressNoListener)
@@ -73,12 +71,13 @@ public class ListViewAdapter extends BaseAdapter {
             holder = new ViewHolder(convertView);
             holder.edit_name=(TextView)convertView.findViewById(R.id.edit_name);//1
             holder.edit_unit=(TextView)convertView.findViewById(R.id.edit_unit);
-            holder.editText.setHint(itemObj.getHint());
+            holder.editText.setHint(itemObj.getCurrentValue());
             holder.edit_current=(Button)convertView.findViewById(R.id.button_write) ;
             holder.edit_current.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    addressNoListener.clickListener(itemObj.getAddress(),itemObj.getText(),itemObj.getName(),itemObj.getUnit(),itemObj.getHint());
+                    addressNoListener.clickListener(itemObj.getAddress(),itemObj.getName(),itemObj.getUnit(),
+                            itemObj.getRange(),itemObj.getMin(),itemObj.getDefaultValue(),itemObj.getCurrentValue());
                 }
             });
             convertView.setTag(holder);
@@ -100,7 +99,7 @@ public class ListViewAdapter extends BaseAdapter {
             holder.editText.removeTextChangedListener((TextWatcher) holder.editText.getTag());
         }
 
-        holder.editText.setText(itemObj.getText());
+        holder.editText.setText(itemObj.getCurrentValue());
 
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -114,9 +113,9 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s)) {
-                    itemObj.setText("");
+                    itemObj.setCurrentValue("");
                 } else {
-                    itemObj.setText(s.toString());
+                    itemObj.setCurrentValue(s.toString());
                 }
             }
         };

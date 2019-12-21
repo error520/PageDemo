@@ -30,6 +30,31 @@ import java.util.HashMap;
  * @descrption: 这是一个工具类，定义了一些频繁调用的方法
  */
 public class util {
+    /*
+    以特定格式解析报文的字节数据
+     */
+    public static String parseByteData(byte[] message, int offset,float min, boolean sign){
+        if(sign) {      //有符号数
+            if(min==1)
+                return String.valueOf((short) byte2ToUnsignedShort(message,offset));
+            else
+                return String.valueOf((short) byte2ToUnsignedShort(message,offset) * min);
+        }
+        else {      //无符号
+            if (min==1)
+                return String.valueOf(byte2ToUnsignedShort(message,offset));
+            else
+                return String.valueOf(byte2ToUnsignedShort(message,offset) * min);
+        }
+    }
+
+    /*
+     将输入文本转为可用于发送的字节数据
+     */
+    public static byte[] toByteData(String text, double min){
+        int data = (int)(Float.valueOf(text)/min);
+        return intToByte2(data);
+    }
     //CRC校验
     public static byte[] CRC16_Check(byte Pushdata[], int length){
         int Reg_CRC=0xffff;
@@ -74,9 +99,8 @@ public class util {
         }
         return hexString.toString().toUpperCase();
     }
-
-    //只要有效数据
-    public static String toHexString(byte[] byteArray,int off) {
+    //只要2字节的有效数据
+    public static String toHexString(byte[] byteArray,int off,boolean addGap) {
         if (byteArray == null || byteArray.length < 1)
             throw new IllegalArgumentException("this byteArray must not be null or empty");
 
@@ -84,7 +108,7 @@ public class util {
         for (int i = 0; i < 2; i++) {
             if ((byteArray[i+off] & 0xff) < 0x10)//0~F前面不零
                 hexString.append("0");
-            hexString.append(Integer.toHexString(0xFF & byteArray[i+off])+" ");
+            hexString.append(Integer.toHexString(0xFF & byteArray[i+off])+(addGap?" ":""));
         }
         return hexString.toString().toUpperCase();
     }

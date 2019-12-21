@@ -22,6 +22,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.kinco.MotorApp.sys.MyApplication;
+import com.kinco.MotorApp.sys.MyFragment;
 import com.kinco.MotorApp.ui.DeviceList;
 
 import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity  {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_id, firstpageFragment);
         fragmentTransaction.commit();
-        List<Fragment> fragments = new ArrayList<>();
+        List<MyFragment> fragments = new ArrayList<>();
         fragments.add(firstpageFragment);
         fragments.add(secondpageFragment);
         fragments.add(thirdpageFragment);
