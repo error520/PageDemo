@@ -40,18 +40,18 @@
 
             <Spinner
                 android:id="@+id/spinner0"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/currentValue"
-                android:layout_width="178dp"
+                android:layout_weight="1.5"
                 android:layout_height="wrap_content"
                 android:ems="10" />
 
             <Button
                 android:id="@+id/btnRead"
-                android:layout_width="wrap_content"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:text="read"
                 android:background="@drawable/button"/>
@@ -98,23 +98,26 @@
 
             <Spinner
                 android:id="@+id/spinner1"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content" />
+<!--            android:layout_width="match_parent"-->
 
             <EditText
                 android:id="@+id/setValue"
-                android:layout_width="wrap_content"
+                android:layout_weight="1.5"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="4"
                 android:digits="0123456789abcdefABCDEF"/>
+            <!--                android:layout_width="match_parent"-->
 
             <Button
                 android:id="@+id/btnWrite"
-                android:layout_width="wrap_content"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:text="write"
                 android:background="@drawable/button"/>
+<!--            android:layout_width="wrap_content"-->
         </TableRow>
 
         <TableRow

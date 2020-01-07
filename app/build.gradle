@@ -8,7 +8,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -16,7 +16,7 @@ android {
         variant ->
             variant.outputs.all {
                 // 此处指定生成的apk文件名
-                outputFileName = "Kinco-test.apk"
+                outputFileName = "Kinco-test3.apk"
             }
     }
 

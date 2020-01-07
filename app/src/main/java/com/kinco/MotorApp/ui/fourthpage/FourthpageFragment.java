@@ -105,6 +105,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             public void run() {
                 WIDTH = showSurfaceView.getWidth();
                 HEIGHT = showSurfaceView.getHeight();
+                centerY = HEIGHT / 2;
                 Log.i(TAG, "showSurfaceView Height is " + HEIGHT + ", Width is " + WIDTH);
             }
         });
@@ -163,7 +164,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             //DisplayMetrics dm = resources.getDisplayMetrics();
             //获取屏幕的宽度作为示波器的边长
             //Y轴的中心就是高的一半
-            centerY = HEIGHT / 2;
+            //centerY = HEIGHT / 2;
 
         }
 
@@ -172,8 +173,8 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             switch (view.getId()) {
                 case R.id.btnShowBrokenLine:
                     //showBrokenLine();
-                    testRandomDraw();
-                    //mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+                    //testRandomDraw(1);
+                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
                     packageCount=0;
                     packageList.clear();
                     mDrawing=true;
@@ -241,7 +242,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             mPaint.setColor(Color.GRAY);// 网格为灰色
             mPaint.setStrokeWidth(3);// 设置画笔粗细
             int oldY = 0;
-            for (int i = 0; i <= 8; i++) {// 绘画横线
+            for (int i = 0; i <= 10; i++) {// 绘画横线
                 canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
                 if(spinner.getSelectedItemPosition()==0) {
                     if (i != 4)
@@ -270,6 +271,11 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             holder.unlockCanvasAndPost(canvas);
         }
 
+    /**
+     * 绘制网格和坐标轴
+     * @param canvas
+     * @param scale
+     */
     private void drawBackGround(Canvas canvas,int scale) {
             // 绘制黑色背景
         canvas.drawColor(Color.BLACK);
@@ -277,26 +283,27 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         p.setColor(Color.WHITE);
         p.setStrokeWidth(5);
         p.setTextSize(50);
-
         // 画网格8*8
         Paint mPaint = new Paint();
         mPaint.setTextSize(50);
         mPaint.setColor(Color.GRAY);// 网格为灰色
         mPaint.setStrokeWidth(3);// 设置画笔粗细
         int oldY = 0;
-        for (int i = 0; i <= 8*scale; i++) {// 绘画横线
-            canvas.drawLine(0, oldY, WIDTH, oldY, mPaint);
-            if(spinner.getSelectedItemPosition()==0) {
-                if (i != 4)
-                    canvas.drawText(maxData / 4 * (4 - i) + "", 10, oldY, p);
-            }else
-                canvas.drawText(maxData / 4 * (4 - i) + "", 10, oldY, p);
-            oldY = oldY + WIDTH / 8;
+        float lineStep = HEIGHT / 10;
+        float textStep = (maxData-minData)/9;
+        for (int i = 0; i <= 10*scale; i++) {// 绘画横线
+            canvas.drawLine(0, oldY, WIDTH*scale, oldY, mPaint);
+            if(i!=0&&i!=10) {
+                float text = average + (4 - i) * textStep;
+                canvas.drawText(String.format("%.2f", text), 10, oldY, p);
+            }
+            Log.d(TAG,"这是坐标轴"+(average+(4-i)*textStep));
+            oldY = oldY + HEIGHT / 10;
 
         }
         int oldX = 0;
         for (int i = 0; i <= 8*scale; i++) {// 绘画纵线
-            canvas.drawLine(oldX, 0, oldX, HEIGHT, mPaint);
+            canvas.drawLine(oldX, 0, oldX, HEIGHT*scale, mPaint);
             if(i%2==0)
                 canvas.drawText(oldX+"",oldX+10,centerY+40,mPaint);
             oldX = oldX + WIDTH/8;
@@ -331,53 +338,54 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     /**
      * 画随机数据的
      */
-    void testRandomDraw(){
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*20,HEIGHT*20, Bitmap.Config.ARGB_4444);
+    void testRandomDraw(int scale){
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*scale,HEIGHT*scale, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(whiteBgBitmap);
-        int scale=1;
         drawBackGround(canvas,scale);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(3);
-        int data[] = createRandomData();
-        float oldY=0;
+        mpaint.setStrokeWidth(3*scale/2);
+        float data[] = createSinData();
+        float oldY=centerY*scale;
         float oldX=0;
         float cx = 0;
         for(int i=0;i<1024;i++) {
-            cx+=50;
-            canvas.drawLine(oldX,oldY+10,cx,data[i]+10,mpaint);
+            cx+=scale;
+            float cy = centerY*scale-data[i]*scale;
+            canvas.drawLine(oldX,oldY+10,cx,cy+10,mpaint);
             oldX=cx;
-            oldY = data[i];
+            oldY = cy;
         }
-        showSurfaceView.setBitmap(whiteBgBitmap);
+        showSurfaceView.setBitmap(whiteBgBitmap,data);
     }
 
     /**
      * 画正式数据的
      */
     void testDraw(){
-        maxData=0;
         final Iterator<Float> data=packageToData(packageList).iterator();//这里面会更新maxData
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*5,HEIGHT, Bitmap.Config.ARGB_8888);
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH,HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(whiteBgBitmap);
         drawBackGround(canvas,1);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
         mpaint.setStrokeWidth(3);
-        float oldY=0;
+        float oldY=centerY;
         float oldX=0;
         float cx = 0;
+        float weight = (maxData-minData)/8 * HEIGHT*8/10;
+        Log.d(TAG,"最大和最小"+maxData+","+minData);
         while(data.hasNext()){
-            float cy = centerY-(data.next()/maxData)*centerY;
+            float cy = centerY-(data.next()-average)*weight;
             //Log.d(TAG,"这是cy:"+cy+"");
-            canvas.drawLine(oldX,oldY+5,cx,cy+5,mpaint);
+            canvas.drawLine(oldX,oldY,cx,cy,mpaint);
             oldX = cx;
-            cx+=5;
+            cx+=1;
             oldY = cy;
         }
 
-        canvas.drawBitmap(whiteBgBitmap,0,0,null);
-        showSurfaceView.setBitmap(whiteBgBitmap);
+        //canvas.drawBitmap(whiteBgBitmap,0,0,null);
+        showSurfaceView.setBitmap(whiteBgBitmap,null);
 
     }
 
@@ -391,6 +399,18 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         for(int i=0;i<1024;i++)
             data[i] = random.nextInt(500);
         return data;
+    }
+
+    /**
+     * 生成正弦波数据
+     */
+    float[] createSinData(){
+        float []data = new float[1024];
+        for(int i=0; i<1024; i++) {
+            data[i] = (float) Math.sin(Math.PI * 2 * i / 1024) * 350;
+            Log.d(TAG,data[i]+"");
+        }
+         return data;
     }
 
     /**
@@ -467,32 +487,34 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         for(byte i: package1)
             Log.d(TAG,i+"");
         packageList.set(0,package1);
-        float current;
+        float current=0;
+        int index=0;
         for(byte[] i:packageList){
               for(int j=0; j<i.length; j+=2){
                   switch(spinner.getSelectedItemPosition()){
                       case 0:{
                           current = ((float) (short) (util.byte2ToUnsignedShort(i[j], i[j + 1]))) / 100;
-                          maxData = current>maxData?current:maxData;
-                          minData = current<minData?current:minData;
-                          Log.d(TAG,"这是current"+current);
                           data.add(current);
                       }break;
                       case 1:{
                           current=util.byte2ToUnsignedShort(i[j], i[j + 1]);
-                          maxData = current > maxData ? current : maxData;
                           data.add(current);
                       }break;
                       case 2:{
                           current=util.byte2ToUnsignedShort(i[j], i[j + 1])/10;
-                          maxData = current > maxData ? current : maxData;
                           data.add(current);
                       }break;
                   }
-
+                  if (index==0&&j==0){
+                      maxData=minData=current;
+                  }else {
+                      maxData = Math.max(maxData, current);
+                      minData = Math.min(minData, current);
+                  }
               }
+              index++;
         }
-        average = (maxData-minData)/2;
+        average = (maxData+minData)/2;
         Log.d(TAG,"data长度"+data.size());
 //        for(float i: data){
 //            Log.d(TAG,i+"");
@@ -512,7 +534,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
                 if (mDrawing) {
                     byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                     packageList.add(message);
-                    Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
+                    //Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
                     if(packageCount==102){//102
                         //draw();
                         testDraw();

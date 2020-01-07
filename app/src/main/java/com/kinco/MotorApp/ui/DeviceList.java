@@ -3,7 +3,6 @@ package com.kinco.MotorApp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -26,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
@@ -41,9 +39,7 @@ import com.kinco.MotorApp.util;
 import com.kinco.MotorApp.R;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 
 /**
@@ -58,6 +54,7 @@ public class DeviceList extends AppCompatActivity{
     private IntentFilter filter = new IntentFilter();
     private ProgressBar progressBar;
     private Button BLEScan;
+    private Button SKIP;
     private Switch Filter;
     private PasswordDialog dialog;
     private LoadingDialog loadingDialog;
@@ -89,16 +86,25 @@ public class DeviceList extends AppCompatActivity{
             }
         });
         BLEScan=(Button)findViewById(R.id.BLEscan);
-        Filter=(Switch)findViewById(R.id.filter);
-        Filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        SKIP = findViewById(R.id.btn_skip);
+        SKIP.setOnClickListener(new OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    mBluetoothLeService.mFilter=true;
-                else
-                    mBluetoothLeService.mFilter=false;
+            public void onClick(View v) {
+                Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
+                startActivity(activityIntent);
+                finish();
             }
         });
+//        Filter=(Switch)findViewById(R.id.filter);
+//        Filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked)
+//                    mBluetoothLeService.mFilter=true;
+//                else
+//                    mBluetoothLeService.mFilter=false;
+//            }
+//        });
         BLEScan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +165,8 @@ public class DeviceList extends AppCompatActivity{
                                 View view, int i, long l) {
                 mBluetoothLeService.close();
                 connected_list.clear();
+                progressBar.setVisibility(View.GONE);
+                BLEScan.setVisibility(View.VISIBLE);
                 mPairedDevicesArrayAdapter.notifyDataSetChanged();
         }
     };

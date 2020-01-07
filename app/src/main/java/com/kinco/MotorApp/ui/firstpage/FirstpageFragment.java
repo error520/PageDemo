@@ -139,8 +139,6 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
             });
             listView = (ListView) getActivity().findViewById(R.id.mylist0);
             listView.setAdapter(textAdapter);//传值到ListView中
-            textAdapter.getItem(0).setId(1);
-            textAdapter.notifyDataSetChanged();
             //util.setListViewHeightBasedOnChildren(listView);
         }
     }
@@ -232,25 +230,25 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
             initService();
             //util.centerToast(getActivity(),"1的广播被开启",0);
         }
-//        if(!initialized){
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mBluetoothLeService.readData("0001","0001");
-//                    addressState="0001";
-//                    loadingDialog = new LoadingDialog(getActivity(),"",
-//                            "loading...",true);
-//                    loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
-//                        @Override
-//                        public void onNegativeClick() {
-//                            initialized = true;
-//                            loadingDialog.gone();
-//                        }
-//                    });
-//                }
-//            },1000);
-//
-//        }
+        if(!initialized){
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBluetoothLeService.readData("0001","0001");
+                    addressState="0001";
+                    loadingDialog = new LoadingDialog(getActivity(),"",
+                            "loading...",true);
+                    loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
+                        @Override
+                        public void onNegativeClick() {
+                            initialized = true;
+                            loadingDialog.gone();
+                        }
+                    });
+                }
+            },1000);
+
+        }
     }
 
     @Override
@@ -258,6 +256,16 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
         super.onStop();
         if(!(localBroadcastManager==null))
             localBroadcastManager.unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(!(localBroadcastManager==null))
+            localBroadcastManager.unregisterReceiver(receiver);
+//        if(Showing) {
+//            util.centerToast(getActivity(), "1的广播被停了", 0);
+//        }
     }
 
     public FirstpageFragment newInstance(int i) {
@@ -281,7 +289,7 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
                 byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                 if(!initialized) {
                     if(addressState=="0001"){
-                        textAdapter.getItem(0).setId(1);
+                        textAdapter.getItem(0).setId(message[4]);
                         textAdapter.notifyDataSetChanged();
                         addressState="0002";
                         delayRead(addressState);
@@ -323,6 +331,20 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
 
             }
         }
+    }
+
+    LoadingDialog showLoadingDialog(Context context){
+        final LoadingDialog loadingDialog1 = new LoadingDialog(context,"",
+                "loading...",true);
+        loadingDialog1.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
+            @Override
+            public void onNegativeClick() {
+                initialized = true;
+                loadingDialog1.gone();
+            }
+
+        });
+        return loadingDialog1;
     }
 
     private void delayRead(final String address){

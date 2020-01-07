@@ -63,23 +63,22 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <Switch
-            android:id="@+id/filter"
-            android:layout_width="116dp"
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="wrap_content"
             android:layout_height="43dp"
-            android:layout_weight="1"
-            android:checked="true"
-            android:switchMinWidth="50dp"
-            android:switchPadding="1dp"
-            android:text="Filter"
-            android:textAlignment="center"
-            android:textSize="14sp" />
+            android:layout_weight="6"
+            android:backgroundTint="#FFFFFF"
+            android:backgroundTintMode="add"
+            android:text="Skip" />
 
         <Button
             android:id="@+id/BLEscan"
             android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:layout_weight="6"
+            android:backgroundTint="#FFFFFF"
+            android:backgroundTintMode="add"
             android:text="SCAN" />
 
         <ProgressBar

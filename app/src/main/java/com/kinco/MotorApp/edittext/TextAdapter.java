@@ -110,7 +110,6 @@ public class TextAdapter extends BaseAdapter  {
             }
         });
         contentView.setTag("");
-        contentView.setSelection(text.getId(),true);
         contentView.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -146,6 +145,7 @@ public class TextAdapter extends BaseAdapter  {
         currentView.setTextSize(13);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,text.getContent());
         contentView.setAdapter(adapter);
+        contentView.setSelection(text.getId(),true);//每次改变id也改变spinner选项
 //        arg1.setBackgroundColor(colors[arg0 % 2]);// 每隔item之间颜色不同
         return arg1;
 

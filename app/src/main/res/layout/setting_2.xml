@@ -62,284 +62,284 @@
 
 
 
-        <TextView
-            android:text="控制字"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:id="@+id/Control_bit2"
-            android:text="bit2~bit10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+<!--        <TextView-->
+<!--            android:text="控制字"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit2"-->
+<!--            android:text="bit2~bit10"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_111B"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:text="Running conmmand"
-                android:textSize="12sp" />
-            <View
-                android:layout_width="5dip"
-                android:layout_height="fill_parent"
-                android:background="#00B4B3B3"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_111B"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="#FFFFFF"-->
+<!--                android:text="Running conmmand"-->
+<!--                android:textSize="12sp" />-->
+<!--            <View-->
+<!--                android:layout_width="5dip"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:background="#00B4B3B3"/>-->
 
-            <Button
-                android:id="@+id/Control_110B"
-                android:text="Stop mode 0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#FFFFFF"/>
-            <View
-                android:layout_width="5dip"
-                android:layout_height="fill_parent"
-                android:background="#00B4B3B3"/>
-
-
-            <Button
-                android:id="@+id/Control_101B"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Stop mode 1"
-                android:background="#FFFFFF"/>
-            <View
-                android:layout_width="5dip"
-                android:layout_height="fill_parent"
-                android:background="#00B4B3B3"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_110B"-->
+<!--                android:text="Stop mode 0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="#FFFFFF"/>-->
+<!--            <View-->
+<!--                android:layout_width="5dip"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:background="#00B4B3B3"/>-->
 
 
-            <Button
-                android:id="@+id/Control_100B"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:text="Stop by external fault"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="5dip"
-                android:layout_height="fill_parent"
-                android:background="#00B4B3B3"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_101B"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Stop mode 1"-->
+<!--                android:background="#FFFFFF"/>-->
+<!--            <View-->
+<!--                android:layout_width="5dip"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:background="#00B4B3B3"/>-->
 
 
-            <Button
-                android:id="@+id/Control_011B"
-                android:text="Stop mode 2"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#FFFFFF"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit3"
-            android:text="bit3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--            <Button-->
+<!--                android:id="@+id/Control_100B"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="#FFFFFF"-->
+<!--                android:text="Stop by external fault"-->
+<!--                android:textSize="12sp" />-->
 
-            <Button
-                android:id="@+id/Control_bit3_0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Forward"
-                android:background="@drawable/button"/>
+<!--            <View-->
+<!--                android:layout_width="5dip"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:background="#00B4B3B3"/>-->
 
-            <Button
-                android:id="@+id/Control_bit3_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reverse"
-                android:background="@drawable/button"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit4"
-            android:text="bit4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
 
-            <Button
-                android:id="@+id/Control_bit4_0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Jog forward disable"
-                android:background="@drawable/button"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_011B"-->
+<!--                android:text="Stop mode 2"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="#FFFFFF"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit3"-->
+<!--            android:text="bit3"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_bit4_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Jog forward"
-                android:background="@drawable/button"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit5"
-            android:text="bit5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit3_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Forward"-->
+<!--                android:background="@drawable/button"/>-->
 
-            <Button
-                android:id="@+id/Control_bit5_0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Jog reverse disable"
-                android:background="@drawable/button"
-                />
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit3_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Reverse"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit4"-->
+<!--            android:text="bit4"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_bit5_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Jog reverse"
-                android:background="@drawable/button"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit6"
-            android:text="bit6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit4_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Jog forward disable"-->
+<!--                android:background="@drawable/button"/>-->
 
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit4_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Jog forward"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit5"-->
+<!--            android:text="bit5"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_bit6_0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Disable Acc/Dcc"
-                android:background="@drawable/button"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit5_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Jog reverse disable"-->
+<!--                android:background="@drawable/button"-->
+<!--                />-->
 
-            <Button
-                android:id="@+id/Control_bit6_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Enable Acc/Dcc"
-                android:background="@drawable/button"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit7"
-            android:text="bit7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit5_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Jog reverse"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit6"-->
+<!--            android:text="bit6"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
 
-            <Button
-                android:id="@+id/Control_bit7_0"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:text="Host computer control word 1 disable"
-                android:background="@drawable/button"/>
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_bit7_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Host computer control word 1 enable"
-                android:background="@drawable/button"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit8"
-            android:text="bit8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit6_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Disable Acc/Dcc"-->
+<!--                android:background="@drawable/button"/>-->
 
-            <Button
-                android:id="@+id/Control_bit8_0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Main reference disable"
-                android:background="@drawable/button"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit6_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Enable Acc/Dcc"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit7"-->
+<!--            android:text="bit7"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_bit8_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Main reference enable"
-                android:background="@drawable/button"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/Control_bit9"
-            android:text="bit9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit7_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Host computer control word 1 disable"-->
+<!--                android:background="@drawable/button"/>-->
 
-            <Button
-                android:id="@+id/Control_bit9_0"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Fault reset disable"
-                android:background="@drawable/button"/>
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit7_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Host computer control word 1 enable"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit8"-->
+<!--            android:text="bit8"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-            <Button
-                android:id="@+id/Control_bit9_1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Fault reset enable"
-                android:background="@drawable/button"/>
-        </LinearLayout>
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit8_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Main reference disable"-->
+<!--                android:background="@drawable/button"/>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit8_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Main reference enable"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/Control_bit9"-->
+<!--            android:text="bit9"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
+
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit9_0"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Fault reset disable"-->
+<!--                android:background="@drawable/button"/>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/Control_bit9_1"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="Fault reset enable"-->
+<!--                android:background="@drawable/button"/>-->
+<!--        </LinearLayout>-->
 
 
     </LinearLayout></ScrollView>

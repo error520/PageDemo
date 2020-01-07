@@ -293,44 +293,44 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
 
         mListView.setAdapter(mAdapter);
         util.setListViewHeightBasedOnChildren(mListView);
-        Button button2 = (Button) findViewById(R.id.Control_111B);
-        button2.setOnClickListener(this);
-        Button button3 = (Button) findViewById(R.id.Control_110B);
-        button3.setOnClickListener(this);
-        Button button4 = (Button) findViewById(R.id.Control_101B);
-        button4.setOnClickListener(this);
-        Button button5 = (Button) findViewById(R.id.Control_100B);
-        button5.setOnClickListener(this);
-        Button button6 = (Button) findViewById(R.id.Control_011B);
-        button6.setOnClickListener(this);
-        Button button7 = (Button) findViewById(R.id.Control_bit3_0);
-        button7.setOnClickListener(this);
-        Button button8 = (Button) findViewById(R.id.Control_bit3_1);
-        button8.setOnClickListener(this);
-        Button button9 = (Button) findViewById(R.id.Control_bit4_0);
-        button9.setOnClickListener(this);
-        Button button10 = (Button) findViewById(R.id.Control_bit4_1);
-        button10.setOnClickListener(this);
-        Button button11 = (Button) findViewById(R.id.Control_bit5_0);
-        button11.setOnClickListener(this);
-        Button button12 = (Button) findViewById(R.id.Control_bit5_1);
-        button12.setOnClickListener(this);
-        Button button13 = (Button) findViewById(R.id.Control_bit6_0);
-        button13.setOnClickListener(this);
-        Button button14 = (Button) findViewById(R.id.Control_bit6_1);
-        button14.setOnClickListener(this);
-        Button button15 = (Button) findViewById(R.id.Control_bit7_0);
-        button15.setOnClickListener(this);
-        Button button16 = (Button) findViewById(R.id.Control_bit7_1);
-        button16.setOnClickListener(this);
-        Button button17 = (Button) findViewById(R.id.Control_bit8_0);
-        button17.setOnClickListener(this);
-        Button button18 = (Button) findViewById(R.id.Control_bit8_1);
-        button18.setOnClickListener(this);
-        Button button19 = (Button) findViewById(R.id.Control_bit9_0);
-        button19.setOnClickListener(this);
-        Button button20 = (Button) findViewById(R.id.Control_bit9_1);
-        button20.setOnClickListener(this);
+//        Button button2 = (Button) findViewById(R.id.Control_111B);
+//        button2.setOnClickListener(this);
+//        Button button3 = (Button) findViewById(R.id.Control_110B);
+//        button3.setOnClickListener(this);
+//        Button button4 = (Button) findViewById(R.id.Control_101B);
+//        button4.setOnClickListener(this);
+//        Button button5 = (Button) findViewById(R.id.Control_100B);
+//        button5.setOnClickListener(this);
+//        Button button6 = (Button) findViewById(R.id.Control_011B);
+//        button6.setOnClickListener(this);
+//        Button button7 = (Button) findViewById(R.id.Control_bit3_0);
+//        button7.setOnClickListener(this);
+//        Button button8 = (Button) findViewById(R.id.Control_bit3_1);
+//        button8.setOnClickListener(this);
+//        Button button9 = (Button) findViewById(R.id.Control_bit4_0);
+//        button9.setOnClickListener(this);
+//        Button button10 = (Button) findViewById(R.id.Control_bit4_1);
+//        button10.setOnClickListener(this);
+//        Button button11 = (Button) findViewById(R.id.Control_bit5_0);
+//        button11.setOnClickListener(this);
+//        Button button12 = (Button) findViewById(R.id.Control_bit5_1);
+//        button12.setOnClickListener(this);
+//        Button button13 = (Button) findViewById(R.id.Control_bit6_0);
+//        button13.setOnClickListener(this);
+//        Button button14 = (Button) findViewById(R.id.Control_bit6_1);
+//        button14.setOnClickListener(this);
+//        Button button15 = (Button) findViewById(R.id.Control_bit7_0);
+//        button15.setOnClickListener(this);
+//        Button button16 = (Button) findViewById(R.id.Control_bit7_1);
+//        button16.setOnClickListener(this);
+//        Button button17 = (Button) findViewById(R.id.Control_bit8_0);
+//        button17.setOnClickListener(this);
+//        Button button18 = (Button) findViewById(R.id.Control_bit8_1);
+//        button18.setOnClickListener(this);
+//        Button button19 = (Button) findViewById(R.id.Control_bit9_0);
+//        button19.setOnClickListener(this);
+//        Button button20 = (Button) findViewById(R.id.Control_bit9_1);
+//        button20.setOnClickListener(this);
         initData();
     }
 
@@ -410,63 +410,63 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.Control_111B:
-                //mBluetoothLeService.writeData("0017","00CF");
-                break;
-            case R.id.Control_110B:
-                Toast.makeText(this,"方式0停车",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_101B:
-                Toast.makeText(this,"方式1停车",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_100B:
-                Toast.makeText(this,"外部故障停车",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_011B:
-                Toast.makeText(this,"方式2停车",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit3_0:
-                mBluetoothLeService.writeData("0017","00C7");
-                break;
-            case R.id.Control_bit3_1:
-                Toast.makeText(this,"反转",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit4_0:
-                Toast.makeText(this,"点动正转无效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit4_1:
-                Toast.makeText(this,"点动正转",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit5_0:
-                Toast.makeText(this,"点动反转无效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit5_1:
-                Toast.makeText(this,"点动反转",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit6_0:
-                Toast.makeText(this,"允许加减速",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit6_1:
-                Toast.makeText(this,"禁止加减速",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit7_0:
-                Toast.makeText(this,"上位机控制字1有效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit7_1:
-                Toast.makeText(this,"上位机控制字1无效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit8_0:
-                Toast.makeText(this,"主给定有效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit8_1:
-                Toast.makeText(this,"主给定无效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit9_0:
-                Toast.makeText(this,"故障复位有效",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.Control_bit9_1:
-                Toast.makeText(this,"故障复位无效",Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.Control_111B:
+//                //mBluetoothLeService.writeData("0017","00CF");
+//                break;
+//            case R.id.Control_110B:
+//                Toast.makeText(this,"方式0停车",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_101B:
+//                Toast.makeText(this,"方式1停车",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_100B:
+//                Toast.makeText(this,"外部故障停车",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_011B:
+//                Toast.makeText(this,"方式2停车",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit3_0:
+//                mBluetoothLeService.writeData("0017","00C7");
+//                break;
+//            case R.id.Control_bit3_1:
+//                Toast.makeText(this,"反转",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit4_0:
+//                Toast.makeText(this,"点动正转无效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit4_1:
+//                Toast.makeText(this,"点动正转",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit5_0:
+//                Toast.makeText(this,"点动反转无效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit5_1:
+//                Toast.makeText(this,"点动反转",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit6_0:
+//                Toast.makeText(this,"允许加减速",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit6_1:
+//                Toast.makeText(this,"禁止加减速",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit7_0:
+//                Toast.makeText(this,"上位机控制字1有效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit7_1:
+//                Toast.makeText(this,"上位机控制字1无效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit8_0:
+//                Toast.makeText(this,"主给定有效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit8_1:
+//                Toast.makeText(this,"主给定无效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit9_0:
+//                Toast.makeText(this,"故障复位有效",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.Control_bit9_1:
+//                Toast.makeText(this,"故障复位无效",Toast.LENGTH_SHORT).show();
+//                break;
         }
     }
 
@@ -557,6 +557,20 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
                 mBluetoothLeService.readData(address, "0001");
             }
         },500);
+    }
+
+    LoadingDialog showLoadingDialog(Context context){
+        final LoadingDialog loadingDialog = new LoadingDialog(context,"",
+                "loading...",true);
+        loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
+            @Override
+            public void onNegativeClick() {
+                initialized = true;
+                loadingDialog.gone();
+            }
+
+        });
+        return loadingDialog;
     }
 
 
