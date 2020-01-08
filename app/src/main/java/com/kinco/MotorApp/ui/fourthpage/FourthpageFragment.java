@@ -82,6 +82,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     private float maxData = 0;
     private float minData=0;
     private float average = 0;
+    private int count=1;
 
     //记住一定要重写onCreateView方法
     @Nullable
@@ -109,7 +110,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
                 Log.i(TAG, "showSurfaceView Height is " + HEIGHT + ", Width is " + WIDTH);
             }
         });
-        btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShowBrokenLine);
+        btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShow);
         btnShowBrokenLine.setOnClickListener(this);
         spinner = getActivity().findViewById(R.id.OSCspinner);
 
@@ -171,12 +172,17 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.btnShowBrokenLine:
+                case R.id.btnShow:
                     //showBrokenLine();
-                    //testRandomDraw(1);
-                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
-                    packageCount=0;
-                    packageList.clear();
+//                    if(count>5)
+//                        count=1;
+//                    else{
+//                        count++;
+                        testRandomDraw(count);
+                    //}
+//                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+//                    packageCount=0;
+//                    packageList.clear();
                     mDrawing=true;
                     break;
             }
@@ -344,7 +350,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         drawBackGround(canvas,scale);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(3*scale/2);
+        mpaint.setStrokeWidth(6);//3*scale/2
         float data[] = createSinData();
         float oldY=centerY*scale;
         float oldX=0;

@@ -24,8 +24,8 @@ public class MySurfaceView3 extends SurfaceView implements
     private static final int ZOOM = 2;// 放大
     private int mStatus = NONE;
 
-    private static final float MAX_ZOOM_SCALE = 4.0f;
-    private static final float MIN_ZOOM_SCALE = 1.0f;
+    private static final float MAX_ZOOM_SCALE = 4.0f;//4.0
+    private static final float MIN_ZOOM_SCALE = 1.0f;//1.0
     private static final float FLOAT_TYPE = 1.0f;
     private float mCurrentMaxScale = MAX_ZOOM_SCALE;
     private float mCurrentScale = 1.0f;
@@ -43,6 +43,7 @@ public class MySurfaceView3 extends SurfaceView implements
     private SurfaceHolder mSurHolder = null;
     private Bitmap mBitmap;
     private float data[];
+    private int count=1;
 
     public MySurfaceView3(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -53,11 +54,12 @@ public class MySurfaceView3 extends SurfaceView implements
     }
 
     private void init() {
-        mCurrentMaxScale = Math.max(
-                MIN_ZOOM_SCALE,
-                4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
-                        * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
+//        mCurrentMaxScale = Math.max(
+//                MIN_ZOOM_SCALE,
+//                4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
+//                        * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
         mCurrentScale = MIN_ZOOM_SCALE;
+        setMaxZoom(2);
         mCenterX = mImageWidth / 2;
         mCenterY = mImageHeight / 2;
         calcRect();
@@ -223,6 +225,13 @@ public class MySurfaceView3 extends SurfaceView implements
             case MotionEvent.ACTION_DOWN:
                 mStartPoint.set(event.getX(), event.getY());
                 mStatus = DRAG;
+//                if(count>5)
+//                    count=1;
+//                else {
+//                    count++;
+//                    testRandomDraw(count);
+//                }
+
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -322,7 +331,7 @@ public class MySurfaceView3 extends SurfaceView implements
      */
     void testRandomDraw(int scale){
         Log.d("MySV3","宽高为"+mImageWidth+","+mImageHeight);
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(mImageWidth*scale,mImageHeight*scale, Bitmap.Config.ARGB_4444);
+        Bitmap whiteBgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(whiteBgBitmap);
         drawBackGround(canvas,scale);
         Paint mpaint = new Paint();

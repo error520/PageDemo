@@ -115,7 +115,8 @@
                 android:layout_weight="1"
                 android:text="Forward"
                 android:textAllCaps="false"
-                android:background="@drawable/button"/>
+                android:background="@drawable/button"
+                android:shadowRadius="0dp"/>
 
             <Button
                 android:id="@+id/control_bit3_1"
