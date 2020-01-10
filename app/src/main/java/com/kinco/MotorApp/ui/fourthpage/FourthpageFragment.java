@@ -178,7 +178,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
 //                        count=1;
 //                    else{
 //                        count++;
-                        testRandomDraw(count);
+                        testRandomDraw(5);
                     //}
 //                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
 //                    packageCount=0;
@@ -347,22 +347,29 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     void testRandomDraw(int scale){
         Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*scale,HEIGHT*scale, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(whiteBgBitmap);
-        drawBackGround(canvas,scale);
+        //drawBackGround(canvas,scale);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(6);//3*scale/2
+        mpaint.setStrokeWidth(10);//3*scale/2
         float data[] = createSinData();
-        float oldY=centerY*scale;
-        float oldX=0;
-        float cx = 0;
-        for(int i=0;i<1024;i++) {
-            cx+=scale;
-            float cy = centerY*scale-data[i]*scale;
-            canvas.drawLine(oldX,oldY+10,cx,cy+10,mpaint);
-            oldX=cx;
-            oldY = cy;
-        }
-        showSurfaceView.setBitmap(whiteBgBitmap,data);
+        data[1]=0;
+        data[2]=10;
+        data[3]=30;
+        data[4]=0;
+        data[5]=50;
+        data[6]=100;
+        data[7]=200;
+//        float oldY=centerY*scale;
+//        float oldX=0;
+//        float cx = 0;
+//        for(int i=0;i<1024;i++) {
+//            cx+=scale;
+//            float cy = centerY*scale-data[i]*scale;
+//            canvas.drawLine(oldX,oldY+10,cx,cy+10,mpaint);
+//            oldX=cx;
+//            oldY = cy;
+//        }
+        showSurfaceView.drawWave(data);
     }
 
     /**
@@ -391,7 +398,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         }
 
         //canvas.drawBitmap(whiteBgBitmap,0,0,null);
-        showSurfaceView.setBitmap(whiteBgBitmap,null);
+        showSurfaceView.setBitmap(whiteBgBitmap);
 
     }
 

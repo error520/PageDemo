@@ -34,7 +34,7 @@ public class MySurfaceView3 extends SurfaceView implements
     private Rect mRectDes = new Rect(); // used for store size of monitor.
 
     private int mCenterX, mCenterY;
-    int mSurfaceHeight, mSurfaceWidth;  //真实宽高
+    int mSurfaceHeight=0, mSurfaceWidth=0;  //SurfaceView宽高
     int mImageHeight, mImageWidth;      //放入图片的宽高
 
     private PointF mStartPoint = new PointF();
@@ -43,6 +43,8 @@ public class MySurfaceView3 extends SurfaceView implements
     private SurfaceHolder mSurHolder = null;
     private Bitmap mBitmap;
     private float data[];
+    private int bgCenterY = mSurfaceHeight/2;
+    private int bgCenterX = mSurfaceWidth/2;
     private int count=1;
 
     public MySurfaceView3(Context context, AttributeSet attrs) {
@@ -54,12 +56,12 @@ public class MySurfaceView3 extends SurfaceView implements
     }
 
     private void init() {
-//        mCurrentMaxScale = Math.max(
-//                MIN_ZOOM_SCALE,
-//                4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
-//                        * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
+        mCurrentMaxScale = Math.max(
+                MIN_ZOOM_SCALE,
+                4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
+                        * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
         mCurrentScale = MIN_ZOOM_SCALE;
-        setMaxZoom(2);
+        //setMaxZoom(2);
         mCenterX = mImageWidth / 2;
         mCenterY = mImageHeight / 2;
         calcRect();
@@ -145,8 +147,7 @@ public class MySurfaceView3 extends SurfaceView implements
         mCurrentMaxScale = value;
     }
 
-    public void setBitmap(Bitmap b,float data[]) {
-        this.data = data;
+    public void setBitmap(Bitmap b) {
         if (b == null) {
             return;
         }
@@ -165,9 +166,18 @@ public class MySurfaceView3 extends SurfaceView implements
 
     private void showBitmap() {
         synchronized (MySurfaceView3.class) {
+            Bitmap bgBitmap = Bitmap.createBitmap(mSurfaceWidth,mSurfaceHeight, Bitmap.Config.ARGB_4444);
+            Canvas fc = new Canvas(bgBitmap);
+            Paint p = new Paint();
+            p.setColor(Color.WHITE);
+            p.setTextSize(50);
+            drawBackGround(fc,1);
+            //fc.drawText(mCenterX+"",mSurfaceWidth/2,mSurfaceHeight/2,p);
+
             Canvas c = getHolder().lockCanvas();
             if (c != null && mBitmap != null) {
                 c.drawColor(Color.GRAY);
+                c.drawBitmap(bgBitmap,0, 0,null);
                 c.drawBitmap(mBitmap, mRectSrc, mRectDes, null);
                 getHolder().unlockCanvasAndPost(c);
             }
@@ -237,7 +247,6 @@ public class MySurfaceView3 extends SurfaceView implements
             case MotionEvent.ACTION_POINTER_DOWN:
                 float distance = spacing(event);
                 if (distance > 10f) {
-
                     mStatus = ZOOM;
                     mStartDistance = distance;//获取两手指初始距离
                 }
@@ -310,44 +319,51 @@ public class MySurfaceView3 extends SurfaceView implements
         mPaint.setColor(Color.GRAY);// 网格为灰色
         mPaint.setStrokeWidth(3);// 设置画笔粗细
         int oldY = 0;
-        for (int i = 0; i <= 8*scale; i++) {// 绘画横线
-            canvas.drawLine(0, oldY, mImageWidth*scale, oldY, mPaint);
+        for (int i = 0; i <= 10; i++) {// 绘画横线
+            canvas.drawLine(0, oldY, mSurfaceWidth*scale, oldY, mPaint);
+            canvas.drawText(0+"",0, oldY,p);
+            oldY += mSurfaceHeight/10;
         }
         int oldX = 0;
-        for (int i = 0; i <= 8*scale; i++) {// 绘画纵线
-            canvas.drawLine(oldX, 0, oldX, mImageHeight*scale, mPaint);
+        for (int i = 0; i <= 8; i++) {// 绘画纵线
+            canvas.drawLine(oldX, 0, oldX, mSurfaceHeight*scale, mPaint);
             if(i%2==0)
-                canvas.drawText(oldX+"",oldX+10,mCenterY+40,mPaint);
-            oldX = oldX + mImageWidth/8;
+                canvas.drawText(oldX+"",oldX+10,mSurfaceHeight/2+40,mPaint);
+            oldX = oldX + mSurfaceWidth/8;
 
         }
         // 绘制坐标轴
-        canvas.drawLine(2, mCenterY, mImageWidth*scale, mCenterY, p);
-        canvas.drawLine(2, 0, 2, mImageHeight*scale, p);
+        canvas.drawLine(2, mSurfaceHeight/2, mSurfaceWidth*scale, mSurfaceHeight/2, p);//横轴
+        canvas.drawLine(3, 0, 3, mSurfaceHeight*scale, p);//竖轴
     }
 
     /**
-     * 画随机数据的
+     * 生成并设置bitmap
      */
-    void testRandomDraw(int scale){
-        Log.d("MySV3","宽高为"+mImageWidth+","+mImageHeight);
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale, Bitmap.Config.ARGB_4444);
-        Canvas canvas = new Canvas(whiteBgBitmap);
-        drawBackGround(canvas,scale);
+    void createBitmap(int scale){
+        //Log.d("MySV3","宽高为"+mImageWidth+","+mImageHeight);
+        Bitmap fgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale/4, Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(fgBitmap);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(3*scale/2);
-        float oldY=mCenterY*scale;
-        float oldX=0;
+        mpaint.setStrokeWidth(3*(float)Math.log(scale));
+        float centerY = mSurfaceHeight*scale/8;   //局部变量，只存在这张图里
+        float oldY = centerY;
+        float oldX = 0;
         float cx = 0;
         for(int i=0;i<1024;i++) {
-            cx+=scale;
-            float cy = mCenterY*scale-data[i]*scale;
-            canvas.drawLine(oldX,oldY+10,cx,cy+10,mpaint);
-            oldX=cx;
+            cx += scale;
+            float cy = centerY-data[i]*scale/4;
+            canvas.drawLine(oldX,oldY,cx,cy,mpaint);
+            oldX = cx;
             oldY = cy;
         }
-        setBitmap(whiteBgBitmap,data);
+        setBitmap(fgBitmap);
+    }
+
+    public void drawWave(float data[]){
+        this.data=data;
+        createBitmap(5);
     }
 
 }
