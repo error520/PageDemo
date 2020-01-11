@@ -185,7 +185,7 @@ public class MySurfaceView3 extends SurfaceView implements
     }
 
     private void dragAction(MotionEvent event) {
-
+        
         synchronized (MySurfaceView3.class) {
             PointF currentPoint = new PointF();
             currentPoint.set(event.getX(), event.getY());
@@ -282,7 +282,9 @@ public class MySurfaceView3 extends SurfaceView implements
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        // TODO Auto-generated method stub
+        Canvas c = getHolder().lockCanvas();
+        drawBackGround(c,1);
+        getHolder().unlockCanvasAndPost(c);
     }
 
     // 初始化

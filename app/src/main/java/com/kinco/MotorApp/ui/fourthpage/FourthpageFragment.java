@@ -145,13 +145,14 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         super.onStart();
         if(Showing)
             initService();
+
         //util.centerToast(getContext(),"4被开启",0);
-//        mHnadler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                drawBackGround(holder);
-//            }
-//        },300);
+        mHnadler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSurfaceView.surfaceCreated(showSurfaceView.getHolder());
+            }
+        },300);
     }
 
     @Override
