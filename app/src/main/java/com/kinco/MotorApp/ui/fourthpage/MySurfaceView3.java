@@ -172,7 +172,7 @@ public class MySurfaceView3 extends SurfaceView implements
             p.setColor(Color.WHITE);
             p.setTextSize(50);
             drawBackGround(fc,1);
-            //fc.drawText(mCenterX+"",mSurfaceWidth/2,mSurfaceHeight/2,p);
+            fc.drawText(mCurrentScale+"",mSurfaceWidth/2,mSurfaceHeight/2,p);
 
             Canvas c = getHolder().lockCanvas();
             if (c != null && mBitmap != null) {
@@ -294,7 +294,7 @@ public class MySurfaceView3 extends SurfaceView implements
             mRectDes.set(0, 0, width, height);
             mSurfaceHeight = height;    //获取真实的高宽
             mSurfaceWidth = width;
-            init();
+            //init();
             if (mBitmap != null) {
                 showBitmap();
             }
@@ -342,18 +342,18 @@ public class MySurfaceView3 extends SurfaceView implements
      */
     void createBitmap(int scale){
         //Log.d("MySV3","宽高为"+mImageWidth+","+mImageHeight);
-        Bitmap fgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale/4, Bitmap.Config.ARGB_4444);
+        Bitmap fgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(fgBitmap);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(3*(float)Math.log(scale));
-        float centerY = mSurfaceHeight*scale/8;   //局部变量，只存在这张图里
+        mpaint.setStrokeWidth(2*(float)Math.log(scale+Math.E));
+        float centerY = mSurfaceHeight*scale/2;   //局部变量，只存在这张图里
         float oldY = centerY;
         float oldX = 0;
         float cx = 0;
         for(int i=0;i<1024;i++) {
             cx += scale;
-            float cy = centerY-data[i]*scale/4;
+            float cy = centerY-data[i]*scale;
             canvas.drawLine(oldX,oldY,cx,cy,mpaint);
             oldX = cx;
             oldY = cy;
@@ -363,7 +363,7 @@ public class MySurfaceView3 extends SurfaceView implements
 
     public void drawWave(float data[]){
         this.data=data;
-        createBitmap(5);
+        createBitmap(1);
     }
 
 }

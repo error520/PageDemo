@@ -353,12 +353,12 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         mpaint.setStrokeWidth(10);//3*scale/2
         float data[] = createSinData();
         data[1]=0;
-        data[2]=10;
-        data[3]=30;
-        data[4]=0;
-        data[5]=50;
-        data[6]=100;
-        data[7]=200;
+        data[2]=5;
+        data[3]=0;
+        data[4]=5;
+        data[5]=0;
+        data[6]=5;
+        data[7]=0;
 //        float oldY=centerY*scale;
 //        float oldX=0;
 //        float cx = 0;
@@ -420,7 +420,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     float[] createSinData(){
         float []data = new float[1024];
         for(int i=0; i<1024; i++) {
-            data[i] = (float) Math.sin(Math.PI * 2 * i / 1024) * 350;
+            data[i] = (float) Math.sin(Math.PI * 2 * i / 1024) * 500;
             Log.d(TAG,data[i]+"");
         }
          return data;
