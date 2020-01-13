@@ -3,7 +3,9 @@ package com.kinco.MotorApp.ui.fourthpage;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.PathEffect;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,6 +50,8 @@ public class MySurfaceView3 extends SurfaceView implements
     private int count=1;
     private boolean change=false;
     private float oldScale=1;
+    private float average=0;
+    private float step;
 
     public MySurfaceView3(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -61,8 +65,10 @@ public class MySurfaceView3 extends SurfaceView implements
                 MIN_ZOOM_SCALE,
                 4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
                         * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
-        if(!change) {
+        if(!change) {           //不是因为缩放而更换图片
             mCurrentScale = MIN_ZOOM_SCALE;
+            mRectSrc.set(0,0,mImageWidth,mImageHeight);
+            //mRectDes.set(0,0,mSurfaceWidth,mSurfaceHeight);
             mCenterX = mImageWidth / 2;
             mCenterY = mImageHeight / 2;
             Log.d("MySV3","初始："+mCenterX);
@@ -85,7 +91,6 @@ public class MySurfaceView3 extends SurfaceView implements
             mCenterX = mImageWidth - w / 2;
             mRectSrc.right = mImageWidth;
             mRectSrc.left = mRectSrc.right - w;
-
         } else {
             mRectSrc.left = mCenterX - w / 2;
             mRectSrc.right = mRectSrc.left + w;
@@ -164,6 +169,8 @@ public class MySurfaceView3 extends SurfaceView implements
                 mImageWidth = mBitmap.getWidth();
                 init();
             }
+            mImageHeight = mBitmap.getHeight();
+            mImageWidth = mBitmap.getWidth();
             //showBitmap();
         }
 
@@ -198,8 +205,8 @@ public class MySurfaceView3 extends SurfaceView implements
             int offsetY = (int) currentPoint.y - (int) mStartPoint.y;
             mStartPoint = currentPoint;
 
-            mCenterX -= offsetX;
-            mCenterY -= offsetY;
+            mCenterX -= offsetX*((int)mCurrentScale/2+1);
+            mCenterY -= offsetY*((int)mCurrentScale/2+1);
 
             adjustCenter();
             showBitmap();
@@ -217,7 +224,11 @@ public class MySurfaceView3 extends SurfaceView implements
             mCurrentScale *= scale;
             mCurrentScale = Math.max(FLOAT_TYPE,
                     Math.min(mCurrentScale, mCurrentMaxScale));//限定上下界范围
-            if(mCurrentScale>(int)oldScale+1) {
+            if(mCurrentScale>(int)oldScale+1) {     //放大换图
+                change=true;
+                createBitmap((int) mCurrentScale);
+                changeAction((int)mCurrentScale,(int)oldScale);
+            }else if(mCurrentScale<(int)oldScale){      //缩小换图
                 change=true;
                 createBitmap((int) mCurrentScale);
                 changeAction((int)mCurrentScale,(int)oldScale);
@@ -330,10 +341,14 @@ public class MySurfaceView3 extends SurfaceView implements
         mPaint.setTextSize(50);
         mPaint.setColor(Color.GRAY);// 网格为灰色
         mPaint.setStrokeWidth(3);// 设置画笔粗细
+        mPaint.setPathEffect ( new DashPathEffect( new float []{ 5,5,5,5}, 0 ) ) ;
         int oldY = 0;
         for (int i = 0; i <= 10; i++) {// 绘画横线
             canvas.drawLine(0, oldY, mSurfaceWidth*scale, oldY, mPaint);
-            canvas.drawText(1+"",0, oldY,p);
+            if(i!=0&&i!=10) {
+                float measure = average + step / mCurrentScale * (5 - i);
+                canvas.drawText(String.format("%.2f",measure), 0, oldY, p);
+            }
             oldY += mSurfaceHeight/10;
         }
         int oldX = 0;
@@ -357,7 +372,7 @@ public class MySurfaceView3 extends SurfaceView implements
         Canvas canvas = new Canvas(fgBitmap);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(4*(float)Math.log(scale+Math.E));
+        mpaint.setStrokeWidth(3.5f*(float)Math.log(scale/2*4+Math.E));
         float centerY = mSurfaceHeight*scale/2;   //局部变量，只存在这张图里
         float oldY = centerY;
         float oldX = 0;
@@ -372,8 +387,10 @@ public class MySurfaceView3 extends SurfaceView implements
         setBitmap(fgBitmap);
     }
 
-    public void drawWave(float data[]){
-        this.data=data;
+    public void drawWave(float data[],float average,float step){
+        this.data = data;
+        this.average = average;
+        this.step = step;
         createBitmap(1);
         showBitmap();
     }

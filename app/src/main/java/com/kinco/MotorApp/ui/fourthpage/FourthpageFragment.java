@@ -302,7 +302,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         mPaint.setStrokeWidth(3);// 设置画笔粗细
         int oldY = 0;
         float lineStep = HEIGHT / 10;
-        float textStep = (maxData-minData)/9;
+        float textStep = (maxData-minData)/8;
         for (int i = 0; i <= 10*scale; i++) {// 绘画横线
             canvas.drawLine(0, oldY, WIDTH*scale, oldY, mPaint);
             if(i!=0&&i!=10) {
@@ -358,13 +358,15 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         mpaint.setColor(Color.GREEN);
         mpaint.setStrokeWidth(10);//3*scale/2
         float data[] = createSinData();
-        data[1]=0;
-        data[2]=5;
-        data[3]=0;
-        data[4]=5;
-        data[5]=0;
-        data[6]=5;
-        data[7]=0;
+        for(int i=0;i<100;i++){
+            data[i]=0;
+        }
+        for(int i=100;i<200;i++){
+            data[i]=200;
+        }
+        for(int i=200;i<300;i++){
+            data[i]=500;
+        }
 //        float oldY=centerY*scale;
 //        float oldX=0;
 //        float cx = 0;
@@ -375,7 +377,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
 //            oldX=cx;
 //            oldY = cy;
 //        }
-        showSurfaceView.drawWave(data);
+        showSurfaceView.drawWave(data,0,1000/8);
     }
 
     /**
