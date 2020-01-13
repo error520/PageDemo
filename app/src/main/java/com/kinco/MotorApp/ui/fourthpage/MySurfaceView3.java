@@ -47,7 +47,7 @@ public class MySurfaceView3 extends SurfaceView implements
     private int bgCenterX = mSurfaceWidth/2;
     private int count=1;
     private boolean change=false;
-    private float oldScale=0;
+    private float oldScale=1;
 
     public MySurfaceView3(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -65,6 +65,7 @@ public class MySurfaceView3 extends SurfaceView implements
             mCurrentScale = MIN_ZOOM_SCALE;
             mCenterX = mImageWidth / 2;
             mCenterY = mImageHeight / 2;
+            Log.d("MySV3","初始："+mCenterX);
         }
         change=false;
         setMaxZoom(20);
@@ -76,11 +77,11 @@ public class MySurfaceView3 extends SurfaceView implements
         int w = mRectSrc.right - mRectSrc.left;
         int h = mRectSrc.bottom - mRectSrc.top;
 
-        if (mCenterX - w / 2 < 0) { //若没有放大,则不更改中心
+        if (mCenterX - w / 2 < 0) { //拖到了左边界
             mCenterX = w / 2;
             mRectSrc.left = 0;
             mRectSrc.right = w;
-        } else if (mCenterX + w / 2 >= mImageWidth) {
+        } else if (mCenterX + w / 2 >= mImageWidth) {   //拖到了右边界
             mCenterX = mImageWidth - w / 2;
             mRectSrc.right = mImageWidth;
             mRectSrc.left = mRectSrc.right - w;
@@ -158,12 +159,12 @@ public class MySurfaceView3 extends SurfaceView implements
         synchronized (MySurfaceView3.class) {
             mBitmap = b;
             if (mImageHeight != mBitmap.getHeight()
-                    || mImageWidth != mBitmap.getWidth()) {
+                    || mImageWidth != mBitmap.getWidth()&&!change) {
                 mImageHeight = mBitmap.getHeight();
                 mImageWidth = mBitmap.getWidth();
                 init();
             }
-            showBitmap();
+            //showBitmap();
         }
 
     }
@@ -219,38 +220,37 @@ public class MySurfaceView3 extends SurfaceView implements
             if(mCurrentScale>(int)oldScale+1) {
                 change=true;
                 createBitmap((int) mCurrentScale);
+                changeAction((int)mCurrentScale,(int)oldScale);
+            }else{
+                calcRect(); //计算了显示照片哪部分的rect
             }
             oldScale=mCurrentScale;
-//            Log.d("MySV3",scale+"");
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    int finalScale = Math.max(1,(int)(scale));
-//                    testRandomDraw(finalScale);
-//                    //原操作
-//
-//                }
-//            }).start();
-            calcRect(); //计算了显示照片哪部分的rect
             adjustCenter(); //计算显示区域的中心
+
             showBitmap();
 
         }
     }
 
+    private void changeAction(float scale,float oldScale){
+        mCenterX*=scale/oldScale;
+        mCenterY*=scale/oldScale;
+        mRectSrc.left*=scale/oldScale;
+        mRectSrc.top*=scale/oldScale;
+        mRectSrc.right*=scale/oldScale;
+        mRectSrc.bottom*=scale/oldScale;
+        Log.d("MySV3",mCenterX+"");
+
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(mBitmap==null)
+            return true;
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 mStartPoint.set(event.getX(), event.getY());
                 mStatus = DRAG;
-//                if(count>5)
-//                    count=1;
-//                else {
-//                    count++;
-//                    testRandomDraw(count);
-//                }
-
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -308,6 +308,7 @@ public class MySurfaceView3 extends SurfaceView implements
             //init();
             if (mBitmap != null) {
                 showBitmap();
+                Log.d("MySV3","surfaceChange被调用了");
             }
         }
     }
@@ -352,7 +353,6 @@ public class MySurfaceView3 extends SurfaceView implements
      * 生成并设置bitmap
      */
     void createBitmap(int scale){
-        //Log.d("MySV3","宽高为"+mImageWidth+","+mImageHeight);
         Bitmap fgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(fgBitmap);
         Paint mpaint = new Paint();
@@ -375,6 +375,7 @@ public class MySurfaceView3 extends SurfaceView implements
     public void drawWave(float data[]){
         this.data=data;
         createBitmap(1);
+        showBitmap();
     }
 
 }
