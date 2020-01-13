@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -124,8 +125,12 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         paint.setStrokeWidth(3);
 
         mHnadler=new Handler();
-
-
+        mHnadler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSurfaceView.surfaceCreated(showSurfaceView.getHolder());
+            }
+        },100);
 
     }
 
@@ -147,12 +152,12 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             initService();
 
         //util.centerToast(getContext(),"4被开启",0);
-        mHnadler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showSurfaceView.surfaceCreated(showSurfaceView.getHolder());
-            }
-        },300);
+//        mHnadler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                showSurfaceView.surfaceCreated(showSurfaceView.getHolder());
+//            }
+//        },300);
     }
 
     @Override

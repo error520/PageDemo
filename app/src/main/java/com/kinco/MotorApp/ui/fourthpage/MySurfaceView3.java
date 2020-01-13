@@ -46,13 +46,14 @@ public class MySurfaceView3 extends SurfaceView implements
     private int bgCenterY = mSurfaceHeight/2;
     private int bgCenterX = mSurfaceWidth/2;
     private int count=1;
+    private boolean change=false;
+    private float oldScale=0;
 
     public MySurfaceView3(Context context, AttributeSet attrs) {
         super(context,attrs);
         mSurHolder = getHolder();
         mSurHolder.addCallback(this);
         this.setOnTouchListener(this);
-
     }
 
     private void init() {
@@ -60,19 +61,22 @@ public class MySurfaceView3 extends SurfaceView implements
                 MIN_ZOOM_SCALE,
                 4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
                         * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
-        mCurrentScale = MIN_ZOOM_SCALE;
-        //setMaxZoom(2);
-        mCenterX = mImageWidth / 2;
-        mCenterY = mImageHeight / 2;
-        calcRect();
+        if(!change) {
+            mCurrentScale = MIN_ZOOM_SCALE;
+            mCenterX = mImageWidth / 2;
+            mCenterY = mImageHeight / 2;
+        }
+        change=false;
+        setMaxZoom(20);
 
+        calcRect();
     }
 
     private void adjustCenter() {
         int w = mRectSrc.right - mRectSrc.left;
         int h = mRectSrc.bottom - mRectSrc.top;
 
-        if (mCenterX - w / 2 < 0) {
+        if (mCenterX - w / 2 < 0) { //若没有放大,则不更改中心
             mCenterX = w / 2;
             mRectSrc.left = 0;
             mRectSrc.right = w;
@@ -122,7 +126,7 @@ public class MySurfaceView3 extends SurfaceView implements
             mCurrentScale = MIN_ZOOM_SCALE;
         }
 
-        mRectDes.left = (mSurfaceWidth - w) / 2;
+        mRectDes.left = (mSurfaceWidth - w) / 2;    //为计算照片规格不符合surfaceview的
         mRectDes.top = (mSurfaceHeight - h) / 2;
         mRectDes.right = mRectDes.left + w;
         mRectDes.bottom = mRectDes.top + h;
@@ -176,7 +180,7 @@ public class MySurfaceView3 extends SurfaceView implements
 
             Canvas c = getHolder().lockCanvas();
             if (c != null && mBitmap != null) {
-                c.drawColor(Color.GRAY);
+                //c.drawColor(Color.GRAY);
                 c.drawBitmap(bgBitmap,0, 0,null);
                 c.drawBitmap(mBitmap, mRectSrc, mRectDes, null);
                 getHolder().unlockCanvasAndPost(c);
@@ -212,6 +216,11 @@ public class MySurfaceView3 extends SurfaceView implements
             mCurrentScale *= scale;
             mCurrentScale = Math.max(FLOAT_TYPE,
                     Math.min(mCurrentScale, mCurrentMaxScale));//限定上下界范围
+            if(mCurrentScale>(int)oldScale+1) {
+                change=true;
+                createBitmap((int) mCurrentScale);
+            }
+            oldScale=mCurrentScale;
 //            Log.d("MySV3",scale+"");
 //            new Thread(new Runnable() {
 //                @Override
@@ -222,8 +231,8 @@ public class MySurfaceView3 extends SurfaceView implements
 //
 //                }
 //            }).start();
-            calcRect();
-            adjustCenter();
+            calcRect(); //计算了显示照片哪部分的rect
+            adjustCenter(); //计算显示区域的中心
             showBitmap();
 
         }
@@ -323,7 +332,7 @@ public class MySurfaceView3 extends SurfaceView implements
         int oldY = 0;
         for (int i = 0; i <= 10; i++) {// 绘画横线
             canvas.drawLine(0, oldY, mSurfaceWidth*scale, oldY, mPaint);
-            canvas.drawText(0+"",0, oldY,p);
+            canvas.drawText(1+"",0, oldY,p);
             oldY += mSurfaceHeight/10;
         }
         int oldX = 0;
@@ -348,7 +357,7 @@ public class MySurfaceView3 extends SurfaceView implements
         Canvas canvas = new Canvas(fgBitmap);
         Paint mpaint = new Paint();
         mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(2*(float)Math.log(scale+Math.E));
+        mpaint.setStrokeWidth(4*(float)Math.log(scale+Math.E));
         float centerY = mSurfaceHeight*scale/2;   //局部变量，只存在这张图里
         float oldY = centerY;
         float oldX = 0;
