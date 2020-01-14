@@ -47,11 +47,14 @@ public class MySurfaceView3 extends SurfaceView implements
     private float data[];
     private int bgCenterY = mSurfaceHeight/2;
     private int bgCenterX = mSurfaceWidth/2;
+    private float fgCenterY = 0;
+    private float fgCenterX = 0;
     private int count=1;
     private boolean change=false;
     private float oldScale=1;
     private float average=0;
     private float step;
+    private String TAG = "MySV3";
 
     public MySurfaceView3(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -60,6 +63,9 @@ public class MySurfaceView3 extends SurfaceView implements
         this.setOnTouchListener(this);
     }
 
+    /**
+     * 计算新图片中心,把缩放归回1
+     */
     private void init() {
         mCurrentMaxScale = Math.max(
                 MIN_ZOOM_SCALE,
@@ -76,7 +82,7 @@ public class MySurfaceView3 extends SurfaceView implements
         change=false;
         setMaxZoom(20);
 
-        calcRect();
+        //calcRect();
     }
 
     private void adjustCenter() {
@@ -176,15 +182,16 @@ public class MySurfaceView3 extends SurfaceView implements
 
     }
 
-    private void showBitmap() {
+    private void showBitmap(float offset) {
         synchronized (MySurfaceView3.class) {
+            //先画背景
             Bitmap bgBitmap = Bitmap.createBitmap(mSurfaceWidth,mSurfaceHeight, Bitmap.Config.ARGB_4444);
             Canvas fc = new Canvas(bgBitmap);
             Paint p = new Paint();
             p.setColor(Color.WHITE);
             p.setTextSize(50);
-            drawBackGround(fc,1);
-            fc.drawText(mCurrentScale+"",mSurfaceWidth/2,mSurfaceHeight/2,p);
+            drawBackGround(fc,offset);
+            fc.drawText(mCurrentScale+"",mSurfaceWidth/2,mSurfaceHeight/2,p);  //缩放调试信息
 
             Canvas c = getHolder().lockCanvas();
             if (c != null && mBitmap != null) {
@@ -205,11 +212,11 @@ public class MySurfaceView3 extends SurfaceView implements
             int offsetY = (int) currentPoint.y - (int) mStartPoint.y;
             mStartPoint = currentPoint;
 
-            mCenterX -= offsetX*((int)mCurrentScale/2+1);
+            mCenterX -= offsetX*((int)mCurrentScale/2+1);       //调节拖动速度
             mCenterY -= offsetY*((int)mCurrentScale/2+1);
 
             adjustCenter();
-            showBitmap();
+            showBitmap(offsetY);
         }
     }
 
@@ -238,7 +245,7 @@ public class MySurfaceView3 extends SurfaceView implements
             oldScale=mCurrentScale;
             adjustCenter(); //计算显示区域的中心
 
-            showBitmap();
+            showBitmap(0);
 
         }
     }
@@ -303,11 +310,11 @@ public class MySurfaceView3 extends SurfaceView implements
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Canvas c = getHolder().lockCanvas();
-        drawBackGround(c,1);
+        drawBackGround(c,0);
         getHolder().unlockCanvasAndPost(c);
     }
 
-    // 初始化
+    // 初始化,每次重回app会调用
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
@@ -318,7 +325,7 @@ public class MySurfaceView3 extends SurfaceView implements
             mSurfaceWidth = width;
             //init();
             if (mBitmap != null) {
-                showBitmap();
+                showBitmap(0);
                 Log.d("MySV3","surfaceChange被调用了");
             }
         }
@@ -329,7 +336,7 @@ public class MySurfaceView3 extends SurfaceView implements
 
     }
 
-    private void drawBackGround(Canvas canvas,int scale) {
+    private void drawBackGround(Canvas canvas,float offset) {
         // 绘制黑色背景
         canvas.drawColor(Color.BLACK);
         Paint p = new Paint();
@@ -344,30 +351,30 @@ public class MySurfaceView3 extends SurfaceView implements
         mPaint.setPathEffect ( new DashPathEffect( new float []{ 5,5,5,5}, 0 ) ) ;
         int oldY = 0;
         for (int i = 0; i <= 10; i++) {// 绘画横线
-            canvas.drawLine(0, oldY, mSurfaceWidth*scale, oldY, mPaint);
+            canvas.drawLine(0, oldY, mSurfaceWidth, oldY, mPaint);
             if(i!=0&&i!=10) {
-                float measure = average + step / mCurrentScale * (5 - i);
+                float measure = average-(mCenterY-fgCenterY)/mCurrentScale + step / mCurrentScale * (5 - i);
                 canvas.drawText(String.format("%.2f",measure), 0, oldY, p);
             }
             oldY += mSurfaceHeight/10;
         }
         int oldX = 0;
         for (int i = 0; i <= 8; i++) {// 绘画纵线
-            canvas.drawLine(oldX, 0, oldX, mSurfaceHeight*scale, mPaint);
+            canvas.drawLine(oldX, 0, oldX, mSurfaceHeight, mPaint);
             if(i%2==0)
                 canvas.drawText(oldX+"",oldX+10,mSurfaceHeight/2+40,mPaint);
             oldX = oldX + mSurfaceWidth/8;
 
         }
         // 绘制坐标轴
-        canvas.drawLine(2, mSurfaceHeight/2, mSurfaceWidth*scale, mSurfaceHeight/2, p);//横轴
-        canvas.drawLine(3, 0, 3, mSurfaceHeight*scale, p);//竖轴
+        canvas.drawLine(2, mSurfaceHeight/2, mSurfaceWidth, mSurfaceHeight/2, p);//横轴
+        canvas.drawLine(3, 0, 3, mSurfaceHeight, p);//竖轴
     }
 
     /**
      * 生成并设置bitmap
      */
-    void createBitmap(int scale){
+    private void createBitmap(int scale){
         Bitmap fgBitmap = Bitmap.createBitmap(mSurfaceWidth*scale,mSurfaceHeight*scale, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(fgBitmap);
         Paint mpaint = new Paint();
@@ -384,15 +391,30 @@ public class MySurfaceView3 extends SurfaceView implements
             oldX = cx;
             oldY = cy;
         }
-        setBitmap(fgBitmap);
+        mBitmap = fgBitmap;
+        mImageHeight = fgBitmap.getHeight();
+        mImageWidth = fgBitmap.getWidth();
+        fgCenterY = mImageHeight/2;
+        //setBitmap(fgBitmap);
     }
 
-    public void drawWave(float data[],float average,float step){
+    /**
+     * 对外接口
+     * @param data
+     */
+    public void drawWave(float data[]){
         this.data = data;
-        this.average = average;
-        this.step = step;
+        float max = data[0],min = data[0];
+        for(float i:data){
+            max = Math.max(max,i);
+            min = Math.min(min,i);
+        }
+        this.average = (max+min)/2;
+        this.step = (max-min)/8;
+        Log.d(TAG,"max is "+max+",min is "+min);
         createBitmap(1);
-        showBitmap();
+        init();
+        showBitmap(0);
     }
 
 }

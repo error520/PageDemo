@@ -377,7 +377,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
 //            oldX=cx;
 //            oldY = cy;
 //        }
-        showSurfaceView.drawWave(data,0,1000/8);
+        showSurfaceView.drawWave(data);
     }
 
     /**
