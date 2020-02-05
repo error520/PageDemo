@@ -31,13 +31,13 @@ import com.kinco.MotorApp.util;
 
 public class SecondMoreActivity extends Activity {
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
-    String[] Name={"Output frequency","Output voltage","Output current","Motor power","Motor actual frequency",
-    "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
-    "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
-    "Custom-made version number","Software date"};
-    String[] Unit={"Hz","V","A","%","Hz","","","","V","℃","","V","A","Hz","",""};
-    boolean[] sign={true, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false};
-    double[] min={0.01, 1, 0.1, 0.1, 0.01, 1, 1, 1, 0.01, 0.1, 1, 1, 0.1, 0.01, 1, 1};
+//    String[] Name={"Output frequency","Output voltage","Output current","Motor power","Motor actual frequency",
+//    "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
+//    "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
+//    "Custom-made version number","Software date"};
+    String[] Unit={"Hz","V","A","%","Hz","","","","V","℃","","V","A","Hz","","","V","V","V","%","%","%","%"};
+    boolean[] sign={true, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    double[] min={0.01, 1, 0.1, 0.1, 0.01, 1, 1, 1, 0.01, 0.1, 1, 1, 0.1, 0.01, 1, 1, 1, 0.01, 0.01, 0.1, 0.1, 0.01, 0.01};
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(this);
     private BroadcastReceiver receiver=new LocalReceiver();
@@ -55,8 +55,9 @@ public class SecondMoreActivity extends Activity {
 //        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
 
         //！！！数据每次点击后都应该刷新数据
-        for(int i=0;i<16;i++){
-            list.add(new Parameter(  Name[i],"(null)",Unit[i],sign[i],min[i]));
+        String []Name = getResources().getStringArray(R.array.B0_All);
+        for(int i=0;i<Name.length;i++){
+            list.add(new Parameter(Name[i],"(null)",Unit[i],sign[i],min[i]));
         }
         ListView tableListView = (ListView) findViewById(R.id.list1);
 

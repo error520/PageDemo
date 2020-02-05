@@ -43,9 +43,10 @@ public class SecondpageFragment extends MyFragment {
     List<Parameter> list0;
     TableAdapter adapter;
     int count = 0;
+    private String []s_options;
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
-    String[] Name={"Output frequency","Output voltage","Motor power","VFD","VFD rotation","Main reference","Serial port control",
-        "Serial port setting","State"};
+//    String[] Name={"Output frequency","Output voltage","Motor power","VFD","VFD rotation","Main reference","Serial port control",
+//        "Serial port setting","State"};
     String[] unit={"Hz","V","%","","","","","",""};
     boolean[] sign={true, false, false, false, false, false, false, false, false};
     double[] min={0.01, 1, 0.1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
@@ -67,6 +68,8 @@ public class SecondpageFragment extends MyFragment {
         ViewGroup tableTitle = (ViewGroup)getActivity(). findViewById(R.id.table_title);
 //        tableTitle.setBackgroundColor(Color.rgb(219, 238, 244));
         //！！！数据每次点击后都应该刷新数据
+        s_options = getResources().getStringArray(R.array.status_options);
+        String Name[] = getResources().getStringArray(R.array.status_word);
         list0 = new ArrayList<Parameter>();
         for(int i=0;i<9;i++){
             list0.add( new Parameter( Name[i],"(null)",unit[i],sign[i],min[i]));
@@ -174,32 +177,32 @@ public class SecondpageFragment extends MyFragment {
                             if (addressState.equals("0110")) {
                                 //Log.d(TAG,info+"");
                                 if ((info & 0x1) > 0)
-                                    list0.get(3).setDescribe("Running");
+                                    list0.get(3).setDescribe(s_options[0]);
                                 else
-                                    list0.get(3).setDescribe("Stop");
+                                    list0.get(3).setDescribe(s_options[1]);
                                 if ((info & 0x02) > 0)
-                                    list0.get(4).setDescribe("Reverse");
+                                    list0.get(4).setDescribe(s_options[2]);
                                 else
-                                    list0.get(4).setDescribe("Forward");
+                                    list0.get(4).setDescribe(s_options[3]);
                                 if ((info & 0x04) > 0)
-                                    list0.get(5).setDescribe("Reach");
+                                    list0.get(5).setDescribe(s_options[4]);
                                 else
-                                    list0.get(5).setDescribe("Not Reach");
+                                    list0.get(5).setDescribe(s_options[5]);
                                 if ((info & 0x08) > 0)
-                                    list0.get(6).setDescribe("Enable");
+                                    list0.get(6).setDescribe(s_options[6]);
                                 else
-                                    list0.get(6).setDescribe("Disable");
+                                    list0.get(6).setDescribe(s_options[7]);
                                 if ((info & 0x10) > 0)
-                                    list0.get(7).setDescribe("Enable");
+                                    list0.get(7).setDescribe(s_options[6]);//与上项一样
                                 else
-                                    list0.get(7).setDescribe("Disable");
+                                    list0.get(7).setDescribe(s_options[7]);
                                 if ((info & 0x20) > 0)
-                                    list0.get(8).setDescribe("Alarm");
+                                    list0.get(8).setDescribe(s_options[8]);
                                 else {
                                     if ((info & 0xff00) > 0)
-                                        list0.get(8).setDescribe("Fault");
+                                        list0.get(8).setDescribe(s_options[9]);
                                     else
-                                        list0.get(8).setDescribe("Normal");
+                                        list0.get(8).setDescribe(s_options[10]);
                                 }
                                 util.centerToast(getContext(),"Reload completed!",0);
                                 adapter.notifyDataSetChanged();

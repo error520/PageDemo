@@ -40,7 +40,7 @@
 
             app:layout_constraintTop_toBottomOf="@id/list0"
 
-            android:text="Reload"
+            android:text="@string/RELOAD"
 
             android:background="@drawable/button"
 
@@ -150,7 +150,7 @@
 
             app:layout_constraintTop_toBottomOf="@id/list0"
 
-            android:text="More"
+            android:text="@string/More"
 
             android:background="@drawable/button"
 

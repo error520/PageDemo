@@ -179,16 +179,15 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnShow:
-                    //showBrokenLine();
-//                    if(count>5)
-//                        count=1;
-//                    else{
-//                        count++;
-                        testRandomDraw(5);
-                    //}
-//                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
-//                    packageCount=0;
-//                    packageList.clear();
+
+                    testRandomDraw(count);
+                    if(count==10)
+                        count=1;
+                    else
+                        count++;
+                    //mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+                    packageCount=0;
+                    packageList.clear();
                     mDrawing=true;
                     break;
             }
@@ -351,33 +350,17 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
      * 画随机数据的
      */
     void testRandomDraw(int scale){
-        Bitmap whiteBgBitmap = Bitmap.createBitmap(WIDTH*scale,HEIGHT*scale, Bitmap.Config.ARGB_4444);
-        Canvas canvas = new Canvas(whiteBgBitmap);
-        //drawBackGround(canvas,scale);
-        Paint mpaint = new Paint();
-        mpaint.setColor(Color.GREEN);
-        mpaint.setStrokeWidth(10);//3*scale/2
         float data[] = createSinData();
-        for(int i=0;i<100;i++){
-            data[i]=0;
-        }
-        for(int i=100;i<200;i++){
-            data[i]=200;
-        }
-        for(int i=200;i<300;i++){
-            data[i]=500;
-        }
-//        float oldY=centerY*scale;
-//        float oldX=0;
-//        float cx = 0;
-//        for(int i=0;i<1024;i++) {
-//            cx+=scale;
-//            float cy = centerY*scale-data[i]*scale;
-//            canvas.drawLine(oldX,oldY+10,cx,cy+10,mpaint);
-//            oldX=cx;
-//            oldY = cy;
+//        for(int i=0;i<100;i++){
+//            data[i]=0;
 //        }
-        showSurfaceView.drawWave(data);
+//        for(int i=400;i<500;i++){
+//            data[i]=325;
+//        }
+//        for(int i=500;i<600;i++){
+//            data[i]=200;
+//        }
+        showSurfaceView.drawWave(data,scale);
     }
 
     /**
@@ -428,7 +411,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     float[] createSinData(){
         float []data = new float[1024];
         for(int i=0; i<1024; i++) {
-            data[i] = (float) Math.sin(Math.PI * 2 * i / 1024) * 500;
+            data[i] = (float) Math.sin(Math.PI * 2 * i / 1024) * 100;
             Log.d(TAG,data[i]+"");
         }
          return data;
@@ -558,7 +541,9 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
                     //Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
                     if(packageCount==102){//102
                         //draw();
-                        testDraw();
+                        //testDraw();
+                        //showSurfaceView.drawWave(packageToData(packageList));
+
                     }
                     packageCount++;
 

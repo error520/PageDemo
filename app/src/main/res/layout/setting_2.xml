@@ -28,11 +28,9 @@
         <ListView
 
             android:id="@+id/mylist"
-
             android:layout_width="match_parent"
-
-            android:layout_height="880dp"
-
+            android:layout_height="wrap_content"
+            android:divider="@null"
             ></ListView>
         <!--        <View-->
         <!--            android:layout_width="match_parent"-->
@@ -49,7 +47,7 @@
             android:id="@+id/list_view"
             android:descendantFocusability="beforeDescendants"
             android:layout_width="match_parent"
-            android:layout_height="310dp"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/button1"
             android:divider="@null"
             />

@@ -40,8 +40,9 @@ import java.util.List;
 
 
 public class FirstpageFragment extends MyFragment implements View.OnClickListener {
-    String[] Name =  { "Control mode", "Main reference  frequency selector"};
-    String[][] temp = {{"0：Vector control without PG","1: Vector control with PG","2:V/F control"},
+    //String[] Name =  { "Control mode", "Main reference  frequency selector"};
+
+    String[][] temp = {{"0：Vector control without PG","1: Vector control with PG","2: V/F control"},
             {"0:Digital setting Keyboard UP/DN or terminal UP/DN ","1:AI1","2:AI2","3:AI3","4:Set via DI terminal(PULSE)","5:Reserved"}};
     private String TAG = "FirstpageFragment";
     Text text;
@@ -71,16 +72,16 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        show();
+        String[] Name = {getString(R.string.A0_01),getString(R.string.A0_02)};
+        show(Name);
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
-        mData.add(new ItemBean( "Digital reference frequency","HZ","0.0~300.00",0.01f,"0.0~300.00","0003"));
+        mData.add(new ItemBean(getString(R.string.A0_03),"HZ","0.0~300.00",0.01f,"0.0~300.00","0003"));
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
             public void clickListener(String address, String name,String Unit,String Hint, float min, String defalutValue,String currentValue) {
-                Log.d(TAG,"传出的为"+address);
                 showSetDataDialog(address,defalutValue,currentValue);
             }
         });
@@ -115,15 +116,21 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
         //if(!util.isRegister(localBroadcastManager,BLEService.ACTION_DATA_AVAILABLE))
             localBroadcastManager.registerReceiver(receiver,util.makeGattUpdateIntentFilter());
     }
-    private void show() {
+
+    /**
+     * 选择型
+     */
+    private void show(String Name[]) {
         List<Text> texts = new ArrayList<Text>();
+        String options[][]={getResources().getStringArray(R.array.A0_options)[0].split(","),
+                getResources().getStringArray(R.array.A0_options)[1].split(",")};
         for (int i = 0; i < 2; i++) {//自定义的Text类存数据
             final int j = i;
             text = new Text();
             text.setTitle(Name[i]);//标题数据
             text.setCurrent(""+i);
             text.setId(0);//Spinner的默认选择项
-            text.setContent(temp[i]);
+            text.setContent(options[i]);
             text.setAddress("000" + (i + 1));
             texts.add(text);
             textAdapter = new TextAdapter(this.getActivity(), texts, R.layout.main_item);//向自定义的Adapter中传值
@@ -182,7 +189,7 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
 
     private void showSetDataDialog(final String address,String defaultValue, String currentValue){
         try {
-            setDatadialog = new SetDataDialog(this.getActivity(),"Digital reference frequency",
+            setDatadialog = new SetDataDialog(this.getActivity(),getString(R.string.A0_03),
                     "HZ","0.0~300.00",defaultValue,currentValue);
             setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
                 @Override
@@ -230,25 +237,25 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
             initService();
             //util.centerToast(getActivity(),"1的广播被开启",0);
         }
-        if(!initialized){
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mBluetoothLeService.readData("0001","0001");
-                    addressState="0001";
-                    loadingDialog = new LoadingDialog(getActivity(),"",
-                            "loading...",true);
-                    loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
-                        @Override
-                        public void onNegativeClick() {
-                            initialized = true;
-                            loadingDialog.gone();
-                        }
-                    });
-                }
-            },1000);
-
-        }
+//        if(!initialized){
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mBluetoothLeService.readData("0001","0001");
+//                    addressState="0001";
+//                    loadingDialog = new LoadingDialog(getActivity(),"",
+//                            "loading...",true);
+//                    loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
+//                        @Override
+//                        public void onNegativeClick() {
+//                            initialized = true;
+//                            loadingDialog.gone();
+//                        }
+//                    });
+//                }
+//            },1000);
+//
+//        }
     }
 
     @Override

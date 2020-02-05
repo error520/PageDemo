@@ -1,34 +1,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_margin="3dip"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
-     <View 
+    android:layout_height="wrap_content"
+    android:layout_margin="3dip"
+    android:orientation="vertical">
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:background="#A7A5A5"/>
-    
-    <include 
-        layout="@layout/list_item1"
-        android:id="@+id/table_title"/>
-    
-    <View 
+        android:background="#A7A5A5" />
+
+    <include
+        android:id="@+id/table_title"
+        layout="@layout/list_item1" />
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="1.5dip"
-        android:background="#686867"/>
+        android:background="#686867" />
 
     <ListView
         android:id="@+id/list1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+
+        android:descendantFocusability="beforeDescendants"
         android:divider="#B4B3B3"
         android:dividerHeight="1.0dip"
-        android:descendantFocusability="beforeDescendants"
-
-        android:cacheColorHint="@android:color/transparent"
-        android:fadingEdge="none"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-<!--        android:background="@drawable/listview_bg"-->
+        android:fadingEdge="none"></ListView>
+    <!--        android:background="@drawable/listview_bg"-->
 </LinearLayout>

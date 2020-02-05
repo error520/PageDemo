@@ -32,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.LanguageUtils.LanguageUtil;
+import com.kinco.MotorApp.LanguageUtils.PrefUtils;
 import com.kinco.MotorApp.MainActivity;
 import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.PasswordDialog;
@@ -43,7 +45,6 @@ import java.util.ArrayList;
 
 
 /**
- * Created by Excalibur on 2017/6/1.
  * 用于显示蓝牙设备列表，并返回蓝牙设备信息
  */
 public class DeviceList extends AppCompatActivity{
@@ -139,6 +140,7 @@ public class DeviceList extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this)); // onCreate 之前调用 否则不起作用
         super.onCreate(savedInstanceState);
         try {
             initUI();

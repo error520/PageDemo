@@ -25,63 +25,63 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:checked="true"
             android:id="@+id/one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
+            android:checked="true"
             android:drawableTop="@drawable/selector_setting"
-            android:gravity="center"
-            android:paddingBottom="7dp"
             android:drawablePadding="3dp"
+            android:gravity="center"
             android:paddingTop="7dp"
-            android:text="Setting"
+            android:paddingBottom="7dp"
+            android:text="@string/title_Setting"
             android:textColor="@color/color_radiobutton"
             android:textSize="12sp" />
 
         <RadioButton
-            android:drawablePadding="3dp"
             android:id="@+id/two"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:drawableTop="@drawable/selector_condition"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:paddingBottom="7dp"
             android:paddingTop="7dp"
-            android:text="Condition"
+            android:paddingBottom="7dp"
+            android:text="@string/title_Condition"
             android:textColor="@color/color_radiobutton"
             android:textSize="12sp" />
 
         <RadioButton
-            android:drawablePadding="3dp"
             android:id="@+id/three"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:drawableTop="@drawable/selector_read"
+            android:drawablePadding="3dp"
             android:gravity="center"
-            android:paddingBottom="7dp"
             android:paddingTop="7dp"
-            android:text="Read/Write"
+            android:paddingBottom="7dp"
+            android:text="@string/title_ReadWrite"
             android:textColor="@color/color_radiobutton"
             android:textSize="12sp" />
 
         <RadioButton
-            android:drawablePadding="3dp"
             android:id="@+id/four"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
             android:drawableTop="@drawable/setting_osc"
+            android:drawablePadding="3dp"
             android:gravity="center"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
-            android:text="OSC"
+            android:text="@string/title_OSC"
             android:textColor="@color/color_radiobutton"
             android:textSize="12sp" />
     </RadioGroup>

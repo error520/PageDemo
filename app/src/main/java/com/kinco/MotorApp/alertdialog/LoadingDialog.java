@@ -34,13 +34,11 @@ public class LoadingDialog {
         builder.setTitle(title);
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view=inflater.inflate(R.layout.loading_layout,null);
-        textView=(TextView) (view.findViewById(R.id.loadingText));
-        textView.setText(text);
         builder.setView(view);
 
         //据实际情况是否要“取消”按钮
         if(cancelable){
-            builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(context.getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     onClickCancelListener.onNegativeClick();
                 }

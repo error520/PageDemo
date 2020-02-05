@@ -52,7 +52,7 @@
             android:id="@+id/fragment1_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Control command word 1"
+            android:text="@string/Control_command_word"
             android:textSize="18sp"
             android:textStyle="bold" />
         <TextView
@@ -82,7 +82,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Stop mode 0"
+                android:text="@string/C_110B"
                 android:textAllCaps="false"
                 android:background="@drawable/button"/>
 
@@ -91,7 +91,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Stop mode 1"
+                android:text="@string/C_101B"
                 android:textAllCaps="false"
                 android:background="@drawable/button"/>
 
@@ -113,7 +113,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Forward"
+                android:text="@string/C_bit3_0"
                 android:textAllCaps="false"
                 android:background="@drawable/button" />
 
@@ -122,7 +122,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Backward"
+                android:text="@string/C_bit3_1"
                 android:textAllCaps="false"
                 android:background="@drawable/button"/>
         </LinearLayout>
@@ -144,7 +144,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fault reset enable"
+                android:text="@string/C_bit9_0"
                 android:textAllCaps="false"
                 android:background="@drawable/button"/>
 
@@ -153,7 +153,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fault reset disable"
+                android:text="@string/C_bit9_1"
                 android:textAllCaps="false"
                 android:background="@drawable/button"/>
         </LinearLayout>
@@ -167,7 +167,7 @@
             android:id="@+id/FirstpageMore"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="More"
+            android:text="@string/More"
             tools:layout_editor_absoluteX="153dp"
             tools:layout_editor_absoluteY="170dp"
             android:textAllCaps="false"

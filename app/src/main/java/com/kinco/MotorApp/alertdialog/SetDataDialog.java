@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -40,14 +39,15 @@ public class SetDataDialog {
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
         builder.setTitle(title);
-//        builder.setMessage("\n"+"Range:" +Hint+"\n"+"Default:" +"\n"+"Current:" );
+        String hintArray[] = context.getResources().getStringArray(R.array.setDataDialog);
         final TextView blank= new TextView(context);
         blank.setText("");
         final TextView blank1= new TextView(context);
         blank1.setText("");
 
         final TextView range = new TextView(context);
-        range.setText("        range:   ");
+        range.setText(hintArray[0]);
+        range.setPadding(80,0,40,0);
         range.setTextSize(17);
         final TextView Range = new TextView(context);
         Range.setText(Hint);
@@ -61,7 +61,8 @@ public class SetDataDialog {
         layout1.addView(Range);
 
         final TextView default1= new TextView(context);
-        default1.setText("        default:");
+        default1.setText(hintArray[1]);
+        default1.setPadding(80,0,40,0);
         default1.setTextSize(17);
         Default = new TextView(context);
         Default.setText(defaultValue);
@@ -75,7 +76,8 @@ public class SetDataDialog {
         layout2.addView(Default);
 
         final TextView current = new TextView(context);
-        current.setText("        current:");
+        current.setText(hintArray[2]);
+        current.setPadding(80,0,40,0);
         current.setTextSize(17);
         Current = new TextView(context);
         Current.setText(currentValue);
@@ -89,14 +91,16 @@ public class SetDataDialog {
         layout3.addView(Current);
 
         final TextView input = new TextView(context);
-        input.setText("        input:");
+        input.setText(hintArray[3]);
+        input.setPadding(80,0,40,0);
         input.setTextSize(17);
         final EditText edit = new EditText(context);
         edit.setFocusable(true);
         edit.setFocusableInTouchMode(true);
         edit.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(7)});
-        edit.setHint("Set data here");
+        //edit.setHint(hintArray[4]);
+        edit.setMinWidth(100);
         final TextView unit = new TextView(context);
         unit.setText(Unit);
         unit.setTextSize(17);

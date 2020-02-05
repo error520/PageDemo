@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="CONNECTED"
+            android:text="@string/CONNECTED"
             android:textAlignment="center"
             android:textColor="#3838AC"
             android:textSize="18sp"
@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="NEW"
+            android:text="@string/NEW"
             android:textAlignment="center"
             android:textColor="#3838AC"
             android:textSize="18sp"
@@ -70,7 +70,7 @@
             android:layout_weight="6"
             android:backgroundTint="#FFFFFF"
             android:backgroundTintMode="add"
-            android:text="Skip" />
+            android:text="@string/SKIP" />
 
         <Button
             android:id="@+id/BLEscan"
@@ -79,7 +79,7 @@
             android:layout_weight="6"
             android:backgroundTint="#FFFFFF"
             android:backgroundTintMode="add"
-            android:text="SCAN" />
+            android:text="@string/SCAN" />
 
         <ProgressBar
             android:id="@+id/processbar"

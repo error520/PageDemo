@@ -5,11 +5,11 @@
     tools:context="android.myapplication.MainActivity">
     <item
         android:id="@+id/item00"
-        android:title="Device Connection" />
+        android:title="@string/Device" />
     <item
-            android:id="@+id/item01"
-            android:title="Parameter List" />
+        android:id="@+id/item01"
+        android:title="@string/Language" />
     <item
         android:id="@+id/item02"
-        android:title="Contract" />
+        android:title="@string/Contract" />
 </menu>

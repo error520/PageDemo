@@ -43,7 +43,6 @@ public class PasswordDialog{
             public void onClick(DialogInterface dialog, int which) {
                 password=edit.getText().toString();
                 onClickBottomListener.onPositiveClick();
-
             }
         });
 

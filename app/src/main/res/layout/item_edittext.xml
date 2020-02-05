@@ -45,8 +45,9 @@
 
             android:gravity="left"
 
-            android:paddingBottom="8dip"
 
+            android:paddingLeft="12dp"
+            android:paddingBottom="8dip"
             android:paddingTop="8dip"
 
             android:text="Name"

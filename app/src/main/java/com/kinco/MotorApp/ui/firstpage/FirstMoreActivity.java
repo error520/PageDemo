@@ -38,11 +38,11 @@ import java.util.List;
 
 public class FirstMoreActivity extends Activity implements View.OnClickListener {
 
-    /** Called when the activity is first created. */
 
-    String[] Name =  { "Control mode", "Main reference  frequency selector", "Methods of  inputting operating  commands", "Running direction   " ,"Input terminal X1 function selection","Input terminal  X2 function selection" ,
-                        "Terminal control mode selection","Bi-direction pen-collector output terminal Y1","Output functions  of relay R1","Y1 terminal output","Functions of   terminal AO1","PG type ","Fault masking  selection 1"};
-    String[][] temp = {{"0：Vector control without PG","1: Vector control with PG","2:V/F control"},
+//    String[] Name =  { "Control mode", "Main reference  frequency selector", "Methods of  inputting operating  commands", "Running direction   " ,"Input terminal X1 function selection","Input terminal  X2 function selection" ,
+//                        "Terminal control mode selection","Bi-direction pen-collector output terminal Y1","Output functions  of relay R1","Y1 terminal output","Functions of   terminal AO1","PG type ","Fault masking  selection 1"};
+
+    String[][] temp = {{"0:Vector control without PG","1: Vector control with PG","2:V/F control"},
                         {"0:Digital setting Keyboard UP/DN or terminal UP/DN ","1:AI1","2:AI2","3:AI3","4:Set via DI terminal(PULSE","5:Reserved"},
             {"0:Panel control","1:Terminal control","2:Communication control"},
             {"0:Forward","1:Reverse"},
@@ -247,12 +247,14 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     public String[] GroupArray = new String[]{"User password", "Digital reference frequency", "Acc time 1","Dec time 1",
             "Number of pulses per revolution of PG", "Rated power of AC motor 1", "Number of polarities 0f AC motor 1","Rated power of PMSM motor 1","Number of polarities 0f PMSM motor 1",
             "Parameter initialization"};
-    private String writeAddressList[] = {"0000","0003","0006","0007","0010","0012","0013","0014","0015","0016"};
+    private String writeAddressList[] = {"0000","0003","0006","0007","0010","0012","0013","0014","0015","0016"
+            ,"0018","0019","001A","001B","001C","001D","001E","001F","0020","0024","0027"};
     private String chooseAddressList[] = {"0001","0002","0004","0005","0008","0009","000A","000B","000C","000D",
-            "000E","000F","0011"};
-    private String Unit[]={"","HZ","S","S","","KW","","KW","",""};
-    private String Hint[]={"4 digits","0.0~300.00","0.0~6000.0","0.0~6000.0","1~10000","0.2~999.9","2~24","0.4~999.9","1~40","0~1"};
-    private float[] Min={1, 0.01f, 0.1f, 0.1f, 1, 0.1f, 1, 0.1f, 1, 1};
+            "000E","000F","0011","0021","0022","0023","0025","0026","0028","0029","002A","002B","002C","002D"};
+    private String Unit[]={"HZ","S","S","","KW","","KW","","","V","A","HZ","RPM","V","A","RPM","HZ","%","KHZ","%"};
+    private String Hint[]={"0.00~300.00","0.0~6000.0","0.0~6000.0","1~10000","0.2~999.9","2~24","0.4~999.9","1~40","0~1",
+            "0~999","0.1~999.9","1.00~300.00","0~60000","0~999","0.1~999.9","0~60000","0~300.00","0.0~30.0","2.0~15.0","-300.0~+300.0"};
+    private float[] Min={0.01f, 0.1f, 0.1f, 1, 0.1f, 1, 0.1f, 1, 1, 1, 0.1f, 0.01f, 1, 1, 0.1f, 1, 0.01f, 0.1f, 0.1f, 0.1f};
     private ListView listView;
     private Button button;
     private ListView mListView;
@@ -264,23 +266,26 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
     private SetDataDialog setDatadialog;
-    private String editSetData="";
     boolean initialized = false;
     private int count=0;
     private Handler mHandler;
     private LoadingDialog loadingDialog;
+    private String TAG = "FirstMoreActivity";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_2);
         mHandler = new Handler();
-        show();
+        String []Name = getResources().getStringArray(R.array.A0_select);
+        String []options = getResources().getStringArray(R.array.A0_options);
+        show(Name,options);
+
+        String []Name2 = getResources().getStringArray(R.array.A0_type);
+        //输入型
         mListView = (ListView) findViewById(R.id.list_view);
         mData = new ArrayList<ItemBean>();
-
-        //输入型
-        for(int i=0;i<10;i++){
-            mData.add(new ItemBean( GroupArray[i], Unit[i],Hint[i],Min[i],Hint[i],writeAddressList[i]));
+        for(int i=0;i<Name2.length;i++){
+            mData.add(new ItemBean( Name2[i], Unit[i],Hint[i],Min[i],Hint[i],writeAddressList[i]));
         }
         mAdapter = new ListViewAdapter(this, mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
@@ -381,15 +386,16 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
 
     }
 
-    private void show() {
+    private void show(String Name[],String options[]) {
         //这里初始化的是下拉型数据
         List<Text> texts = new ArrayList<Text>();
-        for(int i=0;i<13;i++) {//自定义的Text类存数据
+        for(int i=0;i<options.length;i++) {//自定义的Text类存数据
             Text text = new Text();
             text.setTitle(Name[i]);//标题数据
             text.setAddress(chooseAddressList[i]);
             text.setId(0);//Spinner的默认选择项
-            text.setContent(temp[i]);
+            String[] tempArray = options[i].split(",");
+            text.setContent(tempArray);
             texts.add(text);
             TextAdapter textAdapter = new TextAdapter(FirstMoreActivity.this, texts, R.layout.main_item);//向自定义的Adapter中传值
             textAdapter.setAddressNoListener(new TextAdapter.AddressNoListener() {
@@ -404,7 +410,7 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
             listView = (ListView) findViewById(R.id.mylist);
             listView.setAdapter(textAdapter);//传值到ListView中
         }
-//        util.setListViewHeightBasedOnChildren(listView);
+        util.setListViewHeightBasedOnChildren(listView);
     }
 
     @Override
@@ -571,6 +577,20 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
 
         });
         return loadingDialog;
+    }
+    private String[][] getTwoDimensionalArray(String[] array) {
+        Log.d(TAG,array.length+"");
+        String[][] twoDimensionalArray = null;
+        for (int i = 0; i < array.length; i++) {
+            String[] tempArray = array[i].split(",");
+            if (twoDimensionalArray == null) {
+                twoDimensionalArray = new String[array.length][tempArray.length];
+            }
+            for (int j = 0; j < tempArray.length; j++) {
+                twoDimensionalArray[i][j] = tempArray[j];
+            }
+        }
+        return twoDimensionalArray;
     }
 
 

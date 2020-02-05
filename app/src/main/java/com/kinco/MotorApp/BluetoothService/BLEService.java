@@ -54,11 +54,14 @@ public class BLEService extends Service {
     private List<BluetoothGattCharacteristic> gattCharacteristics;
     private List<UUID> readUuid = new ArrayList<UUID>();
     private List<UUID> writeUuid = new ArrayList<UUID>();
+    private List<BluetoothGattCharacteristic> writeCList = new ArrayList<BluetoothGattCharacteristic>();
+    private List<BluetoothGattCharacteristic> notifyCList = new ArrayList<BluetoothGattCharacteristic>();
     private List<UUID> notifyUuid = new ArrayList<UUID>();
     private UUID notify_UUID_service;
     private UUID notify_UUID_chara;
     private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGattCharacteristic writeCharacteristic;
+
 
 
     public boolean init(){
@@ -243,42 +246,62 @@ public class BLEService extends Service {
                 //得到所有Service
                 List<BluetoothGattService> supportedGattServices = gatt.getServices();
                 Log.d("ga6tt",supportedGattServices.size()+"");
-//                supportedGattServices.remove(0);
-//                supportedGattServices.remove(2);
+                //supportedGattServices.remove(0);
+                //supportedGattServices.remove(2);
+                int index=1;
+                writeCList.clear();
+                notifyCList.clear();
                 for (BluetoothGattService gattService : supportedGattServices) {
                     //得到每个Service的Characteristics
+                    Log.d(TAG,"第"+index+"组服务:");
                     gattCharacteristics = gattService.getCharacteristics();
                     for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                         int charaProp = gattCharacteristic.getProperties();
                         //所有Characteristics按属性分类
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-                            Log.d(TAG, "gattCharacteristic的UUID为:" + gattCharacteristic.getUuid());
-                            Log.d(TAG, "gattCharacteristic的属性为:  可读");
+//                            Log.d(TAG, "gattCharacteristic的UUID为:" + gattCharacteristic.getUuid());
+//                            Log.d(TAG, "gattCharacteristic的属性为:  可读");
                             readUuid.add(gattCharacteristic.getUuid());
                             readCharacteristic = gattCharacteristic;
                         }
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE) > 0) {
-                            Log.d(TAG, "gattCharacteristic的UUID为:" + gattCharacteristic.getUuid());
-                            Log.d(TAG, "gattCharacteristic的属性为:  可写");
-                            writeUuid.add(gattCharacteristic.getUuid());
+//                            Log.d(TAG, "gattCharacteristic的UUID为:" + gattCharacteristic.getUuid());
+//                            Log.d(TAG, "gattCharacteristic的属性为:  可写");
+                            //writeUuid.add(gattCharacteristic.getUuid());
+                            writeCList.add(gattCharacteristic);
                             writeCharacteristic = gattCharacteristic;
                         }
                         if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
-                            Log.d(TAG, "gattCharacteristic的UUID为:" + gattCharacteristic.getUuid() + gattCharacteristic);
-                            Log.d(TAG, "gattCharacteristic的属性为:  具备通知属性");
+//                            Log.d(TAG, "gattCharacteristic的UUID为:" + gattCharacteristic.getUuid() + gattCharacteristic);
+//                            Log.d(TAG, "gattCharacteristic的属性为:  具备通知属性");
+                            notifyCList.add(gattCharacteristic);
+
                             notifyUuid.add(gattCharacteristic.getUuid());
                             notify_UUID_service = gattService.getUuid();
-
                             notify_UUID_chara = gattCharacteristic.getUuid();
                         }
-                    }
+
+                    }index++;
                 }
             }
+            mBluetoothGatt.setCharacteristicNotification(notifyCList.get(notifyCList.size()-1),true);
+            //writeCharacteristic = writeCList.get(2);
+            Log.d(TAG,"write:"+writeCharacteristic.getUuid());
 
-            mBluetoothGatt.setCharacteristicNotification(mBluetoothGatt
-                    .getService(notify_UUID_service).getCharacteristic(notify_UUID_chara),true);
+            Log.d(TAG,"notify:"+notifyCList.get(5).getUuid());
+//            mBluetoothGatt.setCharacteristicNotification(mBluetoothGatt
+//                    .getService(notify_UUID_service).getCharacteristic(notify_UUID_chara),true);
 
-//            mBluetoothGatt.setCharacteristicNotification(UUID.fromString("00002b13-0000-1000-8000-00805f9b34fb"),true);
+
+            Log.d(TAG,"写特征的信息如下");
+            for(int i=0;i<writeCList.size();i++) {
+                Log.d(TAG, writeCList.get(i).getUuid() + ":");
+            }
+            Log.d(TAG,"通知的信息如下");
+            for(int i=0;i<notifyCList.size();i++) {
+                Log.d(TAG, notifyCList.get(i).getUuid() + ":");
+            }
+            //mBluetoothGatt.setCharacteristicNotification(UUID.fromString("00002b13-0000-1000-8000-00805f9b34fb"),true);
 
 
         }
@@ -308,7 +331,7 @@ public class BLEService extends Service {
             }
             else{
                 Log.e(TAG,"长度错误!当前长度为"+bb2.length+"");
-            broadcastUpdate(bb2.length+"",2);
+                broadcastUpdate(bb2.length+"",2);
             }
 
         }
@@ -326,10 +349,6 @@ public class BLEService extends Service {
         public BLEService getService(){
             return BLEService.this;
         };
-    }
-    public void hello(){
-        broadcastUpdate(ACTION_GET_DEVICE_NAME,"nihao");
-        Log.d(TAG,"hello");
     }
     @Override
     public void onCreate() {
@@ -384,6 +403,11 @@ public class BLEService extends Service {
             broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
 
+    /**
+     * 传入字节数组的写数据方式
+     * @param address
+     * @param data
+     */
     public void writeData(String address,byte[] data){
         int numA = Integer.parseInt(address, 16);
         byte dataA[] = util.intToByte2(numA);
@@ -418,8 +442,9 @@ public class BLEService extends Service {
         send[7] = CRC[1];
         try {
             writeCharacteristic.setValue(send);
-            mBluetoothGatt.writeCharacteristic(writeCharacteristic);
+            boolean result = mBluetoothGatt.writeCharacteristic(writeCharacteristic);
             Log.d(TAG,"Master:"+util.toHexString(send,true));
+            Log.d(TAG,result+"!");
         } catch (Exception e) {
             Log.d("data", e.toString());
         }

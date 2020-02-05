@@ -30,7 +30,7 @@
             android:background="@drawable/button"
             android:onClick="click"
             android:padding="10dp"
-            android:text="Show"
+            android:text="@string/Show"
             android:textAllCaps="false" />
 
     </LinearLayout>

@@ -21,6 +21,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.kinco.MotorApp.LanguageUtils.LanguageUtil;
+import com.kinco.MotorApp.LanguageUtils.PrefUtils;
+import com.kinco.MotorApp.alertdialog.SetLanguageDialog;
 import com.kinco.MotorApp.sys.MyApplication;
 import com.kinco.MotorApp.sys.MyFragment;
 import com.kinco.MotorApp.ui.DeviceList;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this)); // onCreate 之前调用 否则不起作用
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainRadioGroupId = (RadioGroup) findViewById(R.id.main_radioGroupId);
@@ -109,10 +113,12 @@ public class MainActivity extends AppCompatActivity  {
                 }
              break;
             case R.id.item01:
-                Toast.makeText(MainActivity.this,"Coming soon",Toast.LENGTH_SHORT);
+                SetLanguageDialog sld = new SetLanguageDialog(this);
+                //setLanguage("en");
                 break;
             case R.id.item02:
                 Toast.makeText(MyApplication.getContext(),"Coming soon",Toast.LENGTH_SHORT);
+                setLanguage("zh");
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -123,6 +129,21 @@ public class MainActivity extends AppCompatActivity  {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_menu, menu);
         return true;
+    }
+    /**
+     * 设置语言
+     */
+    private void setLanguage(String language) {
+        // 切换
+        LanguageUtil.changeAppLanguage(MainActivity.this, language);
+        // 存入sp
+        PrefUtils.setLanguage(MainActivity.this, language);
+        // 重启app
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
     }
 
 
