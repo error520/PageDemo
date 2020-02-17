@@ -34,6 +34,8 @@ public class LoadingDialog {
         builder.setTitle(title);
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view=inflater.inflate(R.layout.loading_layout,null);
+        TextView textView = view.findViewById(R.id.loadingText);
+        textView.setText(text);
         builder.setView(view);
 
         //据实际情况是否要“取消”按钮
@@ -45,6 +47,8 @@ public class LoadingDialog {
             });
         }
         dialog = builder.show();
+        btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        btnNeg.setTextColor(Color.parseColor("#DA0D0D"));
 
     }
     public interface OnClickCancelListener{

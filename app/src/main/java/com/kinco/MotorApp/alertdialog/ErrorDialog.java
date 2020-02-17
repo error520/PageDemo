@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.util;
 
 /**
  * 错误提示框

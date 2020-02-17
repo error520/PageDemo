@@ -1,8 +1,6 @@
 package com.kinco.MotorApp.ui.firstpage;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,256 +10,68 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.Xml;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
-import com.kinco.MotorApp.alertdialog.ErrorDialog;
+import com.kinco.MotorApp.MainActivity;
 import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.SetDataDialog;
 import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
 import com.kinco.MotorApp.edittext.TextAdapter;
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.XmlUtil;
+import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class FirstMoreActivity extends Activity implements View.OnClickListener {
-
-
-//    String[] Name =  { "Control mode", "Main reference  frequency selector", "Methods of  inputting operating  commands", "Running direction   " ,"Input terminal X1 function selection","Input terminal  X2 function selection" ,
-//                        "Terminal control mode selection","Bi-direction pen-collector output terminal Y1","Output functions  of relay R1","Y1 terminal output","Functions of   terminal AO1","PG type ","Fault masking  selection 1"};
-
-    String[][] temp = {{"0:Vector control without PG","1: Vector control with PG","2:V/F control"},
-                        {"0:Digital setting Keyboard UP/DN or terminal UP/DN ","1:AI1","2:AI2","3:AI3","4:Set via DI terminal(PULSE","5:Reserved"},
-            {"0:Panel control","1:Terminal control","2:Communication control"},
-            {"0:Forward","1:Reverse"},
-            {"0:No function"," 1:Forward","2:Reverse","3:Forward jog operation","4:Reverse jog operation","5:3-wire operation control","6:External RESET signal input","7:External fault signal input","8:External interrupt signal input",
-             "9:Drive operation prohibit","10:External stop command","11:DC injection braking command","12:Coast to stop","13:Frequency ramp up (UP)","14:Frequency ramp down (DN)","15:Switch to panel control","16:Switch to terminal control",
-            "17:Switch to communication control mode","18:Main reference frequency via AI1 ","19:Main reference frequency via AI2"," 20:Main reference frequency via AI3 ","21:Main reference frequency via DI ","22:Auxiliary reference frequency invalid" ,
-                    "23:Auxiliary reference frequency via AI1 (Reserved)" ,
-                    "24:Auxiliary reference frequency via AI2 (Reserved)" ,
-                    "25:Auxiliary reference frequency via AI3 (Reserved)" ,
-                    "26:Auxiliary reference frequency via DI(Reserved)" ,
-                    "27:Preset frequency 1" ,
-                    "28:Preset frequency 2" ,
-                    "29:Preset frequency 3" ,
-                    "30:Preset frequency 4" ,
-                    "31:Acc/Dec time 1" ,
-                    "32:Acc/Dec time 2" ,
-                    "33:Multiple close-loop reference selection 1" ,
-                    "34:Multiple close-loop reference selection 2 " ,
-                    "35:Multiple close-loop reference selection 3 " ,
-                    "36:Multiple close-loop reference selection 4 " ,
-                    "37:Forward prohibit " ,
-                    "38:Reverse prohibit " ,
-                    "39:Acc/Dec prohibit " ,
-                    "40:Process close-loop prohibit " ,
-                    "41:Speed and torque control switching terminal" ,
-                    "42:Main frequency switch to digital setting" ,
-                    "43:PLC pause ",
-                    "44:PLC prohibit" ,
-                    "45:PLC stop memory clear " ,
-                    "46:Swing input" ,
-                    "47:Swing reset" ,
-                    "48~50：Reserved" ,
-                    "51：Timer1 start","52：Timer2 start","53：Counter start","54：Counter reset","Others.Reserved"},
-            {"0:No function" ,
-                    "1:Forward " ,
-                    "2:Reverse" ,
-                    "3:Forward jog operation " ,
-                    "4:Reverse jog operation " ,
-                    "5:3-wire operation control" ,
-                    "6:External RESET signal input ",
-                    "7:External fault signal input",
-                    "8:External interrupt signal input ",
-                    "9:Drive operation prohibit ",
-                    "10:External stop command" ,
-                    "11:DC injection braking command ",
-                    "12:Coast to stop" ,
-                    "13:Frequency ramp up (UP) ",
-                    "14:Frequency ramp down (DN) " ,
-                    "15:Switch to panel control ",
-                    "16:Switch to terminal control" ,
-                    "17:Switch to communication control mode" ,
-                    "18:Main reference frequency via AI1 ",
-                    "19:Main reference frequency via AI2 ",
-                    "20:Main reference frequency via AI3 ",
-                    "21:Main reference frequency via DI",
-                    "22:Auxiliary reference frequency invalid" ,
-                    "23:Auxiliary reference frequency via AI1 (Reserved)" ,
-                    "24:Auxiliary reference frequency via AI2 (Reserved)" ,
-                    "25:Auxiliary reference frequency via AI3 (Reserved)" ,
-                    "26:Auxiliary reference frequency via DI(Reserved)" ,
-                    "27:Preset frequency 1" ,
-                    "28:Preset frequency 2" ,
-                    "29:Preset frequency 3" ,
-                    "30:Preset frequency 4" ,
-                    "31:Acc/Dec time 1" ,
-                    "32:Acc/Dec time 2",
-                    "33:Multiple close-loop reference selection 1" ,
-                    "34:Multiple close-loop reference selection 2  " ,
-                    "35:Multiple close-loop reference selection 3 " ,
-                    "36:Multiple close-loop reference selection 4 " ,
-                    "37:Forward prohibit " ,
-                    "38:Reverse prohibit " ,
-                    "39:Acc/Dec prohibit " ,
-                    "40:Process close-loop prohibit " ,
-                    "41:Speed and torque control switching terminal" ,
-                    "42:Main frequency switch to digital setting" ,
-                    "43:PLC pause 44:PLC prohibit" ,
-                    "45:PLC stop memory clear " ,
-                    "46:Swing input" ,
-                    "47:Swing reset" ,
-                    "48~50：Reserved" ,
-                    "51：Timer1 start" ,
-                    "52：Timer2 start" ,
-                    "53：Counter start" ,
-                    "54：Counter reset" ,
-                    "Others.Reserved"},
-            {"0: 2-wire operating mode 1",
-                    "1:2-wire operating mode 2 ",
-                    "2: 3-wire operating mode 1",
-                    "3: 3-wire operation mode 2",
-                    "4: 2-wires operation mode 3"},
-            {"0:Running signal(RUN)" ,
-                    "1:Frequency arriving signal(FAR)" ,
-                    "2:Frequency detection threshold (FDT1)" ,
-                    "3:Frequency detection threshold (FDT2)" ,
-                    "4:Overload detection signal(OL) " ,
-                    "5:Low voltage signal(LU) " ,
-                    "6:External fault stop signal(EXT) ",
-                    "7:Frequency high limit(FHL) ",
-                    "8:Frequency low limit(FLL) ",
-                    "9:Zero-speed running ",
-                    "10:Terminal X1(Reserved) ",
-                    "11:Terminal X2(Reserved)",
-                    "12:PLC running step complete signal 13:PLC running cycle complete signal",
-                    "14:Limit of swing frequency upper/lower limit",
-                    "15:Drive ready (RDY) ",
-                    "16:Drive fault ",
-                    "17:Switching signal of host 18:Reserved",
-                    "19:Torque limiting",
-                    "20:Drive running forward/reverse",
-                    "21:Timer 1 full",
-                    "22: Timer 2 full",
-                    "23:Setting counter full",
-                    "24: Intermediate counter",
-                    "full",
-                    " Others.Reserved"},
-            {"0:Running signal(RUN)",
-                    "1:Frequency arriving signal(FAR)",
-                    "2:Frequency detection threshold (FDT1)",
-                    "3:Frequency detection threshold (FDT2)",
-                    "4:Overload detection signal(OL) ",
-                    "5:Low voltage signal(LU)",
-                    " 6:External fault stop signal(EXT)",
-                    " 7:Frequency high limit(FHL)",
-                    " 8:Frequency low limit(FLL)",
-                    " 9:Zero-speed running ",
-                    "10:Terminal X1(Reserved) ",
-                    "11:Terminal X2(Reserved)",
-                    "12:PLC running step complete signal",
-                    "13:PLC running cycle complete signal",
-                    "14:Limit of swing frequency upper/lower limit",
-                    "15:Drive ready (RDY) ",
-                    "16:Drive fault ",
-                    "17:Switching signal of host 18:Reserved",
-                    "19:Torque limiting",
-                    "20:Drive running forward/reverse",
-                    "21:Timer 1 full",
-                    "22: Timer 2 full",
-                    "23:Setting counter full",
-                    "24: Intermediate counter full",
-                    " Others.Reserved"},
-            {"0:Running signal(RUN)",
-                    "1:frequency arriving signal(FAR)",
-                    "2:frequency detection threshold (FDT1)",
-                    "3:frequency detection threshold (FDT2)",
-                    "4:overload signal(OL) ",
-                    "5:low voltage signal(LU) ",
-                    "6:external fault signal(EXT",
-                    "7:frequency high limit(FHL)",
-                    " 8:frequency low limit(FLL) ",
-                    "9:zero-speed running ",
-                    "10:Terminal X1(Reserved) ",
-                    "11:Terminal X2(Reserved)",
-                    "12:PLC running step complete signal",
-                    "13:PLC running cycle completesignal",
-                    "14:Limit of swing frequency upper/lower limit",
-                    "15:Drive ready (RDY) ",
-                    "16:Drive fault",
-                    " 17:Switching signal of host ",
-                    "18:Reserved",
-                    "19:Torque limiting",
-                    "20:Drive running forward/reverse ",
-                    "21~50:Reserved",
-                    "51:Output frequency (0~ Max. output frequency)",
-                    "52:Preset frequency (0~ Max. output frequency)",
-                    "53:Preset frequency (After Acc/Dec)(0~ Max. output frequency)",
-                    "54:Motor speed(0~ Max. speed) ",
-                    "55:Output current(0~2*Iei)",
-                    "56:Output current(0~2*Iem) ",
-                    "57:Output torque(0~3*Tem) ",
-                    "58:Output power(0~2*Pe)",
-                    "59:Output voltage(0~1.2*Ve)",
-                    "60:Bus voltage(0~800V) ",
-                    "61:AI1",
-                    "62:AI2",
-                    "63: Keyboard potentiometer",
-                    "64:DI",
-                    "65:Percentage of host(0~4095)",
-                    "66~88:Reserved"},
-            {"0:No function",
-                    "1:Output frequency(0~ Max. output frequency)",
-                    "2:Preset frequency(0~ Max. output frequency) ",
-                    "3:Preset frequency(After Acc/Dec)(0~ Max. output frequency) ",
-                    "4:Motor speed(0~ Max. speed) ",
-                    "5:Output current(0~2*Iei)",
-                    "6:Output current(0~2*Iem)",
-                    "7:Output torque(0~3*Tem)",
-                    "8:Output power(0~2*Pe) ",
-                    "9:Output voltage(0~1.2*Ve)",
-                    "10:Bus voltage(0~800V) ",
-                    "11:AI1",
-                    "12:AI2",
-                    "13:Keyboard potentiometer",
-                    "14:DI",
-                    "15:Percentage of host(0~4095) ",
-                    "16~36:Reserved"},
-            {"0:ABZ incremental type ",
-                    "1:UVW incremental type ",
-                    "2:Cosine type",
-                    "3: Single pulse"},
-            {"0:Disable.Stop when fault happen","1:Disable.Continue operating when fault happen","2:Enable"}};
-    public String[] GroupArray = new String[]{"User password", "Digital reference frequency", "Acc time 1","Dec time 1",
-            "Number of pulses per revolution of PG", "Rated power of AC motor 1", "Number of polarities 0f AC motor 1","Rated power of PMSM motor 1","Number of polarities 0f PMSM motor 1",
-            "Parameter initialization"};
+public class FirstMoreActivity extends AppCompatActivity implements View.OnClickListener {
     private String writeAddressList[] = {"0000","0003","0006","0007","0010","0012","0013","0014","0015","0016"
             ,"0018","0019","001A","001B","001C","001D","001E","001F","0020","0024","0027"};
     private String chooseAddressList[] = {"0001","0002","0004","0005","0008","0009","000A","000B","000C","000D",
             "000E","000F","0011","0021","0022","0023","0025","0026","0028","0029","002A","002B","002C","002D"};
-    private String Unit[]={"HZ","S","S","","KW","","KW","","","V","A","HZ","RPM","V","A","RPM","HZ","%","KHZ","%"};
-    private String Hint[]={"0.00~300.00","0.0~6000.0","0.0~6000.0","1~10000","0.2~999.9","2~24","0.4~999.9","1~40","0~1",
-            "0~999","0.1~999.9","1.00~300.00","0~60000","0~999","0.1~999.9","0~60000","0~300.00","0.0~30.0","2.0~15.0","-300.0~+300.0"};
-    private float[] Min={0.01f, 0.1f, 0.1f, 1, 0.1f, 1, 0.1f, 1, 1, 1, 0.1f, 0.01f, 1, 1, 0.1f, 1, 0.01f, 0.1f, 0.1f, 0.1f};
     private ListView listView;
-    private Button button;
     private ListView mListView;
-    private Button mButton;
-    private TextView editName;
     private ListViewAdapter mAdapter;
     private List<ItemBean> mData;
+
+    private TextAdapter A1CAdapter;
+    private List<Text> A1CList;
+    private ListView A1Clv;
+    private ListViewAdapter A1TAdapter;
+    private List<ItemBean> A1TList;
+    private ListView A1Tlv;
+
+    private TextAdapter A2CAdapter;
+    private List<Text> A2CList;
+    private ListView A2Clv;
+    private ListViewAdapter A2TAdapter;
+    private List<ItemBean> A2TList;
+    private ListView A2Tlv;
+
+    private TextAdapter A3CAdapter;
+    private List<Text> A3CList;
+    private ListView A3Clv;
+
+    private TextAdapter A4CAdapter;
+    private List<Text> A4CList;
+    private ListView A4Clv;
+    private ListViewAdapter A4TAdapter;
+    private List<ItemBean> A4TList;
+    private ListView A4Tlv;
+
+
     private BLEService mBluetoothLeService;
     LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
@@ -271,33 +81,33 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     private Handler mHandler;
     private LoadingDialog loadingDialog;
     private String TAG = "FirstMoreActivity";
+    private int mGroup=1;   //当前位置
+    private int mPosition=0;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_2);
         mHandler = new Handler();
-        String []Name = getResources().getStringArray(R.array.A0_select);
-        String []options = getResources().getStringArray(R.array.A0_options);
-        show(Name,options);
+        initUI();
 
-        String []Name2 = getResources().getStringArray(R.array.A0_type);
-        //输入型
-        mListView = (ListView) findViewById(R.id.list_view);
-        mData = new ArrayList<ItemBean>();
-        for(int i=0;i<Name2.length;i++){
-            mData.add(new ItemBean( Name2[i], Unit[i],Hint[i],Min[i],Hint[i],writeAddressList[i]));
-        }
-        mAdapter = new ListViewAdapter(this, mData);
-        mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
-            @Override
-            public void clickListener(String Address, String Name,String Unit,
-                                      String Range,float Min,String defaultValue,String currentValue) {
-                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue);
-            }
-        });
+//        //输入型
+//        mListView = (ListView) findViewById(R.id.A1Tlist);
+//        mData = new ArrayList<ItemBean>();
+//        for(int i=0;i<Name2.length;i++){
+//            mData.add(new ItemBean( Name2[i], Unit[i],Hint[i],Min[i],Hint[i],writeAddressList[i]));
+//        }
+//        mAdapter = new ListViewAdapter(this, mData);
+//        mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
+//            @Override
+//            public void clickListener(String Address, String Name,String Unit,
+//                                      String Range,float Min,String defaultValue,String currentValue) {
+//                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue);
+//            }
+//        });
+//
+//        mListView.setAdapter(mAdapter);
+//        util.setListViewHeightBasedOnChildren(mListView);
 
-        mListView.setAdapter(mAdapter);
-        util.setListViewHeightBasedOnChildren(mListView);
 //        Button button2 = (Button) findViewById(R.id.Control_111B);
 //        button2.setOnClickListener(this);
 //        Button button3 = (Button) findViewById(R.id.Control_110B);
@@ -336,7 +146,97 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
 //        button19.setOnClickListener(this);
 //        Button button20 = (Button) findViewById(R.id.Control_bit9_1);
 //        button20.setOnClickListener(this);
-        initData();
+
+        Log.d(TAG,Float.parseFloat(getResources().getString(R.string.A0_03M))+"ddd");
+    }
+
+    private void initUI(){
+        A1Clv = findViewById(R.id.A1Clist);
+        A1Tlv = findViewById(R.id.A1Tlist);
+        A2Clv = findViewById(R.id.A2Clist);
+        A2Tlv = findViewById(R.id.A2Tlist);
+        A3Clv = findViewById(R.id.A3Clist);
+        A4Clv = findViewById(R.id.A4Clist);
+        A4Tlv = findViewById(R.id.A4Tlist);
+
+        A1TList = new ArrayList<>();
+        A2TList = new ArrayList<>();
+        A4TList = new ArrayList<>();
+        A1TAdapter = new ListViewAdapter(this,A1TList);
+        A2TAdapter = new ListViewAdapter(this,A2TList);
+        A4TAdapter = new ListViewAdapter(this,A4TList);
+        int cNum1[] = {37};
+        int cNum2[] = {46};
+        int cNum3[] = {10,8,9,40,41,42,43,14,44,12,45,11,13};
+        int cNum4[] = {15,17,35,2,38};
+        setCListView(cNum1,A1CAdapter,A1CList,A1Clv);
+        setCListView(cNum2,A2CAdapter,A2CList,A2Clv);
+        setCListView(cNum3,A3CAdapter,A3CList,A3Clv);
+        setCListView(cNum4,A4CAdapter,A4CList,A4Clv);
+        int tNum1[] = {18,24,25,26,27,19,20,28,29,30,21};
+        int tNum2[] = {32,47,48,49,50,51,52,53};
+        int tNum4[] = {6,7,31,36,16,22,3,39};
+        setTListView(tNum1,A1TAdapter,A1TList,A1Tlv,1);
+        setTListView(tNum2,A2TAdapter,A2TList,A2Tlv,2);
+        setTListView(tNum4,A4TAdapter,A4TList,A4Tlv,4);
+
+    }
+
+    /**
+     * 设置选择参数
+     * @param num
+     * @param textAdapter
+     * @param list
+     * @param listView
+     */
+    private void setCListView(int num[], TextAdapter textAdapter, List<Text> list, ListView listView){
+        String Name[] = XmlUtil.getName(this,num);
+        String options[][] = XmlUtil.getOptions(this,num);
+        list = new ArrayList<Text>();
+        for(int i=0; i<num.length; i++){
+            String address = "00"+String.format("%x",num[i]);
+            if(address.length()<4)
+                address = "000"+String.format("%x",num[i]);
+            Text text = new Text(Name[i],options[i],address,0);
+            list.add(text);
+        }
+        textAdapter = new TextAdapter(this, list, R.layout.main_item);//向自定义的Adapter中传值
+        textAdapter.setAddressNoListener(new TextAdapter.AddressNoListener() {
+            //操作
+            @Override
+            public void titleNo(String address, String value) {
+                mBluetoothLeService.writeData(address,value);
+            }
+            public void addressNo(int addressNo) {
+            }
+        });
+        listView.setAdapter(textAdapter);//传值到ListView中
+        util.setListViewHeightBasedOnChildren(listView);
+
+    }
+
+    private void setTListView(int num[], ListViewAdapter TAdapter, List<ItemBean> TList, ListView listView, int group){
+        String Name[] = XmlUtil.getName(this,num);
+        String Unit[] = XmlUtil.getUnit(this,num);
+        String Hint[] = XmlUtil.getHint(this,num);
+        float Min[] = XmlUtil.getMin(this,num);
+        for(int i=0; i<num.length; i++){
+            String address = "00"+String.format("%x",num[i]);
+            if(address.length()<4)
+                address = "000"+String.format("%x",num[i]);
+            ItemBean ib = new ItemBean(Name[i],Unit[i],Hint[i],Min[i],Hint[i],address ,group,i);
+            TList.add(ib);
+        }
+        TAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
+            @Override
+            public void clickListener(String Address, String Name, String Unit, String Range, float Min, String defaultValue, String currentValue,
+                                      int group, int position) {
+                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue,group,position);
+            }
+        });
+        listView.setAdapter(TAdapter);
+        util.setListViewHeightBasedOnChildren(listView);
+
     }
 
     @Override
@@ -352,8 +252,10 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         unbindService(connection);
     }
 
+
     private void showSetDataDialog(final String address, String title, String Unit, String Range,
-                                   final float min, String defaultValue,String currentValue){
+                                   final float min, String defaultValue, String currentValue,
+                                   final int group, final int position){
         try {
             setDatadialog = new SetDataDialog(this,title,Unit,Range,defaultValue,currentValue);
             setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
@@ -361,6 +263,8 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
                 public void onPositiveClick() {
                     byte data[] = util.toByteData(setDatadialog.getSetData(),min);
                     mBluetoothLeService.writeData(address,data);
+                    mGroup = group;
+                    mPosition = position;
                 }
                 @Override
                 public void onNegativeClick() {
@@ -380,37 +284,6 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         bindService(BLEIntent,connection, Context.BIND_AUTO_CREATE);
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         localBroadcastManager.registerReceiver(receiver,util.makeGattUpdateIntentFilter());
-    }
-
-    private void initData(){
-
-    }
-
-    private void show(String Name[],String options[]) {
-        //这里初始化的是下拉型数据
-        List<Text> texts = new ArrayList<Text>();
-        for(int i=0;i<options.length;i++) {//自定义的Text类存数据
-            Text text = new Text();
-            text.setTitle(Name[i]);//标题数据
-            text.setAddress(chooseAddressList[i]);
-            text.setId(0);//Spinner的默认选择项
-            String[] tempArray = options[i].split(",");
-            text.setContent(tempArray);
-            texts.add(text);
-            TextAdapter textAdapter = new TextAdapter(FirstMoreActivity.this, texts, R.layout.main_item);//向自定义的Adapter中传值
-            textAdapter.setAddressNoListener(new TextAdapter.AddressNoListener() {
-                //操作
-                @Override
-                public void titleNo(String address, String value) {
-                    mBluetoothLeService.writeData(address,value);
-                }
-                public void addressNo(int addressNo) {
-                }
-            });
-            listView = (ListView) findViewById(R.id.mylist);
-            listView.setAdapter(textAdapter);//传值到ListView中
-        }
-        util.setListViewHeightBasedOnChildren(listView);
     }
 
     @Override
@@ -480,6 +353,8 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_BACK){
             moveTaskToBack(true);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -492,35 +367,48 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
-                if(!initialized){
-                    ItemBean ib = mData.get(count);
-                    String currentValue = util.parseByteData(message,3,ib.getMin(),false);
-                    ib.setDefaultValue(currentValue);
-                    ib.setCurrentValue(currentValue);
-                    mAdapter.notifyDataSetChanged();
-                    if(count<9){
-                        delayRead(writeAddressList[count+1]);
-                        count++;
-                    }else{
-                        count=0;
-                        initialized = true;
-                    }
-
-                }else{
-                    //setDatadialog.gone();
-                    String address = util.toHexString(message,2,false);
-                    Log.d("FirstMore",address);
-                    int index=0;
-                    for(int i=0;i<10;i++){
-                        if(address.equals(writeAddressList[i])){
-                            index=i;
-                            break;
-                        }
-                    }
-                    ItemBean ib = mData.get(index);
-                    mData.get(index).setCurrentValue(util.parseByteData(message,4,ib.getMin(),false));
-                    mAdapter.notifyDataSetChanged();
-                }
+                util.centerToast(FirstMoreActivity.this,"suceed!",0);
+                ItemBean ib = A1TList.get(0);
+                if(mGroup==1)
+                   ib = A1TList.get(mPosition);
+                else if(mGroup==2)
+                    ib = A2TList.get(mPosition);
+                else if(mGroup==4)
+                    ib = A4TList.get(mPosition);
+                String currentValue = util.parseByteData(message,4,ib.getMin(),false);
+                ib.setCurrentValue(currentValue);
+                A1TAdapter.notifyDataSetChanged();
+                A2TAdapter.notifyDataSetChanged();
+                A4TAdapter.notifyDataSetChanged();
+//                if(!initialized){
+//                    ItemBean ib = mData.get(count);
+//                    String currentValue = util.parseByteData(message,3,ib.getMin(),false);
+//                    ib.setDefaultValue(currentValue);
+//                    ib.setCurrentValue(currentValue);
+//                    mAdapter.notifyDataSetChanged();
+//                    if(count<9){
+//                        delayRead(writeAddressList[count+1]);
+//                        count++;
+//                    }else{
+//                        count=0;
+//                        initialized = true;
+//                    }
+//
+//                }else{
+//                    //setDatadialog.gone();
+//                    String address = util.toHexString(message,2,false);
+//                    Log.d("FirstMore",address);
+//                    int index=0;
+//                    for(int i=0;i<writeAddressList.length;i++){
+//                        if(address.equals(writeAddressList[i])){
+//                            index=i;
+//                            break;
+//                        }
+//                    }
+//                    ItemBean ib = mData.get(index);
+//                    mData.get(index).setCurrentValue(util.parseByteData(message,4,ib.getMin(),false));
+//                    mAdapter.notifyDataSetChanged();
+//                }
 
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
@@ -544,10 +432,10 @@ public class FirstMoreActivity extends Activity implements View.OnClickListener 
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBluetoothLeService = ((BLEService.localBinder) service)
                     .getService();
-            if(!initialized) {
-                mBluetoothLeService.readData("0000", "0001");
-
-            }
+//            if(!initialized) {
+//                mBluetoothLeService.readData("0000", "0001");
+//
+//            }
         }
 
         @Override

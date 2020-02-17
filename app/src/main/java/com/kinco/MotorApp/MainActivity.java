@@ -1,6 +1,7 @@
 package com.kinco.MotorApp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.ui.fourthpage.FourthpageFragment;
 import com.kinco.MotorApp.ui.secondpage.SecondpageFragment;
 import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
+import com.kinco.MotorApp.utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity  {
     private SecondpageFragment secondpageFragment=new SecondpageFragment();
     private ThirdpageFragment thirdpageFragment=new ThirdpageFragment();
     private FourthpageFragment fourthpageFragment=new FourthpageFragment();
-
+    private String TAG = "MainActivity";
+    public static boolean  flag = false;
+    public static String path = "null";
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
@@ -62,6 +66,26 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+
+        Uri uri = intent.getData();
+
+        if (uri != null) {
+            String scheme= uri.getScheme();
+            String host=uri.getHost();
+            String port=uri.getPort()+"";
+            String path=uri.getPath();
+            Log.d(TAG,scheme);
+            Log.d(TAG,host);
+            Log.d(TAG,port);
+            Log.d(TAG,path);
+            if(scheme.equals("content")){
+                flag = true;
+                this.path = FileUtil.getFilePathByUri(this,uri);
+                Log.d(TAG,FileUtil.getFilePathByUri(this,uri)+"");
+            }
+        }
+
         LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this)); // onCreate 之前调用 否则不起作用
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -77,6 +101,12 @@ public class MainActivity extends AppCompatActivity  {
         fragments.add(fourthpageFragment);
 
         new TabFragmentUtils(mainRadioGroupId, R.id.fragment_id, fragments, getSupportFragmentManager());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override

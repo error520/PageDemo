@@ -16,7 +16,7 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import com.kinco.MotorApp.R;
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.util;
 
 
 class DragImage extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {

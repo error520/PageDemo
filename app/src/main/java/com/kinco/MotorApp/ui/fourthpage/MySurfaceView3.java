@@ -23,7 +23,7 @@ import static java.lang.Float.NaN;
 
 public class MySurfaceView3 extends SurfaceView implements
         SurfaceHolder.Callback, View.OnTouchListener {
-
+    public float data[];//波形数据
     private static final int NONE = 0;// 原始
     private static final int DRAG = 1;// 拖动
     private static final int ZOOM = 2;// 放大
@@ -47,7 +47,6 @@ public class MySurfaceView3 extends SurfaceView implements
 
     private SurfaceHolder mSurHolder = null;
     private Bitmap mBitmap;
-    private float data[];
     private int bgCenterY = mSurfaceHeight/2;
     private int bgCenterX = mSurfaceWidth/2;
     private int fgCenterY = 0;
@@ -441,14 +440,14 @@ public class MySurfaceView3 extends SurfaceView implements
         showBitmap(0);
     }
 
-    public void drawWave(ArrayList<Float> dataList,int scale){
+    public void drawWave(ArrayList<Float> dataList){
         data = new float[dataList.size()];
         Log.d(TAG,dataList.size()+"");
         for(int i=0; i<dataList.size();i++) {
             data[i] = dataList.get(i);
             Log.d(TAG,data[i]+"");
         }
-        Log.d(TAG,"");
+
         drawWave(data, 1);
     }
 

@@ -56,13 +56,11 @@ public class SetLanguageDialog {
                 //setLanguage(context,"zh");
             }
         });
-//        btnPos = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-//        btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-//        btnPos.setText(context.getString(R.string.OK));
-//        btnNeg.setText(context.getString(R.string.CANCEL));
-//        btnPos.setTextColor(Color.RED);
-//        btnNeg.setTextColor(Color.RED);
         dialog = builder.show();
+        btnPos = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        btnPos.setTextColor(Color.parseColor("#DA0D0D"));
+        btnNeg.setTextColor(Color.parseColor("#DA0D0D"));
     }
 
     private void setLanguage(Context context,String language) {

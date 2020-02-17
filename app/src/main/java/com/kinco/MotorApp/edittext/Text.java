@@ -18,6 +18,13 @@ public class Text {
 
     private int id;
 
+    public Text(String Title, String[] content, String address, int id){
+        this.title = Title;
+        this.content = content;
+        this.address = address;
+        this.id = id;
+    }
+
     public String getAddress() {
 
         return address;

@@ -32,7 +32,8 @@ public class ListViewAdapter extends BaseAdapter {
 
     //接口定义
     public interface AddressNoListener{
-        void clickListener(String Address, String Name,String Unit,String Range,float Min, String defaultValue,String currentValue);  //确定传出的值
+        void clickListener(String Address, String Name,String Unit,String Range,float Min, String defaultValue,String currentValue,
+                           int group, int position);  //确定传出的值
     }
     //    public AddressNoListener getAddressNoListener(){return addressNoListener;}
     public void setAddressNoListener(ListViewAdapter.AddressNoListener addressNoListener)
@@ -77,7 +78,8 @@ public class ListViewAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v){
                     addressNoListener.clickListener(itemObj.getAddress(),itemObj.getName(),itemObj.getUnit(),
-                            itemObj.getRange(),itemObj.getMin(),itemObj.getDefaultValue(),itemObj.getCurrentValue());
+                            itemObj.getRange(),itemObj.getMin(),itemObj.getDefaultValue(),itemObj.getCurrentValue(),
+                            itemObj.group, itemObj.positon);
                 }
             });
             convertView.setTag(holder);

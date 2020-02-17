@@ -25,13 +25,20 @@
         <!--            android:textSize="20sp"-->
         <!--            android:textStyle="bold" />-->
 
-        <ListView
-
-            android:id="@+id/mylist"
+        <TextView
+            android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@null"
-            ></ListView>
+            android:text="@string/A1_Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ListView
+
+            android:id="@+id/A1Clist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"></ListView>
         <!--        <View-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="1.5dip"-->
@@ -44,13 +51,66 @@
 
 
         <ListView
-            android:id="@+id/list_view"
-            android:descendantFocusability="beforeDescendants"
+            android:id="@+id/A1Tlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/button1"
-            android:divider="@null"
-            />
+            android:descendantFocusability="beforeDescendants"
+            android:divider="@null" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/A2_Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/A2Clist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null" />
+
+        <ListView
+            android:id="@+id/A2Tlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/A3_Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/A3Clist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/A4_Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/A4Clist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null" />
+
+        <ListView
+            android:id="@+id/A4Tlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null" />
 
         <!--        <View-->
         <!--            android:layout_width="match_parent"-->

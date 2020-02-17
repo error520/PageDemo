@@ -37,7 +37,7 @@ import com.kinco.MotorApp.LanguageUtils.PrefUtils;
 import com.kinco.MotorApp.MainActivity;
 import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.PasswordDialog;
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.R;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -189,7 +189,7 @@ public class DeviceList extends AppCompatActivity{
                 connected_list.clear();
                 mPairedDevicesArrayAdapter.notifyDataSetChanged();
             }
-            loadingDialog = new LoadingDialog(DeviceList.this,"","Connecting...please wait",true);
+            loadingDialog = new LoadingDialog(DeviceList.this,"",getResources().getString(R.string.connecting_text),true);
             loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener(){
                 public void onNegativeClick(){
                     loadingDialog.gone();
@@ -262,22 +262,20 @@ public class DeviceList extends AppCompatActivity{
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                         mBluetoothLeService.slaveAddress = slaveAddress;
-//                        try {
-//                            loadingDialog.gone();
-//                            mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
-//                            Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
-//                            connected_list.clear();
-//                            connected_list.add(slaveAddress);
-//                            mPairedDevicesArrayAdapter.notifyDataSetChanged();
-//                            showPasswordDialog();
-//
-//
-//
-//                        }catch(Exception e){
-//                            util.centerToast(DeviceList.this,"Failed to get SlaveAddress",0);
-//                            e.printStackTrace();
-//                            Log.d(TAG,e.toString());
-//                        }
+                        try {
+                            loadingDialog.gone();
+                            mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
+                            Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
+                            connected_list.clear();
+                            connected_list.add(slaveAddress);
+                            mPairedDevicesArrayAdapter.notifyDataSetChanged();
+                            showPasswordDialog();
+
+                        }catch(Exception e){
+                            util.centerToast(DeviceList.this,getString(R.string.get_slaveAddress_failed),0);
+                            e.printStackTrace();
+                            Log.d(TAG,e.toString());
+                        }
                         debug();
 
                     }

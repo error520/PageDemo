@@ -13,23 +13,36 @@
         <activity
             android:name="com.kinco.MotorApp.MainActivity"
             android:label="Kinco"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
+
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content"/>
+                <data android:scheme="file"/>
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.wave" />
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+
         </activity>
         <activity
             android:name="com.kinco.MotorApp.ui.secondpage.SecondMoreActivity"
             android:configChanges="orientation|keyboard|keyboardHidden"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:launchMode="singleInstance"/>
         <activity android:name="com.kinco.MotorApp.ui.DeviceList"/>
+
         <activity
             android:name="com.kinco.MotorApp.ui.firstpage.FirstMoreActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
+
         <activity android:name=".SplashActivity" >
 
             <intent-filter>
 
                 <action android:name="android.intent.action.MAIN" />
-
-
 
                 <category android:name="android.intent.category.LAUNCHER" />
 

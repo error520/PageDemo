@@ -44,10 +44,10 @@
     <string name="A0_37">Motor type selection</string>
     <string name="A0_38">Reference torque selection</string>
     <string name="A0_39">Digital reference torque</string>
-    <string name="A0_40">Input	terminal X3 function selection</string>
-    <string name="A0_41">Input	terminal X4 function selection</string>
-    <string name="A0_42">Input	terminal X5 function selection</string>
-    <string name="A0_43">Input	terminal X6 function selection</string>
+    <string name="A0_40">Input terminal X3 function selection</string>
+    <string name="A0_41">Input terminal X4 function selection</string>
+    <string name="A0_42">Input terminal X5 function selection</string>
+    <string name="A0_43">Input terminal X6 function selection</string>
     <string name="A0_44">Functions of terminal A02</string>
     <string name="A0_45">Output functions of relay R2</string>
     <string name="B0_00">Output frequency</string>
@@ -55,7 +55,7 @@
     <string name="B0_02">Output current</string>
     <string name="B0_03">Motor power</string>
     <string name="B0_04">Motor actual frequency</string>
-    <string name="B0_05">Inverter running status</string>
+    <string name="B0_05">Device running status</string>
     <string name="B0_06">Input terminals status</string>
     <string name="B0_07">Output terminals status</string>
     <string name="B0_08">AI1 input voltage</string>
@@ -100,6 +100,51 @@
         <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit ,10: External stop command,11: DC injection braking command ,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN) ,15: Switch to panel control ,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2 ,20: Main reference frequency via AI3 ,21: Main reference frequency via DI,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2  ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause 44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,48~50：Reserved,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
         <item>0: No function,1: Output frequency(0~ Max. output frequency),2: Preset frequency(0~ Max. output frequency) ,3: Preset frequency(After Acc/Dec)(0~ Max. output frequency) ,4: Motor speed(0~ Max. speed) ,5: Output current(0~2*Iei),6: Output current(0~2*Iem),7: Output torque(0~3*Tem),8: Output power(0~2*Pe) ,9: Output voltage(0~1.2*Ve),10: Bus voltage(0~800V) ,11: AI1,12: AI2,13: Keyboard potentiometer,14: DI,15: Percentage of host(0~4095) </item>
         <item>0: Running signal(RUN),1: Frequency arriving signal(FAR),2: Frequency detection threshold (FDT1),3: Frequency detection threshold (FDT2),4: Overload detection signal(OL) ,5: Low voltage signal(LU) ,6: External fault stop signal(EXT) ,7: Frequency high limit(FHL) ,8: Frequency low limit(FLL) ,9: Zero-speed running ,10: Terminal X1(Reserved) ,11: Terminal X2(Reserved),12: PLC running step complete signal,13: PLC running cycle complete signal,14: Limit of swing frequency upper/lower limit,15: Drive ready (RDY) ,16: Drive fault ,17: Switching signal of host,18: Reserved,19: Torque limiting,20: Drive running forward/reverse,21: Timer 1 full,22: Timer 2 full,23: Setting counter full,24: Intermediate counter full</item>
+        <item>0：V/F curve is defined by user,1：2-order curve,2：1.7-order curve,3：1.2-order curve</item>
+    </string-array>
+
+    <string-array name="fault_record1_options">
+        <item>0:No fault records</item>
+        <item>1:Hardware or software over</item>
+        <item>2:Hardware or software over</item>
+        <item>3:Hardware or software over current during running in constant speed.</item>
+        <item>4:Hardware or software over voltage during acceleration.</item>
+        <item>5:Hardware or software over voltage during deceleration.</item>
+        <item>6:Hardware or software over voltage during running in constant speed.</item>
+        <item>7:Input voltage is too high</item>
+        <item>8:Input phase loss (E008)</item>
+        <item>9:Output phase failure (E009)</item>
+        <item>10:IGBT module protection</item>
+        <item>11:IGBT module’s heatsink overheat.</item>
+        <item>12:Rectifer’s heatsink overheat.</item>
+        <item>13:Running current is larger than VFD rated current for long time.</item>
+        <item>14:Running current is larger than motor rated current for long time.</item>
+        <item>15:External device fault.</item>
+        <item>16:EEPROM R/W fault (E016)</item>
+        <item>17:VFD can not get communication with host.</item>
+        <item>18:Power	board/drive board/contactor damage causes contactor abnormal.</item>
+        <item>19:Hall/drive board abnormal causes current detective circuit fault.</item>
+        <item>20:Reserved (E020)</item>
+        <item>21:Reserved</item>
+        <item>22:Reserved</item>
+        <item>23:Parameter copy error (E023)</item>
+        <item>24:Auto tunning fault in vector control.(E024)</item>
+        <item>25:Encoder signal fault in lose-loop control(E025)</item>
+        <item>26:VFD running current is detected smaller than set value of load lost(E026)</item>
+        <item>27:Brake unit failure(E027)</item>
+        <item>28:Reserved</item>
+        <item>29:Reserved</item>
+        <item>30:Reserved</item>
+        <item>31:Reserved</item>
+        <item>32:Reserved</item>
+        <item>33:VFD output is short circuit to earth(E033)</item>
+        <item>34:VFD running speed and encoder detected speed deviation exceeds</item>
+        <item>35:Reserved</item>
+        <item>36:Reserved</item>
+        <item>37:Reserved</item>
+        <item>38:Reserved</item>
+        <item>39:Reserved</item>
+        <item>40:Extension card and control board SPIcommunication fault(E040)</item>
 
     </string-array>
 
@@ -172,5 +217,22 @@
     <string name="Set_value">Set value</string>
     <string name="READ">READ</string>
     <string name="WRITE">WRITE</string>
+    <string name="CONNECT">connect</string>
+    <string name="SAVE">Save</string>
+    <string name="OPEN">Open</string>
+    <string name="A0_46">V/F curve setting</string>
+    <string name="A0_47">V/F frequency value F3</string>
+    <string name="A0_48">V/F voltage value V3</string>
+    <string name="A0_49">V/F frequency value F2</string>
+    <string name="A0_50">V/F voltage value V2</string>
+    <string name="A0_51">V/F frequency value F1</string>
+    <string name="A0_52">V/F voltage value V1</string>
+    <string name="A0_53">Cut-off point used for manual torque boost</string>
+    <string name="B0_16">Status word</string>
+    <string name="A1_Name">Motor parameters</string>
+    <string name="A2_Name">V/F parameters</string>
+    <string name="A3_Name">Terminal parameters</string>
+    <string name="A4_Name">Control parameters</string>
+    <string name="get_slaveAddress_failed">Failed to get slave address</string>
 
 </resources>

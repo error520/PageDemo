@@ -52,8 +52,8 @@ public class SetDataDialog {
         final TextView Range = new TextView(context);
         Range.setText(Hint);
         Range.setTextSize(17);
-        Range.setTextColor(Color.BLACK);
-        Range.setBackgroundResource(R.drawable.lin);
+        Range.setTextColor(Color.GRAY);
+        //Range.setBackgroundResource(R.drawable.lin);
 
         LinearLayout layout1=new LinearLayout(context);
         layout1.setOrientation(LinearLayout.HORIZONTAL);
@@ -67,8 +67,8 @@ public class SetDataDialog {
         Default = new TextView(context);
         Default.setText(defaultValue);
         Default.setTextSize(17);
-        Default.setTextColor(Color.BLACK);
-        Default.setBackgroundResource(R.drawable.lin);
+        Default.setTextColor(Color.GRAY);
+        //Default.setBackgroundResource(R.drawable.lin);
 
         LinearLayout layout2=new LinearLayout(context);
         layout2.setOrientation(LinearLayout.HORIZONTAL);
@@ -82,8 +82,8 @@ public class SetDataDialog {
         Current = new TextView(context);
         Current.setText(currentValue);
         Current.setTextSize(17);
-        Current.setTextColor(Color.BLACK);
-        Current.setBackgroundResource(R.drawable.lin);
+        Current.setTextColor(Color.GRAY);
+        //Current.setBackgroundResource(R.drawable.lin);
 
         LinearLayout layout3=new LinearLayout(context);
         layout3.setOrientation(LinearLayout.HORIZONTAL);
@@ -100,7 +100,8 @@ public class SetDataDialog {
         edit.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(7)});
         //edit.setHint(hintArray[4]);
-        edit.setMinWidth(100);
+        edit.setMinWidth(150);
+        edit.setTextColor(Color.BLACK);
         final TextView unit = new TextView(context);
         unit.setText(Unit);
         unit.setTextSize(17);
@@ -122,7 +123,7 @@ public class SetDataDialog {
 
         builder.setView(layout0);
 
-        builder.setPositiveButton("set", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(context.getString(R.string.OK), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SetData = edit.getText().toString();
@@ -131,7 +132,7 @@ public class SetDataDialog {
             }
         });
 
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(context.getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 onClickBottomListener.onNegativeClick();
             }
@@ -140,10 +141,8 @@ public class SetDataDialog {
         dialog = builder.show();
         btnPos = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        btnPos.setText("Set");
-        btnNeg.setText("Cancel");
-        btnPos.setTextColor(Color.RED);
-        btnNeg.setTextColor(Color.RED);
+        btnPos.setTextColor(context.getColor(R.color.colorAccent));
+        btnNeg.setTextColor(context.getColor(R.color.colorAccent));
         //设置不可消失
         try {
             field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");

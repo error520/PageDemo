@@ -3,10 +3,8 @@ package com.kinco.MotorApp.ui.firstpage;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -16,14 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.kinco.MotorApp.MainActivity;
 import com.kinco.MotorApp.sys.MyFragment;
 import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.SetDataDialog;
@@ -31,19 +28,19 @@ import com.kinco.MotorApp.edittext.ItemBean;
 import com.kinco.MotorApp.edittext.ListViewAdapter;
 import com.kinco.MotorApp.edittext.Text;
 import com.kinco.MotorApp.edittext.TextAdapter;
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.XmlUtil;
+import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.BluetoothService.BLEService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class FirstpageFragment extends MyFragment implements View.OnClickListener {
-    //String[] Name =  { "Control mode", "Main reference  frequency selector"};
-
-    String[][] temp = {{"0：Vector control without PG","1: Vector control with PG","2: V/F control"},
-            {"0:Digital setting Keyboard UP/DN or terminal UP/DN ","1:AI1","2:AI2","3:AI3","4:Set via DI terminal(PULSE)","5:Reserved"}};
+    String chooseAddressList[] = {"0001","0002","0004","0005","0021","0022"};
+    private HashMap<Integer,Integer> map = new HashMap<>();
     private String TAG = "FirstpageFragment";
     Text text;
     TextAdapter textAdapter;
@@ -60,8 +57,9 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
     private Handler mHandler = new Handler();
     private SetDataDialog setDatadialog;
     private String editSetData="";
-    private boolean initialized=false;
+    private boolean initializing=false;
     private String addressState="0000";
+    private int position=0;
 
     @Nullable
     @Override
@@ -72,21 +70,27 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String[] Name = {getString(R.string.A0_01),getString(R.string.A0_02)};
+        int nameItem[] = {1,2,4,5,33,34};
+        String Name[] = XmlUtil.getName(getContext(),nameItem);
+        for(int i=0;i<nameItem.length;i++)
+            map.put(nameItem[i],i);
+        //选择型
         show(Name);
         //输入型
         mListView = (ListView) getActivity().findViewById(R.id.list_view0);
         mData = new ArrayList<ItemBean>();
-        mData.add(new ItemBean(getString(R.string.A0_03),"HZ","0.0~300.00",0.01f,"0.0~300.00","0003"));
+        mData.add(new ItemBean(getString(R.string.A0_03),"HZ","0.0~300.00",0.01f,"0.0~300.00","0003",1,0));
         mAdapter = new ListViewAdapter(this.getActivity(), mData);
         mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
-            public void clickListener(String address, String name,String Unit,String Hint, float min, String defalutValue,String currentValue) {
+            public void clickListener(String address, String name,String Unit,String Hint, float min, String defalutValue,String currentValue
+            ,int group, int position) {
                 showSetDataDialog(address,defalutValue,currentValue);
             }
         });
         mListView.setAdapter(mAdapter);
         util.setListViewHeightBasedOnChildren(mListView);
+
         Button button0 = (Button) getActivity().findViewById(R.id.FirstpageMore);
         button0.setOnClickListener(this);
         Button button3 = (Button) getActivity().findViewById(R.id.control_110B);
@@ -122,16 +126,13 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
      */
     private void show(String Name[]) {
         List<Text> texts = new ArrayList<Text>();
-        String options[][]={getResources().getStringArray(R.array.A0_options)[0].split(","),
-                getResources().getStringArray(R.array.A0_options)[1].split(",")};
-        for (int i = 0; i < 2; i++) {//自定义的Text类存数据
-            final int j = i;
-            text = new Text();
-            text.setTitle(Name[i]);//标题数据
+//        String options[][]={getResources().getStringArray(R.array.A0_options)[0].split(","),
+//                getResources().getStringArray(R.array.A0_options)[1].split(",")};
+        int num[] = {0,1,2,3,13,14};
+        String options[][] = XmlUtil.getOptions(getResources(),num);
+        for (int i = 0; i < 6; i++) {//自定义的Text类存数据
+            text = new Text(Name[i],options[i],chooseAddressList[i],0);
             text.setCurrent(""+i);
-            text.setId(0);//Spinner的默认选择项
-            text.setContent(options[i]);
-            text.setAddress("000" + (i + 1));
             texts.add(text);
             textAdapter = new TextAdapter(this.getActivity(), texts, R.layout.main_item);//向自定义的Adapter中传值
             textAdapter.setAddressNoListener(new TextAdapter.AddressNoListener() {
@@ -146,8 +147,8 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
             });
             listView = (ListView) getActivity().findViewById(R.id.mylist0);
             listView.setAdapter(textAdapter);//传值到ListView中
-            //util.setListViewHeightBasedOnChildren(listView);
-        }
+
+        }util.setListViewHeightBasedOnChildren(listView);
     }
 
     @Override
@@ -222,6 +223,7 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBluetoothLeService = ((BLEService.localBinder) service)
                     .getService();
+
         }
 
         @Override
@@ -230,13 +232,26 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
         }
     };
 
+    private void initData(){
+        initializing = true;
+        loadingDialog = showLoadingDialog(getContext());
+        mBluetoothLeService.readData("0001","0001");
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         if(Showing) {
             initService();
-            //util.centerToast(getActivity(),"1的广播被开启",0);
         }
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mBluetoothLeService.mNewConnection)
+                    initData();
+            }
+        },1000);
+
 //        if(!initialized){
 //            mHandler.postDelayed(new Runnable() {
 //                @Override
@@ -294,27 +309,8 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
             //有数据来
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
                 byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
-                if(!initialized) {
-                    if(addressState=="0001"){
-                        textAdapter.getItem(0).setId(message[4]);
-                        textAdapter.notifyDataSetChanged();
-                        addressState="0002";
-                        delayRead(addressState);
-                    }else if(addressState=="0002"){
-                        textAdapter.getItem(1).setId(message[4]);
-                        textAdapter.notifyDataSetChanged();
-                        addressState="0003";
-                        delayRead(addressState);
-                    }else if(addressState=="0003"){
-                        String defaultValue = util.parseByteData(message,3,0.01f,false);
-                        mData.get(0).setCurrentValue(defaultValue);     //外面显示的值
-                        mData.get(0).setDefaultValue(defaultValue);
-                        mData.get(0).setCurrentValue(defaultValue);
-                        mAdapter.notifyDataSetChanged();
-                        addressState="9999";
-                        initialized = true;
-                        loadingDialog.gone();
-                    }
+                if(initializing) {
+                    reloadAll(message, position);
                 }else {
                     util.centerToast(getContext(), "succeed!", 0);
                     if(addressState=="0003")
@@ -342,16 +338,42 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
 
     LoadingDialog showLoadingDialog(Context context){
         final LoadingDialog loadingDialog1 = new LoadingDialog(context,"",
-                "loading...",true);
+                getString(R.string.loading),true);
         loadingDialog1.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
             @Override
             public void onNegativeClick() {
-                initialized = true;
+                initializing = false;
                 loadingDialog1.gone();
             }
 
         });
         return loadingDialog1;
+    }
+
+    private void reloadAll(byte[] message, int position){
+        if(position==6){
+            String defaultValue   = util.parseByteData(message,3,0.01f,false);
+            mData.get(0).setCurrentValue(defaultValue);     //外面显示的值
+            mData.get(0).setDefaultValue(defaultValue);
+            mData.get(0).setCurrentValue(defaultValue);
+            mAdapter.notifyDataSetChanged();
+            mBluetoothLeService.mNewConnection = false;
+            initializing = false;
+            loadingDialog.gone();
+            return;
+        }
+        reloadItem(message, position);
+        this.position++;
+        if(this.position<6)
+            delayRead(chooseAddressList[this.position]);
+        else
+            delayRead("0003");
+    }
+
+    private void reloadItem(byte[] message, int positon){
+        //message[4]最多不会超过8
+        textAdapter.getItem(positon).setId(message[4]);
+        textAdapter.notifyDataSetChanged();
     }
 
     private void delayRead(final String address){

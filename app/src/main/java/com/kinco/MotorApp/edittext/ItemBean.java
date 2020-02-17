@@ -12,12 +12,15 @@ public class ItemBean {
     private float Min;  //最小单位
     private String defaultValue="0";
     private String currentValue="0";
+    public int group;
+    public int positon;
 
 
     public ItemBean() {
         super();
     }
-    public ItemBean(String Name,String Unit, String Range, float Min,String currentValue ,String Address) {
+    public ItemBean(String Name,String Unit, String Range, float Min,String currentValue ,String Address,
+                    int group,int positon) {
         super();
 
         this.Name = Name;
@@ -26,6 +29,9 @@ public class ItemBean {
         this.Range=Range;
         this.Min=Min;
         this.Address=Address;
+
+        this.group = group;
+        this.positon = positon;
 
     }
     public String getAddress() {

@@ -34,7 +34,6 @@ public class TextAdapter extends BaseAdapter  {
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
     private AddressNoListener addressNoListener;  //定义
     public interface AddressNoListener{
-
         void addressNo(int position);  //确定传出的值
         void titleNo(String title, String value);
     }

@@ -9,6 +9,9 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.kinco.MotorApp.R;
+
 import java.lang.reflect.Field;
 
 
@@ -38,7 +41,7 @@ public class PasswordDialog{
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
         edit.setHint("4 digits password");
         builder.setView(edit);
-        builder.setPositiveButton("connect", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(context.getString(R.string.CONNECT), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 password=edit.getText().toString();
@@ -46,7 +49,7 @@ public class PasswordDialog{
             }
         });
 
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(context.getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 onClickBottomListener.onNegativeClick();
             }
@@ -55,10 +58,8 @@ public class PasswordDialog{
         dialog = builder.show();
         btnPos = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btnNeg = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        btnPos.setText("Connect");
-        btnNeg.setText("Cancel");
-        btnPos.setTextColor(Color.RED);
-        btnNeg.setTextColor(Color.RED);
+        btnPos.setTextColor(context.getColor(R.color.colorAccent));
+        btnNeg.setTextColor(context.getColor(R.color.colorAccent));
         //设置不可消失
         try {
             field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");

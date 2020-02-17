@@ -1,4 +1,4 @@
-package com.kinco.MotorApp;
+package com.kinco.MotorApp.utils;
 
 
 import android.content.Context;
@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,15 +38,36 @@ public class util {
         if(sign) {      //有符号数
             if(min==1)
                 return String.valueOf((short) byte2ToUnsignedShort(message,offset));
-            else
-                return String.valueOf((short) byte2ToUnsignedShort(message,offset) * min);
+            else {
+                double num = (short) byte2ToUnsignedShort(message, offset) * min ;
+                DecimalFormat df=new DecimalFormat(String.valueOf(min));
+                String result = df.format(num);
+                return result;
+                //return String.valueOf((short) byte2ToUnsignedShort(message, offset) * min);
+            }
         }
         else {      //无符号
             if (min==1)
                 return String.valueOf(byte2ToUnsignedShort(message,offset));
-            else
-                return String.valueOf(byte2ToUnsignedShort(message,offset) * min);
+            else {
+                double num =  byte2ToUnsignedShort(message, offset) * min ;
+                DecimalFormat df=new DecimalFormat(String.valueOf(min));
+                String result = df.format(num);
+                return result;
+                //return String.valueOf(byte2ToUnsignedShort(message, offset) * min);
+            }
         }
+    }
+
+    /*
+    用于特殊的参数解析
+     */
+    public static String parseByteData2(byte[] message, int offset, float min, String Hint){
+        String max = Hint.substring(Hint.indexOf("~")+1);
+        double dmax = Double.valueOf(max);
+        double current = Double.valueOf(parseByteData(message,offset,min,false));
+        String result = String.valueOf(current-dmax);
+        return result;
     }
 
     /*
@@ -190,7 +212,6 @@ public class util {
             // 统计所有子项的总高度
             totalHeight += listItem.getMeasuredHeight();
         }
-
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         // listView.getDividerHeight()获取子项间分隔符占用的高度

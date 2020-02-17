@@ -69,6 +69,15 @@ public class TableAdapter extends BaseAdapter {
     viewHolder.parameterName.setTextSize(13);
     viewHolder.parameterDescribe.setText(Parameter.getDescribe()+Parameter.getUnit());
     viewHolder.parameterDescribe.setTextSize(13);
+
+    if(Parameter.getDescribe().equals("true")) {
+      viewHolder.parameterName.setTextColor(Color.GREEN);
+      viewHolder.parameterDescribe.setTextColor(Color.GREEN);
+    }
+    if(Parameter.getDescribe().equals("false")) {
+      viewHolder.parameterName.setTextColor(Color.RED);
+      viewHolder.parameterDescribe.setTextColor(Color.RED);
+    }
 //    convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
     return convertView;
   }

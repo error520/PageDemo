@@ -54,8 +54,8 @@
     <string name="B0_01">输出电压</string>
     <string name="B0_02">输出电流</string>
     <string name="B0_03">电机功率</string>
-    <string name="B0_04">电机实测功率</string>
-    <string name="B0_05">变频器运行状态</string>
+    <string name="B0_04">电机实测频率</string>
+    <string name="B0_05">设备运行状态</string>
     <string name="B0_06">开关量输入状态</string>
     <string name="B0_07">开关量输出状态</string>
     <string name="B0_08">AI1输入电压</string>
@@ -128,6 +128,52 @@
         <item>0：无功能,1：正转,2：反转,3：点动正转,4：点动反转,5：三线式运转控制,6：外部复位(RESET)输入,7：外部故障输入,8：外部中断输入,9：变频器运行禁止,10：端子停机,11：端子直流制动停机,12：端子自由停机,13：频率递增指令(UP),14：频率递减指令(DN),15：命令切换至键盘控制,16：命令切换至端子控制,17：命令切换至通信控制,18：主频率源切换至AI1,19：主频率源切换至AI2,20：主频率源切换至AI3,21：主频率源切换至DI,22：辅频率源无效,23：辅频率源切换至AI1(保留),24：辅频率源切换至AI2(保留),25：辅频率源切换至AI3(保留),26：辅频率源切换至DI(保留),27：多段频率选择1,28：多段频率选择2,29：多段频率选择3,30：多段频率选择4,31：加减速时间选择1,32：加减速时间选择2,33：多段闭环给定选择1,34：多段闭环给定选择2,35：多段闭环给定选择3,36：多段闭环给定选择4,37：正转禁止,38：反转禁止,39：加减速禁止,40：过程闭环禁止,41：速度控制和转矩控制切换端子,42：主频率源切换至数字给定,43：PLC暂停,44：PLC禁止,45：PLC停机记忆清除,46：摆频投入,47：摆频状态复位,51：定时器1启动,52：定时器2启动,53：计数器启动,54：计数器清零</item>
         <item>0：无功能,1：输出频率(0~最大频率),2：设定频率(0~最大频率),3：设定频率(加减速后)(0~最大频率),4：电机转速(0~最大转速),5：输出电流(0~2*Iei),6：输出电流(0~2*Iem),7：输出转矩(0~3*Tem),8：输出功率(0~2*Pe),9：输出电压(0~1.2*Ve),10：母线电压(0~800V),11：AI1,12：AI2,13：键盘电位器,14：DI,15：上位机百分比(0~4095)</item>
         <item>0：变频器运行中信号(RUN),1：频率到达信号(FAR),2：频率水平检测信号(FDT1),3：频率水平检测信号(FDT2),4：过载检出信号(OL),5：欠压封锁停止中(LU),6：外部故障停机(EXT),7：频率上限限制(FHL),8：频率下限限制(FLL),9：变频器零速运行中,10：X1端子(保留),11：X2端子(保留),12：简易PLC阶段运转完成指示,13：PLC循环完成指示,14：摆频上下限限制,15：变频器运行准备完成(RDY),16：变频器故障,17：上位机开关信号,18：保留,19：转矩限制中,20：变频器正反转指示端子,21：定时器1到达,22：定时器2到达,23：设定计数器到达,24：中间计数器到达</item>
+        <item>0：用户定义 V/F 曲线,1：2 次幂曲线,2：1.7 次幂曲线,3：1.2 次幂曲线</item>
+    </string-array>
+
+    <string-array name="fault_record1_options">
+        <item>0：无异常记录</item>
+        <item>1：设备加速运行过电流(E001)</item>
+        <item>2：设备减速运行过电流(E002)</item>
+        <item>3：设备恒速运行过电流(E003)</item>
+        <item>4：设备加速运行过电压(E004)</item>
+        <item>5：设备减速运行过电压(E005)</item>
+        <item>6：设备恒速运行过电压(E006)</item>
+        <item>7：控制电压过电压(E007)</item>
+        <item>8：输入侧缺相(E008)</item>
+        <item>9：输出侧缺相(E009)</item>
+        <item>10：功率模块保护(E010)</item>
+        <item>11：散热器1过热(E011)</item>
+        <item>12：散热器2过热(E012)</item>
+        <item>13：设备过载(E013)</item>
+        <item>14：电机过载(E014)</item>
+        <item>15：外部故障(E015)</item>
+        <item>16：EEPROM读写错误(E016)</item>
+        <item>17：串行口通信异常(E017)</item>
+        <item>18：接触器异常(E018)</item>
+        <item>19：电流检测电路异常(E019)霍尔或放大电路</item>
+        <item>20：系统干扰（E020）</item>
+        <item>21:Reserved</item>
+        <item>22:Reserved</item>
+        <item>23：键盘参数拷贝出错(E023)</item>
+        <item>24：自整定不良(E024)</item>
+        <item>25：PG故障(E025)</item>
+        <item>26：保留</item>
+        <item>27：制动单元故障(E027)</item>
+        <item>28:Reserved</item>
+        <item>29:Reserved</item>
+        <item>30:Reserved</item>
+        <item>31:Reserved</item>
+        <item>32:Reserved</item>
+        <item>33:VFD output is short circuit to earth(E033)</item>
+        <item>34:VFD running speed and encoder detected speed deviation exceeds</item>
+        <item>35:Reserved</item>
+        <item>36:Reserved</item>
+        <item>37:Reserved</item>
+        <item>38:Reserved</item>
+        <item>39:Reserved</item>
+        <item>40:Extension card and control board SPIcommunication fault(E040)</item>
+
     </string-array>
 
     <string name="C_110B">方式0停机</string>
@@ -162,6 +208,25 @@
         <item>报警</item>
         <item>错误</item>
         <item>正常</item>
+    </string-array>
+
+    <string-array name="B005_bits_Name">
+        <item>bit0：运行/停机</item>
+        <item>bit1：反转/正转</item>
+        <item>bit2：零速运行</item>
+        <item>bit3：加速中</item>
+        <item>bit4：减速中</item>
+        <item>bit5：恒速运行</item>
+        <item>bit6：预励磁中</item>
+        <item>bit7：调谐中</item>
+        <item>bit8：过流限制中</item>
+        <item>bit9：DC过压限制中</item>
+        <item>bit10：转矩限幅中</item>
+        <item>bit11：速度限幅中</item>
+        <item>bit12：设备故障</item>
+        <item>bit13：速度控制</item>
+        <item>bit14：转矩控制</item>
+        <item>bit15：位置控制(保留)</item>
     </string-array>
 
     <string-array name="setDataDialog">
@@ -201,6 +266,23 @@
     <string name="Set_value">写入值</string>
     <string name="READ">读取</string>
     <string name="WRITE">写入</string>
+    <string name="CONNECT">连接</string>
+    <string name="SAVE">保存</string>
+    <string name="OPEN">打开</string>
+    <string name="A0_46">V/F 曲线设定</string>
+    <string name="A0_47">V/F 频率 3</string>
+    <string name="A0_48">V/F 电压 3</string>
+    <string name="A0_49">V/F 频率 2</string>
+    <string name="A0_50">V/F 电压 2</string>
+    <string name="A0_51">V/F 频率 1</string>
+    <string name="A0_52">V/F 电压 1</string>
+    <string name="A0_53">转矩提升截止点</string>
+    <string name="B0_16">状态字</string>
+    <string name="A1_Name">电机参数</string>
+    <string name="A2_Name">V/F参数</string>
+    <string name="A3_Name">端子参数</string>
+    <string name="A4_Name">控制参数</string>
+    <string name="get_slaveAddress_failed">获取从站地址失败</string>
 
 
 </resources>

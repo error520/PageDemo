@@ -18,12 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
-import com.kinco.MotorApp.ui.secondpage.SecondpageFragment;
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.R;
 
 import java.util.ArrayList;

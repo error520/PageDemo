@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 //import androidx.localbroadcastmanager.content;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.bluetooth.BluetoothGattService;
@@ -20,7 +21,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class BLEService extends Service {
     private boolean mScanning;
     public boolean mConnected=false;
     public boolean mFilter = true;
+    public boolean mNewConnection = false;
     public static String slaveAddress="null";
     public static byte slaveCode = 0x00;
     private final  IBinder mBinder = new localBinder();
@@ -61,6 +63,9 @@ public class BLEService extends Service {
     private UUID notify_UUID_chara;
     private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGattCharacteristic writeCharacteristic;
+
+    //记录蓝牙通信日志
+    public List<String> BLELog = new ArrayList<>();
 
 
 
@@ -242,6 +247,7 @@ public class BLEService extends Service {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //真正连接成功
                 mConnected = true;
+                mNewConnection = true;
                 broadcastUpdate(ACTION_GATT_CONNECTED);
                 //得到所有Service
                 List<BluetoothGattService> supportedGattServices = gatt.getServices();
@@ -284,11 +290,21 @@ public class BLEService extends Service {
                     }index++;
                 }
             }
-            mBluetoothGatt.setCharacteristicNotification(notifyCList.get(notifyCList.size()-1),true);
-            //writeCharacteristic = writeCList.get(2);
+            boolean result = mBluetoothGatt.setCharacteristicNotification(notifyCList.get(2),true);
+            if(result) {
+                List<BluetoothGattDescriptor> descriptorList = notifyCList.get(2).getDescriptors();
+                if(descriptorList != null && descriptorList.size() > 0) {
+                    for(BluetoothGattDescriptor descriptor : descriptorList) {
+                        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                        mBluetoothGatt.writeDescriptor(descriptor);
+                    }
+                }
+            }
+
+            writeCharacteristic = writeCList.get(3);
             Log.d(TAG,"write:"+writeCharacteristic.getUuid());
 
-            Log.d(TAG,"notify:"+notifyCList.get(5).getUuid());
+            Log.d(TAG,"notify result:"+notifyCList.get(2).getUuid()+","+result);
 //            mBluetoothGatt.setCharacteristicNotification(mBluetoothGatt
 //                    .getService(notify_UUID_service).getCharacteristic(notify_UUID_chara),true);
 
@@ -301,6 +317,7 @@ public class BLEService extends Service {
             for(int i=0;i<notifyCList.size();i++) {
                 Log.d(TAG, notifyCList.get(i).getUuid() + ":");
             }
+
             //mBluetoothGatt.setCharacteristicNotification(UUID.fromString("00002b13-0000-1000-8000-00805f9b34fb"),true);
 
 
@@ -323,7 +340,6 @@ public class BLEService extends Service {
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
             byte bb2[] = characteristic.getValue();
-            Log.d(TAG, "Slave:"+util.toHexString(bb2,true));
             if(bb2.length>5) {
                 broadcastUpdate(bb2,0);//收到的消息进行广播
             }else if((bb2.length==5)){
@@ -333,6 +349,9 @@ public class BLEService extends Service {
                 Log.e(TAG,"长度错误!当前长度为"+bb2.length+"");
                 broadcastUpdate(bb2.length+"",2);
             }
+            String logText = "Slave:"+util.toHexString(bb2,true);
+            BLELog.add(logText);
+            Log.d(TAG, logText);
 
         }
 
@@ -418,6 +437,9 @@ public class BLEService extends Service {
         if(mConnected) {
             writeCharacteristic.setValue(send);
             mBluetoothGatt.writeCharacteristic(writeCharacteristic);
+            String logText = "Master:"+util.toHexString(send,true);
+            BLELog.add(logText);
+            Log.d(TAG,logText);
         } else
             broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
@@ -443,8 +465,9 @@ public class BLEService extends Service {
         try {
             writeCharacteristic.setValue(send);
             boolean result = mBluetoothGatt.writeCharacteristic(writeCharacteristic);
-            Log.d(TAG,"Master:"+util.toHexString(send,true));
-            Log.d(TAG,result+"!");
+            String logText = "Master:"+util.toHexString(send,true);
+            BLELog.add(logText);
+            Log.d(TAG,logText);
         } catch (Exception e) {
             Log.d("data", e.toString());
         }

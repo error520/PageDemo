@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,11 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
-import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
-import com.kinco.MotorApp.util;
+import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.edittext.Parameter;
 import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.edittext.TableAdapter;
