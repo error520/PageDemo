@@ -21,9 +21,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.alertdialog.ErrorDialog;
 import com.kinco.MotorApp.utils.util;
-import com.kinco.MotorApp.edittext.Parameter;
+import com.kinco.MotorApp.ParameterItem.Parameter;
 import com.kinco.MotorApp.R;
-import com.kinco.MotorApp.edittext.TableAdapter;
+import com.kinco.MotorApp.ParameterItem.TableAdapter;
 import com.kinco.MotorApp.sys.MyFragment;
 
 import java.util.ArrayList;
@@ -149,9 +149,9 @@ public class SecondpageFragment extends MyFragment {
                     public void run() {
                         try {
                             int info = util.byte2ToUnsignedShort(message,3);
-                            //String str = message.substring(100);   //错误测试
                             if (addressState.equals("0100")) {
-                                list0.get(0).setDescribe(((float) ((short) info) / 100) +"");
+                                String describe = util.parseByteData2(message,3,0.01f,"~300");
+                                list0.get(0).setDescribe(describe);
                                 addressState = "0101";
                                 adapter.notifyDataSetChanged();
                                 delayRead(addressState);
@@ -236,7 +236,7 @@ public class SecondpageFragment extends MyFragment {
             public void run() {
                 mBluetoothLeService.readData(address, "0001");
             }
-        },1000);
+        },BLEService.reloadGap );
     }
 
     /**

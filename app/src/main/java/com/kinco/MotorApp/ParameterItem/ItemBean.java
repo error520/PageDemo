@@ -1,4 +1,4 @@
-package com.kinco.MotorApp.edittext;
+package com.kinco.MotorApp.ParameterItem;
 
 /**
  * Modified by Nicholas on 2019/12/21 0017.

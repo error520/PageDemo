@@ -20,14 +20,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.kinco.MotorApp.MainActivity;
 import com.kinco.MotorApp.sys.MyFragment;
 import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.SetDataDialog;
-import com.kinco.MotorApp.edittext.ItemBean;
-import com.kinco.MotorApp.edittext.ListViewAdapter;
-import com.kinco.MotorApp.edittext.Text;
-import com.kinco.MotorApp.edittext.TextAdapter;
+import com.kinco.MotorApp.ParameterItem.ItemBean;
+import com.kinco.MotorApp.ParameterItem.ListViewAdapter;
+import com.kinco.MotorApp.ParameterItem.Text;
+import com.kinco.MotorApp.ParameterItem.TextAdapter;
 import com.kinco.MotorApp.utils.XmlUtil;
 import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.R;
@@ -57,7 +56,7 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
     private Handler mHandler = new Handler();
     private SetDataDialog setDatadialog;
     private String editSetData="";
-    private boolean initializing=false;
+    public static boolean initializing=false;
     private String addressState="0000";
     private int position=0;
 
@@ -233,8 +232,8 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
     };
 
     private void initData(){
-        initializing = true;
         loadingDialog = showLoadingDialog(getContext());
+        position=0;
         mBluetoothLeService.readData("0001","0001");
     }
 
@@ -243,34 +242,17 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
         super.onStart();
         if(Showing) {
             initService();
-        }
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(mBluetoothLeService.mNewConnection)
-                    initData();
+            if(initializing){
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initData();
+                    }
+                },500);
             }
-        },1000);
 
-//        if(!initialized){
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mBluetoothLeService.readData("0001","0001");
-//                    addressState="0001";
-//                    loadingDialog = new LoadingDialog(getActivity(),"",
-//                            "loading...",true);
-//                    loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
-//                        @Override
-//                        public void onNegativeClick() {
-//                            initialized = true;
-//                            loadingDialog.gone();
-//                        }
-//                    });
-//                }
-//            },1000);
-//
-//        }
+        }
+
     }
 
     @Override
@@ -352,12 +334,10 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
 
     private void reloadAll(byte[] message, int position){
         if(position==6){
-            String defaultValue   = util.parseByteData(message,3,0.01f,false);
+            String defaultValue = util.parseByteData(message,3,0.01f,false);
             mData.get(0).setCurrentValue(defaultValue);     //外面显示的值
             mData.get(0).setDefaultValue(defaultValue);
-            mData.get(0).setCurrentValue(defaultValue);
             mAdapter.notifyDataSetChanged();
-            mBluetoothLeService.mNewConnection = false;
             initializing = false;
             loadingDialog.gone();
             return;
@@ -382,7 +362,7 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
             public void run() {
                 mBluetoothLeService.readData(address, "0001");
             }
-        },1000);
+        },BLEService.reloadGap);
     }
 
 

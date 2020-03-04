@@ -13,11 +13,11 @@
     <string name="A0_05">运行方向选择</string>
     <string name="A0_06">加速时间</string>
     <string name="A0_07">减速时间</string>
-    <string name="A0_08">X1功能选择</string>
-    <string name="A0_09">X2功能选择</string>
+    <string name="A0_08">输入端子X1功能选择</string>
+    <string name="A0_09">输入端子X2功能选择</string>
     <string name="A0_10">端子控制模式选择</string>
     <string name="A0_11">Y1功能选择</string>
-    <string name="A0_12">继电器功能选择</string>
+    <string name="A0_12">继电器R1功能选择</string>
     <string name="A0_13">Y1高速脉冲输出</string>
     <string name="A0_14">AO1功能选择</string>
     <string name="A0_15">PG卡类型选择</string>
@@ -131,6 +131,17 @@
         <item>0：用户定义 V/F 曲线,1：2 次幂曲线,2：1.7 次幂曲线,3：1.2 次幂曲线</item>
     </string-array>
 
+    <string-array name="CWord_options">
+        <item>111B: 运行命令,110B: 方式0停车,101B: 方式1停车,100B: 外部故障停车,011B: 方式2停车</item>
+        <item>0: 正转,1: 反转</item>
+        <item>0: 点动正转无效,1: 点动正转</item>
+        <item>0: 点动反转无效,1: 点动反转</item>
+        <item>0: 禁止加减速,1: 允许加减速</item>
+        <item>0: 上位机控制字1无效,1: 上位机控制字1有效</item>
+        <item>0: 主给定无效,1: 主给定有效</item>
+        <item>0: 故障复位无效,1: 故障复位有效</item>
+    </string-array>
+
     <string-array name="fault_record1_options">
         <item>0：无异常记录</item>
         <item>1：设备加速运行过电流(E001)</item>
@@ -187,7 +198,7 @@
         <item>@string/B0_00</item>
         <item>@string/B0_01</item>
         <item>@string/B0_03</item>
-        <item>变频器</item>
+        <item>变频器运行/停机</item>
         <item>变频器运行方向</item>
         <item>主设定</item>
         <item>串口控制</item>
@@ -252,7 +263,7 @@
 
     <string name="Device">设备连接</string>
     <string name="Language">Language</string>
-    <string name="Contract">联系厂商</string>
+    <string name="Contact">联系厂商</string>
     <string name="reload_completed">重载完毕</string>
     <string name="Name">参数</string>
     <string name="Decription">描述</string>
@@ -283,6 +294,24 @@
     <string name="A3_Name">端子参数</string>
     <string name="A4_Name">控制参数</string>
     <string name="get_slaveAddress_failed">获取从站地址失败</string>
+    <string name="communiation_log">通信日志</string>
+    <string name="Clear">清除</string>
+    <string name="reload_gap">刷新报文间隔(ms)</string>
+    <string name="debug">调试</string>
+    <string name="ControlWord">Control command word 1</string>
+    <string name="password_title">请输入密码</string>
+    <string name="password_hint">4位数字密码</string>
+    <string name="from">"来自: "</string>
+    <string name="no_file">当前没有保存文件</string>
+    <string name="device">设备</string>
+    <string name="file_name">文件名</string>
+    <string name="save_successfully">保存成功</string>
+    <string name="filename_empty">文件名不能为空!</string>
+    <string name="dial">拨打</string>
+    <string name="copy">复制</string>
+    <string name="Tel">电话:</string>
+    <string name="email">邮箱:</string>
+    <string name="copy_completed">已复制</string>
 
 
 </resources>

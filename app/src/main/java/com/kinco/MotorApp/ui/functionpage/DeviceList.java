@@ -1,4 +1,4 @@
-package com.kinco.MotorApp.ui;
+package com.kinco.MotorApp.ui.functionpage;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
@@ -182,8 +182,6 @@ public class DeviceList extends AppCompatActivity{
             mBluetoothLeService.stopLeScan();
             String info=((TextView) view).getText().toString();
             String address=info.substring(info.length()-17);
-//            Intent intent =new Intent();
-//            intent.putExtra(EXTRA_DEVICE_ADDRESS,address);
             slaveAddress = info;
             if(!slaveAddress.equals("null")) {
                 connected_list.clear();
@@ -206,7 +204,7 @@ public class DeviceList extends AppCompatActivity{
 
     //获取位置权限
     public void getBlePermissionFromSys() {
-        Log.d(TAG, Build.VERSION.SDK_INT+"");
+        //Log.d(TAG, Build.VERSION.SDK_INT+"");
         if (Build.VERSION.SDK_INT >= 23) {
             int REQUEST_CODE_CONTACT = 102;
             String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -276,7 +274,7 @@ public class DeviceList extends AppCompatActivity{
                             e.printStackTrace();
                             Log.d(TAG,e.toString());
                         }
-                        debug();
+                        //debug();
 
                     }
                 });
@@ -297,16 +295,19 @@ public class DeviceList extends AppCompatActivity{
                 message[0]=intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA)[3];
                 message[1]=intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA)[4];
                 String password=util.toHexString(message,false);
-                if(editPassword.equals(password)) {
-                    if (!(dialog == null)) {
+                if(dialog!=null){
+                    if(editPassword.equals(password)) {
                         util.centerToast(DeviceList.this, "Correct!", 0);
                         dialog.gone();
                         Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
                         startActivity(activityIntent);
                         finish();
-                    }
-                }else
-                      util.centerToast(DeviceList.this, "Wrong!", 0);
+                        dialog=null;
+                    }else
+                        util.centerToast(DeviceList.this, "Wrong!", 0);
+                }
+
+
             }
         }
     }
@@ -349,7 +350,7 @@ public class DeviceList extends AppCompatActivity{
     }
 
     private void debug(){
-        mBluetoothLeService.slaveCode=0x05;
+        //mBluetoothLeService.slaveCode=0x05;
         Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
         startActivity(activityIntent);
         finish();

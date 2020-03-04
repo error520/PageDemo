@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,41 +20,42 @@ import android.widget.ListView;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.LanguageUtils.LanguageUtil;
+import com.kinco.MotorApp.LanguageUtils.PrefUtils;
 import com.kinco.MotorApp.MainActivity;
-import com.kinco.MotorApp.edittext.Parameter;
+import com.kinco.MotorApp.ParameterItem.Parameter;
 import com.kinco.MotorApp.R;
-import com.kinco.MotorApp.edittext.TableAdapter;
+import com.kinco.MotorApp.ParameterItem.TableAdapter;
 import com.kinco.MotorApp.utils.util;
 
 
 public class SecondMoreActivity extends Activity implements View.OnClickListener {
     public int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色
-//    String[] Name={"Output frequency","Output voltage","Output current","Motor power","Motor actual frequency",
-//    "Inverter running status","Input terminals status","Output terminals status","AI1 input voltage","Temperature of heatsink 1",
-//    "Fault record 1","Bus voltage of the latest failure","Actual current of the latest failure","Operation frequency of the latest failure",
-//    "Custom-made version number","Software date"};
-//    String[] Unit={"Hz","V","A","%","Hz","","","V","℃","","V","A","Hz","","","V","V","V","%","%","%","%"};
-    //加入了两个状态字
-    boolean[] sign={true, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
-    double[] min={0.01, 1, 0.1, 0.1, 0.01, 1, 1, 1, 0.01, 0.1, 1, 1, 0.1, 0.01, 1, 1, 1, 1, 0.01, 0.01, 0.1, 0.1, 0.01, 0.01};
-    int[] specialGroup={18,19,22,23};
-    String[] specialHint={"~10.00","~10.00","~100.00","~100.00"};
+    //去除了不要的
+    boolean[] sign={true, false, false, false, true,  false, false,  false, false, false, false, false, false, false,  false, false, false, false, false, false, false};
+    double[] min={0.01, 1, 0.1, 0.1, 0.01, 1, 1,  0.1, 1, 1, 0.1, 0.01, 1, 1,  1, 0.01, 0.01, 0.1, 0.1, 0.01, 0.01};
+    int[] specialGroup={0,4,15,16,19,20};
+    String[] specialHint={"~300.00","~300.00","~10.00","~10.00","~100.00","~100.00"};
+    private HashMap<String,Parameter> map = new HashMap<>();
     String[] frOptions;
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(this);
     private BroadcastReceiver receiver=new LocalReceiver();
     private String addressState="0000";
     TableAdapter adapter;
+    ListView tableListView;
     List<Parameter> list = new ArrayList<Parameter>();
     TableAdapter adapter2;
     List<Parameter> list2 = new ArrayList<>();
     private Handler mHandler=new Handler();
-    private int mAddress=0;//代表列表中的名字
+    private int mPosition=0;//代表列表中的位置
     private boolean reloading = false;
     private String TAG = "SecondMore";
     @Override
@@ -76,9 +78,12 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
         String []Name = getResources().getStringArray(R.array.B0_All);
         String []Unit = getResources().getStringArray(R.array.B0_Unit);
         for(int i=0;i<Name.length;i++){
-            list.add(new Parameter(Name[i],"(null)",Unit[i],sign[i],min[i]));
+            Parameter parameter = new Parameter(Name[i],"(null)",Unit[i],sign[i],min[i]);
+            list.add(parameter);
+            //存入地址
+            //initMap(i,parameter);
         }
-        ListView tableListView = (ListView) findViewById(R.id.list1);
+        tableListView = (ListView) findViewById(R.id.list1);
         adapter = new TableAdapter(this, list);
         tableListView.setAdapter(adapter);
         util.setListViewHeightBasedOnChildren(tableListView);
@@ -93,18 +98,15 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
         tableListView2.setAdapter(adapter2);
         util.setListViewHeightBasedOnChildren(tableListView2);
 
-        // 点击事件
+        // 点击事件, 更新单条
         tableListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Parameter parameter=list.get(position);
                 util.centerToast(SecondMoreActivity.this,parameter.getName(),0);
-                String hex = Integer.toHexString(position);
-                if(hex.length()<2)
-                    hex = "0"+hex;
-                addressState="01"+hex;
-                mAddress=position;
-                mBluetoothLeService.readData(addressState,"0001");
+                mPosition=position;
+                String address = toAddString(mPosition);
+                mBluetoothLeService.readData(address,"0001");
 
             }
         });
@@ -118,11 +120,12 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
             switch (v.getId()){
                 case R.id.btnR1:
                     reloading = true;
+                    mPosition = 0;
                     mBluetoothLeService.readData("0100","0001");
                     break;
                 case R.id.btnR2:
                     mBluetoothLeService.readData("0105","0001");
-                    mAddress = 5;
+                    mPosition = 100;
                     break;
             }
     }
@@ -167,7 +170,7 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
                                 if(reloading)
                                     reloadAll(message);
                                 else {
-                                    reloadItem(message, mAddress);
+                                    reloadItem(message, mPosition);
                                     util.centerToast(SecondMoreActivity.this,getResources().getString(R.string.reload_completed),0);
                                 };
 
@@ -182,21 +185,21 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
      * @param message
      */
     private void reloadAll(byte[] message){
-            reloadItem(message, mAddress);
-            if (mAddress==23){
-                mAddress = 0;
+            reloadItem(message, mPosition);
+            if (mPosition==20){
+                mPosition = 0;
                 reloading = false;
                 util.centerToast(this, getResources().getString(R.string.reload_completed), 1);
                 return;
             }
-            mAddress++;
+            mPosition++;
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    addressState = toAddString(mAddress);
+                    addressState = toAddString(mPosition);
                     mBluetoothLeService.readData(addressState, "0001");
                 }
-            }, 1000);
+            }, BLEService.reloadGap);
 
     }
 
@@ -205,6 +208,10 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
      * @param message
      */
     private void reloadItem(byte[] message, int position){
+        if(position==100){
+            reloadSW(message);
+            return;
+        }
         Parameter pp = list.get(position);
         String describe;
         String Hint="";
@@ -222,14 +229,23 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
         else
             describe = util.parseByteData(message,3, (float)pp.getMin(),pp.getSign());
 
-        if(position==5)//如果是5, 还要额外更新状态字
-            reloadSW(message);
-        if(position==10){
-            describe = frOptions[Integer.valueOf(describe)];
+        if(position==8){
+            try{
+                describe = frOptions[Integer.valueOf(describe)];
+            }catch (Exception e){
+                Log.d(TAG,"错误原因:"+describe);
+            }
         }
         pp.setDescribe(describe);
         adapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                util.setListViewHeightBasedOnChildren(tableListView);
+            }
+        });
     }
+
 
     /**
      * 从B组功能码位置转为发送的寄存器地址字符串
@@ -237,13 +253,17 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
      * @return
      */
     private String toAddString(int position){
-        String hex = Integer.toHexString(position);
-        if(hex.length()<2)
-            hex = "0"+hex;
-        String addressString="01"+hex;
+        String hex;
+        hex = "01"+String.format("%02X",position);
+        if(position>=5)
+            hex = "01"+String.format("%02X",position+1);
+        if(position>=7)
+            hex = "01"+String.format("%02X",position+2);
+        if(position>=14)
+            hex = "01"+String.format("%02X",position+3);
         //mAddress=position;
 
-        return addressString;
+        return hex;
     }
 
     /**
@@ -264,6 +284,36 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
         }
         adapter2.notifyDataSetChanged();
 
+    }
+
+
+    /**
+     * Android7修改语言必备
+     * @param newBase
+     */
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase,getAppLanguage(newBase)));
+    }
+
+    /**
+     * Handling Configuration Changes
+     * @param newConfig newConfig
+     */
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        onLanguageChange();
+    }
+
+    private void onLanguageChange() {
+        //AppLanguageUtils.changeAppLanguage(this, AppLanguageUtils.getSupportLanguage(getAppLanguage(this)));
+        LanguageUtil.changeAppLanguage(this, getAppLanguage(this));
+    }
+
+    private String getAppLanguage(Context context) {
+        String appLang = PrefUtils.getLanguage(context);
+        return appLang ;
     }
 
 }

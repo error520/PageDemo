@@ -3,89 +3,54 @@ package com.kinco.MotorApp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.kinco.MotorApp.LanguageUtils.LanguageUtil;
 import com.kinco.MotorApp.LanguageUtils.PrefUtils;
+import com.kinco.MotorApp.alertdialog.ContactDialog;
 import com.kinco.MotorApp.alertdialog.SetLanguageDialog;
-import com.kinco.MotorApp.sys.MyApplication;
 import com.kinco.MotorApp.sys.MyFragment;
-import com.kinco.MotorApp.ui.DeviceList;
+import com.kinco.MotorApp.ui.functionpage.DeviceList;
 
+import com.kinco.MotorApp.ui.functionpage.LogActivity;
 import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.ui.fourthpage.FourthpageFragment;
 import com.kinco.MotorApp.ui.secondpage.SecondpageFragment;
 import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
 import com.kinco.MotorApp.utils.FileUtil;
+import com.kinco.MotorApp.utils.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
-    private FirstpageFragment firstpageFragment=new FirstpageFragment(); ;
+    private FirstpageFragment firstpageFragment=new FirstpageFragment();
     private SecondpageFragment secondpageFragment=new SecondpageFragment();
     private ThirdpageFragment thirdpageFragment=new ThirdpageFragment();
     private FourthpageFragment fourthpageFragment=new FourthpageFragment();
     private String TAG = "MainActivity";
     public static boolean  flag = false;
+    public static TabFragmentUtils tabFragmentUtils;
     public static String path = "null";
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_first, R.id.navigation_second, R.id.navigation_third, R.id.navigation_fourth)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(navView, navController);
-//
-//    }
+    private Handler mHandler;
     RadioGroup mainRadioGroupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-
-        Uri uri = intent.getData();
-
-        if (uri != null) {
-            String scheme= uri.getScheme();
-            String host=uri.getHost();
-            String port=uri.getPort()+"";
-            String path=uri.getPath();
-            Log.d(TAG,scheme);
-            Log.d(TAG,host);
-            Log.d(TAG,port);
-            Log.d(TAG,path);
-            if(scheme.equals("content")){
-                flag = true;
-                this.path = FileUtil.getFilePathByUri(this,uri);
-                Log.d(TAG,FileUtil.getFilePathByUri(this,uri)+"");
-            }
-        }
-
         LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this)); // onCreate 之前调用 否则不起作用
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -100,13 +65,26 @@ public class MainActivity extends AppCompatActivity  {
         fragments.add(thirdpageFragment);
         fragments.add(fourthpageFragment);
 
-        new TabFragmentUtils(mainRadioGroupId, R.id.fragment_id, fragments, getSupportFragmentManager());
+        tabFragmentUtils = new TabFragmentUtils(mainRadioGroupId, R.id.fragment_id, fragments, getSupportFragmentManager());
+        Log.d(TAG,"onCreate()");
+
+        mHandler = new Handler();
+        //在里面会判断是不是外部wave文件进来的
+        showWave(getIntent());
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        //MainActivity不在任务栈内时不会调用
+        showWave(intent);
+        Log.d(TAG,"onNewIntent()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -136,19 +114,18 @@ public class MainActivity extends AppCompatActivity  {
         switch (item.getItemId()) {
             case R.id.item00:
                 Intent intent = new Intent(this, DeviceList.class);
-                try{
                 startActivity(intent);
-                }catch(Exception e){
-                    Log.d("device_list",e.toString());
-                }
              break;
             case R.id.item01:
                 SetLanguageDialog sld = new SetLanguageDialog(this);
-                //setLanguage("en");
                 break;
             case R.id.item02:
-                Toast.makeText(MyApplication.getContext(),"Coming soon",Toast.LENGTH_SHORT);
-                setLanguage("zh");
+                //util.centerToast(this,"Comming soon",0);
+                ContactDialog contactDialog = new ContactDialog(this);
+                break;
+            case R.id.item03:
+                Intent intent2 = new Intent(this, LogActivity.class);
+                startActivity(intent2);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -160,20 +137,30 @@ public class MainActivity extends AppCompatActivity  {
         inflater.inflate(R.menu.top_menu, menu);
         return true;
     }
+
     /**
-     * 设置语言
+     * 切换到波形界面展示波形
      */
-    private void setLanguage(String language) {
-        // 切换
-        LanguageUtil.changeAppLanguage(MainActivity.this, language);
-        // 存入sp
-        PrefUtils.setLanguage(MainActivity.this, language);
-        // 重启app
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(0);
+    private void showWave(Intent intent){
+        String action = intent.getAction();
+        //Log.d(TAG,"action:"+action);
+        if(action!=null && action.equals("android.intent.action.VIEW")){
+            final Uri uri = intent.getData();
+            if(uri.getPath().matches(".*\\.wave")){
+                tabFragmentUtils.showPage(3);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fourthpageFragment.readWave(uri);
+                    }
+                },1000);
+            }else{
+                util.centerToast(this,"文件格式错误!",0);
+            }
+            //Log.d(TAG,uri.toString());
+
+
+        }
     }
 
 

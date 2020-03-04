@@ -11,7 +11,7 @@
         <item name="editTextColor">@color/black</item>
     </style>
 
-    <style name="Widget.Kinco.Button" parent="Widget.MaterialComponents.Button">
+    <style name="Widget.Kinco.MaterialButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">43dp</item>
@@ -23,6 +23,14 @@
         <item name="elevation">10dp</item>
         <item name="rippleColor">@color/gray</item>
         <item name="android:layout_margin">3dp</item>
+    </style>
+
+    <style name="Widget.Kinco.Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/button</item>
     </style>
 
 

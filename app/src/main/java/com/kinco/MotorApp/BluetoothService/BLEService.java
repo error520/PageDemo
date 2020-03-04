@@ -21,6 +21,10 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kinco.MotorApp.sys.SysApplication;
+import com.kinco.MotorApp.ui.firstpage.FirstMoreActivity;
+import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
+import com.kinco.MotorApp.utils.FileUtil;
 import com.kinco.MotorApp.utils.util;
 
 import java.io.File;
@@ -65,8 +69,10 @@ public class BLEService extends Service {
     private BluetoothGattCharacteristic writeCharacteristic;
 
     //记录蓝牙通信日志
-    public List<String> BLELog = new ArrayList<>();
+    public static List<String> BLELog = new ArrayList<>();
 
+    //刷新间隔
+    public static int reloadGap = 20;
 
 
     public boolean init(){
@@ -74,10 +80,10 @@ public class BLEService extends Service {
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBtAdapter = bluetoothManager.getAdapter();
         mHandler = new Handler();
-        //创建日志文件夹
-        File dir = new File(Environment.getExternalStorageDirectory()+"/KincoLog");
-        if(!dir.exists())
-            dir.mkdir();
+//        //创建日志文件夹
+//        File dir = new File(FileUtil.pathDir);
+//        if(!dir.exists())
+//            dir.mkdir();
         //检查手机是否支持BLE
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.d("BLEService","不支持BLE!");
@@ -193,7 +199,8 @@ public class BLEService extends Service {
 
     public boolean connect(final String address) {//4
 //        Log.d(TAG, "连接" + mBluetoothDeviceAddress);
-        if(!(mBluetoothGatt==null))
+        //如果当前有设备连接, 关闭这个连接
+        if(mBluetoothGatt!=null)
             close();
         if (mBtAdapter == null || address == null) {
             Log.d(TAG,"BluetoothAdapter不能初始化 or 未知 address.");
@@ -211,7 +218,7 @@ public class BLEService extends Service {
             return false;
         }
 
-        mBluetoothGatt = device.connectGatt(this, true, mBluetoothGattCallback);//真正的连接
+        mBluetoothGatt = device.connectGatt(this, false, mBluetoothGattCallback);//真正的连接
         //这个方法需要三个参数：一个Context对象，自动连接（boolean值,表示只要BLE设备可用是否自动连接到它），和BluetoothGattCallback调用。
         Log.d(TAG, "尝试新的连接.");
         mConnected=true;
@@ -247,7 +254,9 @@ public class BLEService extends Service {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //真正连接成功
                 mConnected = true;
-                mNewConnection = true;
+                FirstpageFragment.initializing = true;//让碎片1初始化
+                FirstMoreActivity.initializing = true;//让二级界面初始化
+                //mNewConnection = true;
                 broadcastUpdate(ACTION_GATT_CONNECTED);
                 //得到所有Service
                 List<BluetoothGattService> supportedGattServices = gatt.getServices();
@@ -350,7 +359,7 @@ public class BLEService extends Service {
                 broadcastUpdate(bb2.length+"",2);
             }
             String logText = "Slave:"+util.toHexString(bb2,true);
-            BLELog.add(logText);
+            BLELog.add(BLELog.size()+"   "+logText);
             Log.d(TAG, logText);
 
         }
@@ -438,7 +447,7 @@ public class BLEService extends Service {
             writeCharacteristic.setValue(send);
             mBluetoothGatt.writeCharacteristic(writeCharacteristic);
             String logText = "Master:"+util.toHexString(send,true);
-            BLELog.add(logText);
+            BLELog.add(BLELog.size()+"   "+logText);
             Log.d(TAG,logText);
         } else
             broadcastUpdate(ACTION_GATT_DISCONNECTED);
@@ -466,7 +475,7 @@ public class BLEService extends Service {
             writeCharacteristic.setValue(send);
             boolean result = mBluetoothGatt.writeCharacteristic(writeCharacteristic);
             String logText = "Master:"+util.toHexString(send,true);
-            BLELog.add(logText);
+            BLELog.add(BLELog.size()+"   "+logText);
             Log.d(TAG,logText);
         } catch (Exception e) {
             Log.d("data", e.toString());

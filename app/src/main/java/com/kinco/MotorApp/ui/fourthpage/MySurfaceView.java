@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.PathEffect;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,10 +17,8 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
-import static java.lang.Float.NaN;
 
-
-public class MySurfaceView3 extends SurfaceView implements
+public class MySurfaceView extends SurfaceView implements
         SurfaceHolder.Callback, View.OnTouchListener {
     public float data[];//波形数据
     private static final int NONE = 0;// 原始
@@ -29,7 +26,7 @@ public class MySurfaceView3 extends SurfaceView implements
     private static final int ZOOM = 2;// 放大
     private int mStatus = NONE;
 
-    private static final float MAX_ZOOM_SCALE = 4.0f;//4.0
+    private static final float MAX_ZOOM_SCALE = 10.0f;//4.0
     private static final float MIN_ZOOM_SCALE = 1.0f;//1.0
     private static final float FLOAT_TYPE = 1.0f;
     private float mCurrentMaxScale = MAX_ZOOM_SCALE;
@@ -61,7 +58,7 @@ public class MySurfaceView3 extends SurfaceView implements
     private float max=0,min=0;
     private float ImageRatio=1;
 
-    public MySurfaceView3(Context context, AttributeSet attrs) {
+    public MySurfaceView(Context context, AttributeSet attrs) {
         super(context,attrs);
         mSurHolder = getHolder();
         mSurHolder.addCallback(this);
@@ -72,10 +69,10 @@ public class MySurfaceView3 extends SurfaceView implements
      * 计算新图片中心,把缩放归回1
      */
     private void init() {
-        mCurrentMaxScale = Math.max(
-                MIN_ZOOM_SCALE,
-                4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
-                        * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
+//        mCurrentMaxScale = Math.max(
+//                MIN_ZOOM_SCALE,
+//                4 * Math.min(FLOAT_TYPE * mImageHeight / mSurfaceHeight, 1.0f
+//                        * mImageWidth / mSurfaceWidth));      //能缩放的尺寸取决于图片/surfaceView的倍数
         if(!change) {           //不是因为缩放而更换图片
             mCurrentScale = MIN_ZOOM_SCALE;
             mRectSrc.set(0,0,mImageWidth,mImageHeight);
@@ -84,7 +81,7 @@ public class MySurfaceView3 extends SurfaceView implements
             //Log.d("MySV3","初始："+mCenterX);
         }
         change=false;
-        setMaxZoom(20);
+
 
         //calcRect();
     }
@@ -171,7 +168,7 @@ public class MySurfaceView3 extends SurfaceView implements
         if (b == null) {
             return;
         }
-        synchronized (MySurfaceView3.class) {
+        synchronized (MySurfaceView.class) {
             mBitmap = b;
             if (mImageHeight != mBitmap.getHeight()
                     || mImageWidth != mBitmap.getWidth()&&!change) {
@@ -186,8 +183,8 @@ public class MySurfaceView3 extends SurfaceView implements
 
     }
 
-    private void showBitmap(float offset) {
-        synchronized (MySurfaceView3.class) {
+    private void showBitmap() {
+        synchronized (MySurfaceView.class) {
             //先画背景
             Bitmap bgBitmap = Bitmap.createBitmap(mSurfaceWidth,mSurfaceHeight, Bitmap.Config.ARGB_4444);
             Canvas bc = new Canvas(bgBitmap);
@@ -209,7 +206,7 @@ public class MySurfaceView3 extends SurfaceView implements
 
     private void dragAction(MotionEvent event) {
         
-        synchronized (MySurfaceView3.class) {
+        synchronized (MySurfaceView.class) {
             PointF currentPoint = new PointF();
             currentPoint.set(event.getX(), event.getY());
             int offsetX = (int) currentPoint.x - (int) mStartPoint.x;
@@ -220,13 +217,13 @@ public class MySurfaceView3 extends SurfaceView implements
             mCenterY -= offsetY*((int)mCurrentScale/3+1);
 
             adjustCenter();
-            showBitmap(offsetY);
+            showBitmap();
         }
     }
 
     private void zoomAcition(MotionEvent event) {
 
-        synchronized (MySurfaceView3.class) {
+        synchronized (MySurfaceView.class) {
 
             float newDist = spacing(event);
             final float scale = newDist / mStartDistance;
@@ -249,7 +246,7 @@ public class MySurfaceView3 extends SurfaceView implements
             oldScale=mCurrentScale;
             adjustCenter(); //计算显示区域的中心
 
-            showBitmap(0);
+            showBitmap();
 
         }
     }
@@ -262,7 +259,7 @@ public class MySurfaceView3 extends SurfaceView implements
         mRectSrc.right*=scale/oldScale;
         mRectSrc.bottom*=scale/oldScale;
         ratio = (oldScale/scale!=2)?(oldScale/scale):1;
-        Log.d("MySV3",ratio+"");
+        //Log.d("MySV3",ratio+"");
 
     }
 
@@ -324,13 +321,13 @@ public class MySurfaceView3 extends SurfaceView implements
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
 
-        synchronized (MySurfaceView3.class) {
+        synchronized (MySurfaceView.class) {
             mRectDes.set(0, 0, width, height);
             mSurfaceHeight = height;    //获取真实的高宽
             mSurfaceWidth = width;
             //init();
             if (mBitmap != null) {
-                showBitmap(0);
+                showBitmap();
                 //Log.d("MySV3","surfaceChange被调用了");
             }
         }
@@ -364,8 +361,8 @@ public class MySurfaceView3 extends SurfaceView implements
                     lhp = (float)mImageWidth/(float)mRectSrc.width();
                     //Log.d(TAG,"lhp is"+lhp);
                 float measure = average-(float)(mCenterY-fgCenterY)/ImageRatio + step/mCurrentScale * (5 - i);
-                Log.d(TAG,"mCenterY-fgCenterY is "+(float)(mCenterY-fgCenterY));
-                Log.d(TAG,"中心偏移值 is "+(float)(mCenterY-fgCenterY)/ImageRatio);
+//                Log.d(TAG,"mCenterY-fgCenterY is "+(float)(mCenterY-fgCenterY));
+//                Log.d(TAG,"中心偏移值 is "+(float)(mCenterY-fgCenterY)/ImageRatio);
                 //float measure = average-(mCenterY-fgCenterY)/ImageRatio/(int)mCurrentScale + step/mCurrentScale * (5 - i);
                 //float measure = average+mRectSrc.top/mCurrentScale + step/mCurrentScale * (5 - i);
                 canvas.drawText(String.format("%.2f",measure), 0, oldY, p);
@@ -400,7 +397,10 @@ public class MySurfaceView3 extends SurfaceView implements
         float cx = 0;
         float cy = 0;
         float step = fgBitmap.getHeight()*4/10;
-        this.  ImageRatio = step/(max-average);
+        if(max==average)
+            ImageRatio = step/4;
+        else
+            ImageRatio = step/(max-average);
         //Log.d(TAG,"centerY是"+centerY+"");
         for(int i=0;i<1024;i++){
             cx += scale;
@@ -417,7 +417,7 @@ public class MySurfaceView3 extends SurfaceView implements
         fgCenterY = mImageHeight/2;
         fgCenterX = mImageWidth/2;
         //setBitmap(fgBitmap);
-        Log.d(TAG,"fgCenterY is "+fgCenterY);
+        //Log.d(TAG,"fgCenterY is "+fgCenterY);
     }
 
     /**
@@ -434,10 +434,14 @@ public class MySurfaceView3 extends SurfaceView implements
         }
         this.average = (max+min)/2;
         this.step = (max-min)/8;//bgBitmap的step
+
+        if(step==0)
+            step=1;
+        this.mCurrentScale=1.0f;
         Log.d(TAG,"max is "+max+",min is "+min+",average is"+average);
         createBitmap(scale);
         init();
-        showBitmap(0);
+        showBitmap();
     }
 
     public void drawWave(ArrayList<Float> dataList){

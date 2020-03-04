@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kinco.MotorApp.R;
+import com.kinco.MotorApp.utils.util;
 
 import java.lang.reflect.Field;
 
@@ -97,7 +98,8 @@ public class SetDataDialog {
         final EditText edit = new EditText(context);
         edit.setFocusable(true);
         edit.setFocusableInTouchMode(true);
-        edit.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        edit.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED|InputType.TYPE_NUMBER_FLAG_DECIMAL |
+                InputType.TYPE_NUMBER_VARIATION_NORMAL|InputType.TYPE_CLASS_NUMBER);
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(7)});
         //edit.setHint(hintArray[4]);
         edit.setMinWidth(150);
@@ -127,7 +129,10 @@ public class SetDataDialog {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SetData = edit.getText().toString();
-                onClickBottomListener.onPositiveClick();
+                if(SetData.equals(""))
+                    util.centerToast(context,"请输入完整数据",0);
+                else
+                    onClickBottomListener.onPositiveClick();
 
             }
         });

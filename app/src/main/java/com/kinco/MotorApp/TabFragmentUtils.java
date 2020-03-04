@@ -26,14 +26,10 @@ public class TabFragmentUtils implements RadioGroup.OnCheckedChangeListener{
         this.fragmentManager = fragmentManager;
         //设置radiobutton的点事件
         radioGroup.setOnCheckedChangeListener(this);
-        if(MainActivity.flag==true) {
-            ((RadioButton) radioGroup.getChildAt(3)).setChecked(true);
-            fragments.get(3).setShowing(true);
-        }else {
-            //默认选择0 页面
-            ((RadioButton) radioGroup.getChildAt(0)).setChecked(true);
-            fragments.get(0).setShowing(true);
-        }
+        //默认选择0 页面
+        ((RadioButton) radioGroup.getChildAt(0)).setChecked(true);
+        fragments.get(0).setShowing(true);
+
     }
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -73,5 +69,9 @@ public class TabFragmentUtils implements RadioGroup.OnCheckedChangeListener{
         }
         //当前显示的页面为 index
         curShowPosition = index;
+    }
+
+    public void showPage(int index){
+        ((RadioButton)radioGroup.getChildAt(index)).setChecked(true);
     }
 }

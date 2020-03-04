@@ -21,7 +21,7 @@ public class ErrorDialog extends AlertDialog.Builder{
 
             }
         });
-        util.saveLog(context,"error.txt",text);
+        //util.saveLog(context,"error.txt",text);
     }
 
 }

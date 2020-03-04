@@ -1,7 +1,5 @@
-package com.kinco.MotorApp.edittext;
+package com.kinco.MotorApp.ParameterItem;
 
-
-import android.location.Address;
 
 /**
  * 下拉选项的数据类

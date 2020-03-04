@@ -3,14 +3,90 @@ package com.kinco.MotorApp.utils;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.kinco.MotorApp.sys.SysApplication;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public final class FileUtil {
+    public static String pathDir = SysApplication.getContext().getExternalFilesDir(null).getAbsolutePath();
+    public static String waveDir = pathDir+"/WaveFile";
+    public static String errorDir = pathDir+"/CrashLog";
+    public static String testDir = Environment.getExternalStorageDirectory()+"/KincoLog/WaveFile/";
+    private static String dirs[] = {waveDir,errorDir,testDir};
+
+    public static void saveFile(int dirIndex,String filename,String str){
+        FileOutputStream out = null;
+        BufferedWriter writer= null;
+        File dir = new File(dirs[dirIndex]);
+        try{
+            if(!dir.exists())
+                dir.mkdir();
+//            if(filename.contains("/")){
+//                File dir2 = new File(dir.getAbsolutePath()+"/"+filename.split("/")[0]);
+//                if (!dir2.exists())
+//                    dir2.mkdir();
+//            }
+            File fs = new File(dir+"/"+filename);
+            //out = context.openFileOutput("ErrorLog.txt",Context.MODE_PRIVATE);  //软件内部的目录创建
+            out = new FileOutputStream(fs);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+            writer.write(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try{
+                if(writer!=null)
+                    writer.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            Log.d("BLEService","写入成功!");
+        }
+    }
+
+    public static File getFileFromContentUri(Uri contentUri, Context context) {
+        if (contentUri == null) {
+            return null;
+        }
+        File file = null;
+        String filePath;
+        String fileName;
+        String[] filePathColumn = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME};
+        ContentResolver contentResolver = context.getContentResolver();
+        Cursor cursor = contentResolver.query(contentUri, filePathColumn, null,
+                null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            filePath = cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
+            fileName = cursor.getString(cursor.getColumnIndex(filePathColumn[1]));
+            cursor.close();
+            if (!TextUtils.isEmpty(filePath)) {
+                file = new File(filePath);
+            }
+//            if (!file.exists() || file.length() <= 0 || TextUtils.isEmpty(filePath)) {
+//                filePath = getPathFromInputStreamUri(context, contentUri, fileName);
+//            }
+            if (!TextUtils.isEmpty(filePath)) {
+                file = new File(filePath);
+            }
+        }
+        return file;
+    }
+
 
     public static String getFilePathByUri(Context context, Uri uri) {
         String path = null;
@@ -40,9 +116,11 @@ public final class FileUtil {
                     // ExternalStorageProvider
                     final String docId = DocumentsContract.getDocumentId(uri);
                     final String[] split = docId.split(":");
+                    String filename = docId.substring(docId.indexOf(":")+1);
                     final String type = split[0];
                     if ("primary".equalsIgnoreCase(type)) {
-                        path = Environment.getExternalStorageDirectory() + "/" + split[1];
+                        //path = Environment.getExternalStorageDirectory() + "/" + split[1];
+                        path = Environment.getExternalStorageDirectory() + "/" + filename;
                         return path;
                     }
                 } else if (isDownloadsDocument(uri)) {
@@ -102,6 +180,11 @@ public final class FileUtil {
 
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static void openOtherApp(Context context,String packagename) {
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packagename);
+        context.startActivity(intent);
     }
 
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import com.kinco.MotorApp.R;
 
 public class XmlUtil {
+    //以选择的options里位置取值
     public static String[][] getOptions(Resources res,int []item){
         String [][]options = new String[item.length][];
         for(int i=0; i<item.length; i++)
@@ -14,6 +15,7 @@ public class XmlUtil {
         return options;
     }
 
+    //以功能码取值
     public static String[][] getOptions(Context context, int []item){
         String [][]options = new String[item.length][];
         int compareNum[] = {1,2,4,5,8,9,10,11,12,13,14,15,17,33,34,35,37,38,40,41,42,43,44,45,46};

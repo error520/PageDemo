@@ -1,39 +1,49 @@
 package com.kinco.MotorApp.ui.firstpage;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.util.Xml;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.kinco.MotorApp.BluetoothService.BLEService;
+import com.kinco.MotorApp.LanguageUtils.LanguageUtil;
+import com.kinco.MotorApp.LanguageUtils.PrefUtils;
 import com.kinco.MotorApp.MainActivity;
+import com.kinco.MotorApp.ParameterItem.CWordAdapter;
 import com.kinco.MotorApp.alertdialog.LoadingDialog;
 import com.kinco.MotorApp.alertdialog.SetDataDialog;
-import com.kinco.MotorApp.edittext.ItemBean;
-import com.kinco.MotorApp.edittext.ListViewAdapter;
-import com.kinco.MotorApp.edittext.Text;
-import com.kinco.MotorApp.edittext.TextAdapter;
+import com.kinco.MotorApp.ParameterItem.ItemBean;
+import com.kinco.MotorApp.ParameterItem.ListViewAdapter;
+import com.kinco.MotorApp.ParameterItem.Text;
+import com.kinco.MotorApp.ParameterItem.TextAdapter;
 import com.kinco.MotorApp.utils.XmlUtil;
 import com.kinco.MotorApp.utils.util;
 import com.kinco.MotorApp.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 public class FirstMoreActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,113 +51,65 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
             ,"0018","0019","001A","001B","001C","001D","001E","001F","0020","0024","0027"};
     private String chooseAddressList[] = {"0001","0002","0004","0005","0008","0009","000A","000B","000C","000D",
             "000E","000F","0011","0021","0022","0023","0025","0026","0028","0029","002A","002B","002C","002D"};
+    private List<String> addressList= new ArrayList<>();
     private ListView listView;
     private ListView mListView;
     private ListViewAdapter mAdapter;
     private List<ItemBean> mData;
 
     private TextAdapter A1CAdapter;
-    private List<Text> A1CList;
+    private List<Text> A1CList = new ArrayList<Text>();
     private ListView A1Clv;
     private ListViewAdapter A1TAdapter;
-    private List<ItemBean> A1TList;
+    private List<ItemBean> A1TList = new ArrayList<>();
     private ListView A1Tlv;
 
     private TextAdapter A2CAdapter;
-    private List<Text> A2CList;
+    private List<Text> A2CList = new ArrayList<>();
     private ListView A2Clv;
     private ListViewAdapter A2TAdapter;
-    private List<ItemBean> A2TList;
+    private List<ItemBean> A2TList = new ArrayList<>();;
     private ListView A2Tlv;
 
     private TextAdapter A3CAdapter;
-    private List<Text> A3CList;
+    private List<Text> A3CList = new ArrayList<>();
     private ListView A3Clv;
 
     private TextAdapter A4CAdapter;
-    private List<Text> A4CList;
+    private List<Text> A4CList = new ArrayList<>();
     private ListView A4Clv;
     private ListViewAdapter A4TAdapter;
-    private List<ItemBean> A4TList;
+    private List<ItemBean> A4TList = new ArrayList<>();
     private ListView A4Tlv;
 
+    private CWordAdapter CWAdapter;
+
+    private TextAdapter[] CAdapters = new TextAdapter[4];
+    private ListViewAdapter[] TAdapters = {A1TAdapter,A2TAdapter,A4TAdapter};
+    private HashMap<String,Object> map = new HashMap<>();
+    private String mAddress;
+    private Iterator<String> mIterator;
 
     private BLEService mBluetoothLeService;
     LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
     private SetDataDialog setDatadialog;
-    boolean initialized = false;
-    private int count=0;
+    public static boolean initializing = false;
     private Handler mHandler;
     private LoadingDialog loadingDialog;
     private String TAG = "FirstMoreActivity";
-    private int mGroup=1;   //当前位置
-    private int mPosition=0;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTitle("");
         setContentView(R.layout.setting_2);
         mHandler = new Handler();
         initUI();
+//        for(Map.Entry<String,Object> entry: map.entrySet())
+//            Log.d(TAG, entry.getKey()+":"+entry.getValue().toString());
 
-//        //输入型
-//        mListView = (ListView) findViewById(R.id.A1Tlist);
-//        mData = new ArrayList<ItemBean>();
-//        for(int i=0;i<Name2.length;i++){
-//            mData.add(new ItemBean( Name2[i], Unit[i],Hint[i],Min[i],Hint[i],writeAddressList[i]));
-//        }
-//        mAdapter = new ListViewAdapter(this, mData);
-//        mAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
-//            @Override
-//            public void clickListener(String Address, String Name,String Unit,
-//                                      String Range,float Min,String defaultValue,String currentValue) {
-//                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue);
-//            }
-//        });
-//
-//        mListView.setAdapter(mAdapter);
-//        util.setListViewHeightBasedOnChildren(mListView);
-
-//        Button button2 = (Button) findViewById(R.id.Control_111B);
-//        button2.setOnClickListener(this);
-//        Button button3 = (Button) findViewById(R.id.Control_110B);
-//        button3.setOnClickListener(this);
-//        Button button4 = (Button) findViewById(R.id.Control_101B);
-//        button4.setOnClickListener(this);
-//        Button button5 = (Button) findViewById(R.id.Control_100B);
-//        button5.setOnClickListener(this);
-//        Button button6 = (Button) findViewById(R.id.Control_011B);
-//        button6.setOnClickListener(this);
-//        Button button7 = (Button) findViewById(R.id.Control_bit3_0);
-//        button7.setOnClickListener(this);
-//        Button button8 = (Button) findViewById(R.id.Control_bit3_1);
-//        button8.setOnClickListener(this);
-//        Button button9 = (Button) findViewById(R.id.Control_bit4_0);
-//        button9.setOnClickListener(this);
-//        Button button10 = (Button) findViewById(R.id.Control_bit4_1);
-//        button10.setOnClickListener(this);
-//        Button button11 = (Button) findViewById(R.id.Control_bit5_0);
-//        button11.setOnClickListener(this);
-//        Button button12 = (Button) findViewById(R.id.Control_bit5_1);
-//        button12.setOnClickListener(this);
-//        Button button13 = (Button) findViewById(R.id.Control_bit6_0);
-//        button13.setOnClickListener(this);
-//        Button button14 = (Button) findViewById(R.id.Control_bit6_1);
-//        button14.setOnClickListener(this);
-//        Button button15 = (Button) findViewById(R.id.Control_bit7_0);
-//        button15.setOnClickListener(this);
-//        Button button16 = (Button) findViewById(R.id.Control_bit7_1);
-//        button16.setOnClickListener(this);
-//        Button button17 = (Button) findViewById(R.id.Control_bit8_0);
-//        button17.setOnClickListener(this);
-//        Button button18 = (Button) findViewById(R.id.Control_bit8_1);
-//        button18.setOnClickListener(this);
-//        Button button19 = (Button) findViewById(R.id.Control_bit9_0);
-//        button19.setOnClickListener(this);
-//        Button button20 = (Button) findViewById(R.id.Control_bit9_1);
-//        button20.setOnClickListener(this);
-
-        Log.d(TAG,Float.parseFloat(getResources().getString(R.string.A0_03M))+"ddd");
+            //Log.d(TAG,entry.getValue().toString());
     }
 
     private void initUI(){
@@ -158,13 +120,23 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
         A3Clv = findViewById(R.id.A3Clist);
         A4Clv = findViewById(R.id.A4Clist);
         A4Tlv = findViewById(R.id.A4Tlist);
+        ListView CWlv = findViewById(R.id.CWlist);
+        Button btnInit = findViewById(R.id.btnInit);
+        btnInit.setOnClickListener(this);
 
-        A1TList = new ArrayList<>();
-        A2TList = new ArrayList<>();
-        A4TList = new ArrayList<>();
+        A1CAdapter = new TextAdapter(this,A1CList,R.layout.main_item);
+        A2CAdapter = new TextAdapter(this,A2CList,R.layout.main_item);
+        A3CAdapter = new TextAdapter(this,A3CList,R.layout.main_item);
+        A4CAdapter = new TextAdapter(this,A4CList,R.layout.main_item);
+
         A1TAdapter = new ListViewAdapter(this,A1TList);
         A2TAdapter = new ListViewAdapter(this,A2TList);
         A4TAdapter = new ListViewAdapter(this,A4TList);
+
+        String[] options = getResources().getStringArray(R.array.CWord_options);
+        CWAdapter = new CWordAdapter(options);
+        CWlv.setAdapter(CWAdapter);
+        util.setListViewHeightBasedOnChildren(CWlv);
         int cNum1[] = {37};
         int cNum2[] = {46};
         int cNum3[] = {10,8,9,40,41,42,43,14,44,12,45,11,13};
@@ -179,7 +151,6 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
         setTListView(tNum1,A1TAdapter,A1TList,A1Tlv,1);
         setTListView(tNum2,A2TAdapter,A2TList,A2Tlv,2);
         setTListView(tNum4,A4TAdapter,A4TList,A4Tlv,4);
-
     }
 
     /**
@@ -192,15 +163,12 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
     private void setCListView(int num[], TextAdapter textAdapter, List<Text> list, ListView listView){
         String Name[] = XmlUtil.getName(this,num);
         String options[][] = XmlUtil.getOptions(this,num);
-        list = new ArrayList<Text>();
         for(int i=0; i<num.length; i++){
-            String address = "00"+String.format("%x",num[i]);
-            if(address.length()<4)
-                address = "000"+String.format("%x",num[i]);
+            String address = "00"+String.format("%02X",num[i]);
             Text text = new Text(Name[i],options[i],address,0);
             list.add(text);
+            map.put(address,text);
         }
-        textAdapter = new TextAdapter(this, list, R.layout.main_item);//向自定义的Adapter中传值
         textAdapter.setAddressNoListener(new TextAdapter.AddressNoListener() {
             //操作
             @Override
@@ -221,17 +189,16 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
         String Hint[] = XmlUtil.getHint(this,num);
         float Min[] = XmlUtil.getMin(this,num);
         for(int i=0; i<num.length; i++){
-            String address = "00"+String.format("%x",num[i]);
-            if(address.length()<4)
-                address = "000"+String.format("%x",num[i]);
+            String address = "00"+String.format("%02X",num[i]);
             ItemBean ib = new ItemBean(Name[i],Unit[i],Hint[i],Min[i],Hint[i],address ,group,i);
+            map.put(address,ib);
             TList.add(ib);
         }
         TAdapter.setAddressNoListener(new ListViewAdapter.AddressNoListener() {
             @Override
             public void clickListener(String Address, String Name, String Unit, String Range, float Min, String defaultValue, String currentValue,
                                       int group, int position) {
-                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue,group,position);
+                showSetDataDialog(Address,Name,Unit,Range,Min,defaultValue,currentValue);
             }
         });
         listView.setAdapter(TAdapter);
@@ -254,8 +221,7 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
 
 
     private void showSetDataDialog(final String address, String title, String Unit, String Range,
-                                   final float min, String defaultValue, String currentValue,
-                                   final int group, final int position){
+                                   final float min, String defaultValue, String currentValue){
         try {
             setDatadialog = new SetDataDialog(this,title,Unit,Range,defaultValue,currentValue);
             setDatadialog.setOnClickBottomListener(new SetDataDialog.OnClickBottomListener(){
@@ -263,8 +229,6 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
                 public void onPositiveClick() {
                     byte data[] = util.toByteData(setDatadialog.getSetData(),min);
                     mBluetoothLeService.writeData(address,data);
-                    mGroup = group;
-                    mPosition = position;
                 }
                 @Override
                 public void onNegativeClick() {
@@ -289,64 +253,16 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.Control_111B:
-//                //mBluetoothLeService.writeData("0017","00CF");
-//                break;
-//            case R.id.Control_110B:
-//                Toast.makeText(this,"方式0停车",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_101B:
-//                Toast.makeText(this,"方式1停车",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_100B:
-//                Toast.makeText(this,"外部故障停车",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_011B:
-//                Toast.makeText(this,"方式2停车",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit3_0:
-//                mBluetoothLeService.writeData("0017","00C7");
-//                break;
-//            case R.id.Control_bit3_1:
-//                Toast.makeText(this,"反转",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit4_0:
-//                Toast.makeText(this,"点动正转无效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit4_1:
-//                Toast.makeText(this,"点动正转",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit5_0:
-//                Toast.makeText(this,"点动反转无效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit5_1:
-//                Toast.makeText(this,"点动反转",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit6_0:
-//                Toast.makeText(this,"允许加减速",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit6_1:
-//                Toast.makeText(this,"禁止加减速",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit7_0:
-//                Toast.makeText(this,"上位机控制字1有效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit7_1:
-//                Toast.makeText(this,"上位机控制字1无效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit8_0:
-//                Toast.makeText(this,"主给定有效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit8_1:
-//                Toast.makeText(this,"主给定无效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit9_0:
-//                Toast.makeText(this,"故障复位有效",Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.Control_bit9_1:
-//                Toast.makeText(this,"故障复位无效",Toast.LENGTH_SHORT).show();
-//                break;
+            case R.id.btnInit:
+                initializing = true;
+                initData();
+                break;
         }
+    }
+
+    public void sendCW(View v){
+        byte[] data = CWAdapter.getData();
+        mBluetoothLeService.writeData("0017",data);
     }
 
     @Override
@@ -366,53 +282,21 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
-                util.centerToast(FirstMoreActivity.this,"suceed!",0);
-                ItemBean ib = A1TList.get(0);
-                if(mGroup==1)
-                   ib = A1TList.get(mPosition);
-                else if(mGroup==2)
-                    ib = A2TList.get(mPosition);
-                else if(mGroup==4)
-                    ib = A4TList.get(mPosition);
-                String currentValue = util.parseByteData(message,4,ib.getMin(),false);
-                ib.setCurrentValue(currentValue);
-                A1TAdapter.notifyDataSetChanged();
-                A2TAdapter.notifyDataSetChanged();
-                A4TAdapter.notifyDataSetChanged();
-//                if(!initialized){
-//                    ItemBean ib = mData.get(count);
-//                    String currentValue = util.parseByteData(message,3,ib.getMin(),false);
-//                    ib.setDefaultValue(currentValue);
-//                    ib.setCurrentValue(currentValue);
-//                    mAdapter.notifyDataSetChanged();
-//                    if(count<9){
-//                        delayRead(writeAddressList[count+1]);
-//                        count++;
-//                    }else{
-//                        count=0;
-//                        initialized = true;
-//                    }
-//
-//                }else{
-//                    //setDatadialog.gone();
-//                    String address = util.toHexString(message,2,false);
-//                    Log.d("FirstMore",address);
-//                    int index=0;
-//                    for(int i=0;i<writeAddressList.length;i++){
-//                        if(address.equals(writeAddressList[i])){
-//                            index=i;
-//                            break;
-//                        }
-//                    }
-//                    ItemBean ib = mData.get(index);
-//                    mData.get(index).setCurrentValue(util.parseByteData(message,4,ib.getMin(),false));
-//                    mAdapter.notifyDataSetChanged();
-//                }
+                final byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
+                if(initializing){
+                    reloadAll(message);
+                }else{
+                    //确保是设置的回应报文
+                    if(message.length==8){
+                        String address = util.toHexString(message,2,false);
+                        reloadItem(address,message);
+                        util.centerToast(FirstMoreActivity.this,"succeed!",0);
+                    }
+                }
 
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
-                Toast.makeText(context, "Bluetooth disconnected!", Toast.LENGTH_SHORT).show();
+                util.centerToast(context, "Bluetooth disconnected!", Toast.LENGTH_SHORT);
             }
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){
                 String errorCode = intent.getStringExtra(BLEService.ACTION_ERROR_CODE);
@@ -432,10 +316,7 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBluetoothLeService = ((BLEService.localBinder) service)
                     .getService();
-//            if(!initialized) {
-//                mBluetoothLeService.readData("0000", "0001");
-//
-//            }
+            initData();
         }
 
         @Override
@@ -444,41 +325,119 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
         }
     };
 
+    //初始化参数
+    private void initData(){
+        if(initializing){
+            Set<String> keys=map.keySet();
+            mIterator=keys.iterator();
+            mAddress = mIterator.next();
+            mBluetoothLeService.readData(mAddress,"0001");
+            if(mBluetoothLeService.mConnected){
+                loadingDialog = showLoadingDialog();
+            }
+        }
+    }
+
     private void delayRead(final String address){
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mBluetoothLeService.readData(address, "0001");
             }
-        },500);
+        },BLEService.reloadGap);
     }
 
-    LoadingDialog showLoadingDialog(Context context){
-        final LoadingDialog loadingDialog = new LoadingDialog(context,"",
-                "loading...",true);
+    LoadingDialog showLoadingDialog(){
+        final LoadingDialog loadingDialog = new LoadingDialog(this,"",
+                getString(R.string.loading),true);
         loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener() {
             @Override
             public void onNegativeClick() {
-                initialized = true;
+                initializing = false;
                 loadingDialog.gone();
             }
 
         });
         return loadingDialog;
     }
-    private String[][] getTwoDimensionalArray(String[] array) {
-        Log.d(TAG,array.length+"");
-        String[][] twoDimensionalArray = null;
-        for (int i = 0; i < array.length; i++) {
-            String[] tempArray = array[i].split(",");
-            if (twoDimensionalArray == null) {
-                twoDimensionalArray = new String[array.length][tempArray.length];
-            }
-            for (int j = 0; j < tempArray.length; j++) {
-                twoDimensionalArray[i][j] = tempArray[j];
-            }
+
+    private void reloadAll(byte[] message){
+        reloadItem(mAddress,message);
+        if(mIterator.hasNext()){
+            mAddress= mIterator.next();
+            delayRead(mAddress);
+        }else{
+            if(loadingDialog!=null)
+                loadingDialog.gone();
+            initializing = false;
         }
-        return twoDimensionalArray;
+    }
+
+    private void reloadItem(String address, byte[] message){
+        try {
+            if(address.equals("0017"))
+                return;
+            Object ob = map.get(address);
+            //Log.d(TAG,map.get(address)+"");
+            if (ob instanceof Text) {
+                int idIndex = initializing?4:5;
+                ((Text) ob).setId(message[idIndex]);
+                A1CAdapter.notifyDataSetChanged();
+                A2CAdapter.notifyDataSetChanged();
+                A3CAdapter.notifyDataSetChanged();
+                A4CAdapter.notifyDataSetChanged();
+            } else {
+                int offset = 4;
+                if (initializing)
+                    offset = 3;
+                boolean Sign = false;
+                //判断是否是有符号数
+                if(address.equals("0027"))
+                    Sign = true;
+                String currentValue = util.parseByteData(message, offset, ((ItemBean) ob).getMin(), Sign);
+                //初始化时才把设置默认值
+                if (initializing)
+                    ((ItemBean) ob).setDefaultValue(currentValue);
+                ((ItemBean) ob).setCurrentValue(currentValue);
+                A1TAdapter.notifyDataSetChanged();
+                A2TAdapter.notifyDataSetChanged();
+                A4TAdapter.notifyDataSetChanged();
+            }
+        }catch (Exception e){
+            Log.d(TAG,e.toString());
+        }
+
+
+    }
+
+
+    /**
+     * Android7修改语言必备
+     * @param newBase
+     */
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase,getAppLanguage(newBase)));
+    }
+
+    /**
+     * Handling Configuration Changes
+     * @param newConfig newConfig
+     */
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        onLanguageChange();
+    }
+
+    private void onLanguageChange() {
+        //AppLanguageUtils.changeAppLanguage(this, AppLanguageUtils.getSupportLanguage(getAppLanguage(this)));
+        LanguageUtil.changeAppLanguage(this, getAppLanguage(this));
+    }
+
+    private String getAppLanguage(Context context) {
+        String appLang = PrefUtils.getLanguage(context);
+        return appLang ;
     }
 
 

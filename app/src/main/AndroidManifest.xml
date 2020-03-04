@@ -3,7 +3,7 @@
     package="com.kinco.MotorApp">
 
     <application
-        android:name="com.kinco.MotorApp.sys.MyApplication"
+        android:name="com.kinco.MotorApp.sys.SysApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Kinco"
@@ -22,7 +22,7 @@
                 <data android:scheme="content"/>
                 <data android:scheme="file"/>
                 <data android:host="*" />
-                <data android:pathPattern=".*\\.wave" />
+<!--                <data android:pathPattern=".*\\.wave" />-->
                 <data android:mimeType="*/*"/>
             </intent-filter>
 
@@ -31,12 +31,14 @@
             android:name="com.kinco.MotorApp.ui.secondpage.SecondMoreActivity"
             android:configChanges="orientation|keyboard|keyboardHidden"
             android:theme="@style/AppTheme"
-            android:launchMode="singleInstance"/>
-        <activity android:name="com.kinco.MotorApp.ui.DeviceList"/>
+            android:launchMode="singleInstance"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name="com.kinco.MotorApp.ui.functionpage.DeviceList"/>
 
         <activity
             android:name="com.kinco.MotorApp.ui.firstpage.FirstMoreActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"/>
+<!--            android:parentActivityName=".MainActivity"/>-->
 
         <activity android:name=".SplashActivity" >
 
@@ -49,10 +51,24 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".ui.functionpage.LogActivity" />
+        <activity
+            android:name=".ui.functionpage.FileActivity"
+            android:exported="true" />
         <service
             android:name="com.kinco.MotorApp.BluetoothService.BLEService"
             android:enabled="true"
             android:exported="true" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
     <uses-feature

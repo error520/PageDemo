@@ -47,13 +47,13 @@
             android:id="@+id/connected_devices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"></ListView>
+            android:layout_weight="1"/>
 
         <ListView
             android:id="@+id/new_devices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"></ListView>
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -66,14 +66,14 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_skip"
             android:text="@string/SKIP"
-            style="@style/Widget.Kinco.Button"/>
+            style="@style/Widget.Kinco.MaterialButton"/>
 
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BLEscan"
             android:text="@string/SCAN"
-            style="@style/Widget.Kinco.Button"/>
+            style="@style/Widget.Kinco.MaterialButton"/>
 
         <ProgressBar
             android:id="@+id/processbar"

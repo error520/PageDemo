@@ -40,7 +40,7 @@ public class util {
                 return String.valueOf((short) byte2ToUnsignedShort(message,offset));
             else {
                 double num = (short) byte2ToUnsignedShort(message, offset) * min ;
-                DecimalFormat df=new DecimalFormat(String.valueOf(min));
+                DecimalFormat df = new DecimalFormat(String.valueOf(min));
                 String result = df.format(num);
                 return result;
                 //return String.valueOf((short) byte2ToUnsignedShort(message, offset) * min);
@@ -51,7 +51,7 @@ public class util {
                 return String.valueOf(byte2ToUnsignedShort(message,offset));
             else {
                 double num =  byte2ToUnsignedShort(message, offset) * min ;
-                DecimalFormat df=new DecimalFormat(String.valueOf(min));
+                DecimalFormat df = new DecimalFormat(String.valueOf(min));
                 String result = df.format(num);
                 return result;
                 //return String.valueOf(byte2ToUnsignedShort(message, offset) * min);
@@ -60,13 +60,15 @@ public class util {
     }
 
     /*
-    用于特殊的参数解析
+    用于特殊的参数解析  0~200 表示-100~100那种
      */
     public static String parseByteData2(byte[] message, int offset, float min, String Hint){
         String max = Hint.substring(Hint.indexOf("~")+1);
         double dmax = Double.valueOf(max);
         double current = Double.valueOf(parseByteData(message,offset,min,false));
-        String result = String.valueOf(current-dmax);
+        //String result = String.valueOf(current-dmax);
+        DecimalFormat df = new DecimalFormat(String.valueOf(min));
+        String result = df.format(current-dmax);
         return result;
     }
 
@@ -74,7 +76,10 @@ public class util {
      将输入文本转为可用于发送的字节数据
      */
     public static byte[] toByteData(String text, double min){
-        int data = (int)(Float.valueOf(text)/min);
+        int data = (int)(Float.valueOf(text)/min+min*0.5);
+        if(data<0)
+            data = (int)(Float.valueOf(text)/min-min*0.5);
+        //Log.d("BreakPoint","data是"+data);
         return intToByte2(data);
     }
     //CRC校验
@@ -103,9 +108,10 @@ public class util {
     }
     //数字转byte数组
     public static byte[] intToByte2(int i) {
+        short k = (short)i;
         byte[] targets = new byte[2];
-        targets[1] = (byte) (i & 0xFF);
-        targets[0] = (byte) (i >> 8 & 0xFF);
+        targets[1] = (byte) (k & 0xFF);
+        targets[0] = (byte) (k >> 8 & 0xFF);
         return targets;
     }
     //字节数组转字节样式的字符串
@@ -226,30 +232,6 @@ public class util {
         toast.show();
     }
 
-    public static void saveLog(Context context,String filename,String str){
-        FileOutputStream out = null;
-        BufferedWriter writer= null;
-        try{
-            File dir = new File(Environment.getExternalStorageDirectory()+"/KincoLog");
-            if(!dir.exists())
-                dir.mkdir();
-            File fs = new File(Environment.getExternalStorageDirectory()+"/KincoLog/"+filename);
-            //out = context.openFileOutput("ErrorLog.txt",Context.MODE_PRIVATE);  //软件内部的目录创建
-            out = new FileOutputStream(fs);
-            writer = new BufferedWriter(new OutputStreamWriter(out));
-            writer.write(str);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try{
-                if(writer!=null)
-                    writer.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            Log.d("BLEService","写入成功!");
-        }
-    }
 
     public static boolean isRegister(LocalBroadcastManager manager,String action) {
         boolean isRegister = false;

@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import android.view.WindowManager;
 
-import com.kinco.MotorApp.ui.DeviceList;
+import com.kinco.MotorApp.ui.functionpage.DeviceList;
 
 
 public class SplashActivity extends Activity {

@@ -1,18 +1,16 @@
 package com.kinco.MotorApp.alertdialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.kinco.MotorApp.R;
-import com.kinco.MotorApp.edittext.TableAdapter;
+import com.kinco.MotorApp.ParameterItem.TableAdapter;
 
 import java.lang.reflect.Field;
 

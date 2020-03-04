@@ -1,4 +1,4 @@
-package com.kinco.MotorApp.edittext;
+package com.kinco.MotorApp.ParameterItem;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kinco.MotorApp.R;;

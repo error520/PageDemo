@@ -1,4 +1,4 @@
-package com.kinco.MotorApp.edittext;
+package com.kinco.MotorApp.ParameterItem;
 
 public class Parameter {
 

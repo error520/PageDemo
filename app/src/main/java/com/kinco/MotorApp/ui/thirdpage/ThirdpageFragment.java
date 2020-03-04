@@ -53,7 +53,7 @@ public class ThirdpageFragment extends MyFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.read_and_write, container, false);//得到对应的布局文件
+        view = inflater.inflate(R.layout.fragment_third, container, false);//得到对应的布局文件
         return view;
     }
 

@@ -13,8 +13,8 @@
     <string name="A0_05">Running direction</string>
     <string name="A0_06">Acc time 1</string>
     <string name="A0_07">Dec time 1</string>
-    <string name="A0_08">Input	terminal X1 function selection</string>
-    <string name="A0_09">Input	terminal X2 function selection</string>
+    <string name="A0_08">Input terminal X1 function selection</string>
+    <string name="A0_09">Input terminal X2 function selection</string>
     <string name="A0_10">Terminal control mode selection</string>
     <string name="A0_11">Bi-direction pen-collector output terminal Y1</string>
     <string name="A0_12">Output functions of relay R1</string>
@@ -32,9 +32,9 @@
     <string name="A0_25">Rated current of AC motor</string>
     <string name="A0_26">Rated frequency of AC motor</string>
     <string name="A0_27">Rated speed of AC motor</string>
-    <string name="A0_28">Synchronous motor rated voltage</string>
-    <string name="A0_29">Synchronous motor rated current</string>
-    <string name="A0_30">Synchronous motor rated speed</string>
+    <string name="A0_28">Rated voltage of PMSM motor 1</string>
+    <string name="A0_29">Rated current of PMSM motor 1</string>
+    <string name="A0_30">Rated speed of PMSM motor 1</string>
     <string name="A0_31">Max output frequency</string>
     <string name="A0_32">Torque boost</string>
     <string name="A0_33">Starting mode</string>
@@ -213,11 +213,22 @@
         <item>@string/A0_39</item>
     </string-array>
 
+    <string-array name="CWord_options">
+        <item>111B: Running command,110B: Stop mode 0,101B: Stop mode 1,100B: Stop by external fault,011B: Stop mode 2</item>
+        <item>0: Forward,1: Reverse</item>
+        <item>0: Jog forward disable,1: Jog forward</item>
+        <item>0: Jog reverse disable,1: Jog reverse</item>
+        <item>0: Disable Acc/Dec,1: Enable Acc/Dec</item>
+        <item>0: Host computer control word 1 disable,1: Host computer control word 1 enable</item>
+        <item>0: Main reference disable,1: Main reference enable</item>
+        <item>0: Fault reset disable,1: Fault reset enable</item>
+    </string-array>
+
     <string-array name = "status_word">
         <item>@string/B0_00</item>
         <item>@string/B0_01</item>
         <item>@string/B0_03</item>
-        <item>VFD</item>
+        <item>VFD run/stop</item>
         <item>VFD rotation</item>
         <item>Main reference</item>
         <item>Serial port control</item>
@@ -264,10 +275,10 @@
         <item>@string/B0_02</item>
         <item>@string/B0_03</item>
         <item>@string/B0_04</item>
-        <item>@string/B0_05</item>
+
         <item>@string/B0_06</item>
         <item>@string/B0_07</item>
-        <item>@string/B0_08</item>
+
         <item>@string/B0_09</item>
         <item>@string/B0_10</item>
         <item>@string/B0_11</item>
@@ -275,7 +286,7 @@
         <item>@string/B0_13</item>
         <item>@string/B0_14</item>
         <item>@string/B0_15</item>
-        <item>@string/B0_16</item>
+
         <item>@string/B0_17</item>
         <item>@string/B0_18</item>
         <item>@string/B0_19</item>
@@ -307,7 +318,7 @@
     <string name="Show">Show</string>
     <string name="loading">loading</string>
     <string name="RELOAD">RELOAD</string>
-    <string name="reload_completed">reload_completed!</string>
+    <string name="reload_completed">Reload completed!</string>
     <string name="CONNECT">connect</string>
 
     <string name="CONNECTED">CONNECTED</string>
@@ -317,7 +328,7 @@
 
     <string name="Device">Device Connection</string>
     <string name="Language">Language</string>
-    <string name="Contract">Contract</string>
+    <string name="Contact">Contact us</string>
     <string name="Name">Name</string>
     <string name="Decription">Decription</string>
     <string name="Control_command_word">Control command word1</string>
@@ -336,6 +347,24 @@
     <string name="A3_Name">Terminal parameters</string>
     <string name="A4_Name">Control parameters</string>
     <string name="get_slaveAddress_failed">Failed to get slave address</string>
+    <string name="communiation_log">Log</string>
+    <string name="Clear">Clear</string>
+    <string name="reload_gap">Refresh interval(ms)</string>
+    <string name="debug">Debug</string>
+    <string name="ControlWord">Control command word 1</string>
+    <string name="password_title">Please enter the password</string>
+    <string name="password_hint">4 digits password</string>
+    <string name="from">"From: "</string>
+    <string name="no_file">You haven\'t saved any files</string>
+    <string name="device">device</string>
+    <string name="file_name">File Name</string>
+    <string name="save_successfully">Saved successfully</string>
+    <string name="filename_empty">Can not be empty!</string>
+    <string name="dial">Dial</string>
+    <string name="copy">Copy</string>
+    <string name="Tel">Tel:</string>
+    <string name="email">E-mail:</string>
+    <string name="copy_completed">Copy completed</string>
 
 
 </resources>

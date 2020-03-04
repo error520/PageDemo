@@ -31,7 +31,7 @@ public class PasswordDialog{
         this.context=context;
         builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
-        builder.setTitle("Please enter the password");
+        builder.setTitle(context.getString(R.string.password_title));
         final EditText edit = new EditText(context);
         edit.setHeight(150);
         edit.setWidth(30);
@@ -39,7 +39,8 @@ public class PasswordDialog{
         edit.setFocusableInTouchMode(true);
         edit.setInputType(InputType.TYPE_CLASS_NUMBER);
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
-        edit.setHint("4 digits password");
+        edit.setHint(context.getString(R.string.password_hint));
+        edit.setTextColor(Color.BLACK);
         builder.setView(edit);
         builder.setPositiveButton(context.getString(R.string.CONNECT), new DialogInterface.OnClickListener() {
             @Override

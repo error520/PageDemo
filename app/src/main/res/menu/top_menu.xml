@@ -11,5 +11,9 @@
         android:title="@string/Language" />
     <item
         android:id="@+id/item02"
-        android:title="@string/Contract" />
+        android:title="@string/Contact" />
+    <item
+        android:id="@+id/item03"
+        android:title="@string/debug">
+    </item>
 </menu>

@@ -1,4 +1,4 @@
-package com.kinco.MotorApp.edittext;
+package com.kinco.MotorApp.ParameterItem;
 
 
 import android.content.Context;
@@ -13,20 +13,17 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kinco.MotorApp.R;
 
 import java.util.List;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 public class TextAdapter extends BaseAdapter  {
     int hhh;
     private List<Text> texts;
 
-    private Integer resource;
+    private Integer resource = R.layout.main_item;
 
     private Context context;
 
@@ -100,8 +97,8 @@ public class TextAdapter extends BaseAdapter  {
 
         final TextView titleView=(TextView)arg1.findViewById(R.id.title);
         final Spinner contentView=(Spinner)arg1.findViewById(R.id.content);
-        Button currentView=(Button) arg1.findViewById(R.id.current);
-        currentView.setOnClickListener(new View.OnClickListener(){
+        Button btnSet=(Button) arg1.findViewById(R.id.current);
+        btnSet.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 addressNoListener.titleNo(text.getAddress(),Integer.toHexString(text.getId()));
@@ -140,8 +137,8 @@ public class TextAdapter extends BaseAdapter  {
 
         titleView.setText(text.getTitle());
         titleView.setTextSize(13);
-        currentView.setText("SET");
-        currentView.setTextSize(13);
+        btnSet.setText("SET");
+        btnSet.setTextSize(13);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item,text.getContent());
         contentView.setAdapter(adapter);
         contentView.setSelection(text.getId(),true);//每次改变id也改变spinner选项

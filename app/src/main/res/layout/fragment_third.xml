@@ -1,127 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Read Data"
-        android:textStyle="bold" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        app:cardElevation="3dp">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="115dp">
-
-        <TableRow
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Register address" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="146dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="0dp"
-                android:text="Current value" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Spinner
-                android:id="@+id/spinner0"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/currentValue2"
-                android:layout_width="178dp"
                 android:layout_height="wrap_content"
-                android:ems="10" />
+                android:layout_marginBottom="10dp"
+                android:text="@string/Read_Data"
+                android:textColor="@color/grayer"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnRead"
-                android:layout_width="wrap_content"
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="read" />
-        </TableRow>
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="20dp"
+                        android:text="@string/Register_address"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/grayer" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Current_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/grayer" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <Spinner
+                        android:id="@+id/spinner0"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingRight="5dp" />
+
+                    <TextView
+                        android:id="@+id/currentValue"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:textAlignment="center" />
+
+                    <Button
+                        android:id="@+id/btnRead"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/button"
+                        android:text="@string/READ" />
+                </TableRow>
 
 
-    </TableLayout>
+            </TableLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView7"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Write data"
-        android:textStyle="bold" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        app:cardElevation="3dp">
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Register address" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="176dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Set value" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/textView7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/Write_data"
+                android:textColor="@color/grayer"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/setValue"
+            <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="4"
-                android:digits="0123456789abcdefABCDEF"/>
+                android:stretchColumns="*">
 
-            <Button
-                android:id="@+id/btnWrite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="write" />
-        </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="20dp"
+                        android:text="@string/Register_address"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/grayer" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Set_value"
+                        android:textAlignment="center"
+                        android:textColor="@color/grayer" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <Spinner
+                        android:id="@+id/spinner1"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingRight="5dp" />
+                    <!--            android:layout_width="match_parent"-->
+
+                    <EditText
+                        android:id="@+id/setValue"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:digits="0123456789abcdefABCDEF"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:textAlignment="center"
+                        android:textColor="@color/mtrl_on_surface_emphasis_high_type" />
+                    <!--                android:layout_width="match_parent"-->
+
+                    <Button
+                        android:id="@+id/btnWrite"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/button"
+                        android:text="@string/WRITE" />
+                    <!--            android:layout_width="wrap_content"-->
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
