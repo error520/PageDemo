@@ -16,6 +16,8 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,29 +50,24 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     private String TAG = "fourth";
 
     private View view;//得到碎片对应的布局文件,方便后续使用
-    private SurfaceHolder holder;
     private MySurfaceView showSurfaceView;
-    //按钮
-    private Button btnShowBrokenLine;
+
+    private Button btnShow;
     private Spinner spinner;
     private LoadingDialog loadingDialog;
+    private ProgressBar progressBar;
+    private ImageView errorSign;
 
-    private float centerY ;
     private Timer timer = new Timer();
     private TimerTask task = null;
     private int packageCount=0;
     private BLEService mBluetoothLeService;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver receiver=new LocalReceiver();
-    private boolean mDrawing=false;
-    private Handler mHnadler;
-    private int data[] = new int[1024];
+    private Handler mHandler;
     private String[] addressList = {"0204","0202","0203"};
     private ArrayList<byte[]> packageList = new ArrayList();
-    private float maxData = 0;
-    private float minData=0;
-    private float average = 0;
-    private int count=1;
+    private boolean mReceiving = false;
     private TextView fileName;
 
     //记住一定要重写onCreateView方法
@@ -85,8 +82,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-            // 获得SurfaceView对象
+        // 获得SurfaceView对象
         showSurfaceView = (MySurfaceView)getActivity().findViewById(R.id.MySV3);
         showSurfaceView.post(new Runnable() {
             @Override
@@ -98,15 +94,18 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
 
             }
         });
-        btnShowBrokenLine = (Button) getActivity().findViewById(R.id.btnShow);
+        btnShow = getActivity().findViewById(R.id.btnShow);
+        progressBar = getActivity().findViewById(R.id.my_progressbar);
+        progressBar.setMax(103);
+        errorSign = getActivity().findViewById(R.id.error_sign);
         Button btnSave = getActivity().findViewById(R.id.btnSave);
         Button btnOpen = getActivity().findViewById(R.id.btnOpen);
         fileName = getActivity().findViewById(R.id.fileName_tv);
-        btnShowBrokenLine.setOnClickListener(this);
+        btnShow.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         btnOpen.setOnClickListener(this);
         spinner = getActivity().findViewById(R.id.OSCspinner);
-        mHnadler=new Handler();
+        mHandler=new Handler();
     }
 
     @Override
@@ -116,6 +115,9 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             task.cancel();
             task=null;
         }
+        mReceiving = false;
+        receivingUI(false);
+        mHandler.removeCallbacks(mRunnable);
         localBroadcastManager.unregisterReceiver(receiver);
     }
 
@@ -130,7 +132,6 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        //Log.d("fourth","真实的高:"+showSurfaceView.getMeasuredHeight());
     }
 
     @Override
@@ -144,26 +145,33 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         }
     }
 
+    /**
+     * 按钮回调函数
+     * @param view
+     */
     @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btnShow:
                     //testRandomDraw(count);
-                    mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
-                    packageCount=0;
-                    packageList.clear();
-                    mDrawing=true;
-                    mHnadler.postDelayed(mRunnable,10000);
-                    loadingDialog = showLoadingDialog();
+                    if(!mReceiving){
+                        receivingUI(true);
+                        mReceiving = true;
+                        sendRequest();
+                        //loadingDialog = showLoadingDialog();
+                    }else{
+                        receivingUI(false);
+                        mReceiving = false;
+                        mHandler.removeCallbacks(mRunnable);
+                    }
                     break;
                 case R.id.btnSave:
                     if(!saveWaveFile())
-                        util.centerToast(getContext(),"当前没有波形!",0);
+                        util.centerToast(getContext(),getString(R.string.current_no_wave),0);
                     break;
                 case R.id.btnOpen:
                     Intent intent = new Intent(getContext(), FileActivity.class);
                     startActivityForResult(intent,1);
-                    //readWave("/storage/emulated/0/KincoLog/02-17|07-20-43wave.wave");
                     break;
             }
 
@@ -192,7 +200,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     private void showWave(){
         if(loadingDialog!=null)
             loadingDialog.gone();
-        mHnadler.removeCallbacks(mRunnable);
+        mHandler.removeCallbacks(mRunnable);
         showSurfaceView.drawWave(packageToData(packageList));
         reloadFileName(getString(R.string.device));
     }
@@ -262,7 +270,6 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
 //            Log.d(TAG,i+"");
 //        packageList.set(0,package1);
         float current=0;
-        int index=0;
         try {
             for (byte[] i : packageList) {
                 for (int j = 0; j < i.length; j += 2) {
@@ -286,22 +293,15 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
                         }
                         break;
                     }
-                    if (index == 0 && j == 0) {
-                        maxData = minData = current;
-                    } else {
-                        maxData = Math.max(maxData, current);
-                        minData = Math.min(minData, current);
-                    }
+
                 }
-                index++;
             }
-            average = (maxData+minData)/2;
             for(int i=0; i<4; i++)
                 data.remove(0);
             Log.d(TAG,"data长度"+data.size());
-            for(int i=0;i<data.size();i++){
-                Log.d(TAG,data.get(i)+"");
-            }
+//            for(int i=0;i<data.size();i++){
+//                Log.d(TAG,data.get(i)+"");
+//            }
         }catch (Exception e){
             data.clear();
             data.add(0f);
@@ -321,12 +321,15 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(action.equals(BLEService.ACTION_DATA_AVAILABLE)) {
-                if (mDrawing) {
+                if (mReceiving) {
                     byte[] message = intent.getByteArrayExtra(BLEService.EXTRA_MESSAGE_DATA);
                     packageList.add(message);
-                    Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
-                    if(packageCount==103){//102
+                    //Log.d(TAG,util.toHexString(message,true)+"\n"+packageCount+"");
+                    updateProcess();
+                    if(packageCount>50&&message.length==8){//正常情况是103
+                        errorUI(packageCount!=103);//判断数量对不对,是否显示错误标志
                         showWave();
+                        sendRequest();  //接收完一帧1024个数据,请求下一帧
                         //testDraw();
                         return;
                     }
@@ -336,7 +339,9 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
                 }
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
-                util.centerToast(getContext(),"Bluetooth disconnected!",0);
+                util.centerToast(getContext(),getString(R.string.bluetooth_disconnected),0);
+                receivingUI(false);
+                mHandler.removeCallbacks(mRunnable);
                 if(loadingDialog!=null)
                     loadingDialog.gone();
             }
@@ -348,6 +353,15 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
 
             }
         }
+    }
+
+    private void updateProcess() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setProgress(packageCount,true);
+            }
+        });
     }
 
     /**
@@ -374,11 +388,6 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             sb.append(i+",");
         sb.deleteCharAt(sb.length()-1);
         SaveFileDialog saveFileDialog = new SaveFileDialog(getContext(),sb);
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-//        String str = formatter.format(curDate);
-//        FileUtil.saveFile(0,"wave"+str+".wave",sb.toString());
-//        util.centerToast(getContext(),"保存成功!",0);
         return true;
     }
 
@@ -397,7 +406,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             }
             //Log.d(TAG,sb.toString());
             String[] data = sb.toString().split(",");
-            float[] finalData = new float[1024];
+            float[] finalData = new float[data.length];
             for(int i=0; i<data.length;i++){
                 finalData[i] = Float.valueOf(data[i]);
                 //Log.d(TAG,data[i]);
@@ -432,7 +441,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
             while((n=in.read(bytes))!=-1)
                 sb.append(new String(bytes,0,n));
             String[] data = sb.toString().split(",");
-            float[] finalData = new float[1024];
+            float[] finalData = new float[data.length];
             for(int i=0; i<data.length;i++){
                 finalData[i] = Float.valueOf(data[i]);
             }
@@ -450,7 +459,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         public void run() {
             if(loadingDialog!=null)
                 loadingDialog.gone();
-            util.centerToast(getContext(),"超时未响应!",1);
+            util.centerToast(getContext(),getString(R.string.timeout),1);
         }
     };
 
@@ -462,8 +471,35 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
         return loadingDialog;
     }
 
+    private void sendRequest(){
+        packageCount=0;
+        packageList.clear();
+        mHandler.postDelayed(mRunnable,5000);
+        mBluetoothLeService.writeData(addressList[spinner.getSelectedItemPosition()],"0001");
+    }
+
     private void reloadFileName(String fileName){
         this.fileName.setText(getString(R.string.from)+fileName);
+    }
+
+    private void receivingUI(boolean receiving){
+        if(receiving){
+            btnShow.setText(getString(R.string.stop));
+            progressBar.setVisibility(View.VISIBLE);
+        }else{
+            btnShow.setText(getString(R.string.Show));
+            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setProgress(0);
+            errorUI(false);
+        }
+
+    }
+
+    private void errorUI(boolean error){
+        if(error)
+            errorSign.setVisibility(View.VISIBLE);
+        else
+            errorSign.setVisibility(View.INVISIBLE);
     }
 
 

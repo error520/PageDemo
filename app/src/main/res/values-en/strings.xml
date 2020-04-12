@@ -216,7 +216,7 @@
     <string name="Device">Device Connection</string>
     <string name="Language">Language</string>
     <string name="Contact">Contact us</string>
-    <string name="reload_completed">Reload completed!</string>
+    <string name="reload_completed">Reload completed</string>
     <string name="Name">Name</string>
     <string name="Decription">Decription</string>
     <string name="Control_command_word">Control command word1</string>
@@ -263,5 +263,14 @@
     <string name="Tel">Tel:</string>
     <string name="email">E-mail:</string>
     <string name="copy_completed">Copy completed</string>
+    <string name="current_no_wave">No waveform on the screen</string>
+    <string name="timeout">Timeout</string>
+    <string name="stop">Stop</string>
+    <string name="succeed">Succeed</string>
+    <string name="bluetooth_disconnected">Bluetooth disconnected</string>
+    <string name="connected">Connected</string>
+    <string name="password_correct">Correct</string>
+    <string name="password_wrong">Wrong</string>
+    <string name="connection_failed">Connection failed</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.kinco.MotorApp.alertdialog;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -33,8 +35,6 @@ public class PasswordDialog{
         builder.setCancelable(false);
         builder.setTitle(context.getString(R.string.password_title));
         final EditText edit = new EditText(context);
-        edit.setHeight(150);
-        edit.setWidth(30);
         edit.setFocusable(true);
         edit.setFocusableInTouchMode(true);
         edit.setInputType(InputType.TYPE_CLASS_NUMBER);

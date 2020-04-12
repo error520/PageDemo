@@ -294,7 +294,7 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
                 if(initializing) {
                     reloadAll(message, position);
                 }else {
-                    util.centerToast(getContext(), "succeed!", 0);
+                    util.centerToast(getContext(), getString(R.string.succeed), 0);
                     if(addressState=="0003")
                         mData.get(0).setCurrentValue(util.parseByteData(message,4,0.01f,false));
                         mAdapter.notifyDataSetChanged();

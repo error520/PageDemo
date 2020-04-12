@@ -290,13 +290,13 @@ public class FirstMoreActivity extends AppCompatActivity implements View.OnClick
                     if(message.length==8){
                         String address = util.toHexString(message,2,false);
                         reloadItem(address,message);
-                        util.centerToast(FirstMoreActivity.this,"succeed!",0);
+                        util.centerToast(FirstMoreActivity.this,getString(R.string.succeed),0);
                     }
                 }
 
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
-                util.centerToast(context, "Bluetooth disconnected!", Toast.LENGTH_SHORT);
+                util.centerToast(context, getString(R.string.bluetooth_disconnected), Toast.LENGTH_SHORT);
             }
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){
                 String errorCode = intent.getStringExtra(BLEService.ACTION_ERROR_CODE);

@@ -404,6 +404,7 @@ public class BLEService extends Service {
     public boolean onUnbind(Intent intent) {
         return super.onUnbind(intent);
     }
+
     public void close() {
         if (mBluetoothGatt == null) {
             return;

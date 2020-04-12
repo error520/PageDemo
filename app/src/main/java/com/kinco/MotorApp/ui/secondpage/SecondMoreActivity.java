@@ -176,6 +176,8 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
 
                             }
                     });
+                }else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)){
+                    util.centerToast(SecondMoreActivity.this,getString(R.string.bluetooth_disconnected),0);
                 }
         }
     }
@@ -314,6 +316,19 @@ public class SecondMoreActivity extends Activity implements View.OnClickListener
     private String getAppLanguage(Context context) {
         String appLang = PrefUtils.getLanguage(context);
         return appLang ;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initService();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        localBroadcastManager.unregisterReceiver(receiver);
+        //unbindService(connection);
     }
 
 }

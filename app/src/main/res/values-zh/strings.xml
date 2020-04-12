@@ -312,6 +312,15 @@
     <string name="Tel">电话:</string>
     <string name="email">邮箱:</string>
     <string name="copy_completed">已复制</string>
+    <string name="current_no_wave">当前没有波形!</string>
+    <string name="timeout">超时未响应</string>
+    <string name="stop">停止</string>
+    <string name="succeed">成功</string>
+    <string name="bluetooth_disconnected">蓝牙未连接</string>
+    <string name="connected">连接成功</string>
+    <string name="password_correct">密码正确</string>
+    <string name="password_wrong">密码错误</string>
+    <string name="connection_failed">连接失败</string>
 
 
 </resources>

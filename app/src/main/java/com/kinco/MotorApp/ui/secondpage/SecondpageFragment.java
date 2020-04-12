@@ -201,7 +201,7 @@ public class SecondpageFragment extends MyFragment {
                                     else
                                         list0.get(8).setDescribe(s_options[10]);
                                 }
-                                util.centerToast(getContext(),"Reload completed!",0);
+                                util.centerToast(getContext(),getString(R.string.reload_completed),0);
                                 adapter.notifyDataSetChanged();
                                 addressState="0000";
                                 return;
@@ -218,7 +218,7 @@ public class SecondpageFragment extends MyFragment {
             }
             //蓝牙未连接
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
-                util.centerToast(getContext(),"Bluetooth disconnected!",0);
+                util.centerToast(getContext(),getString(R.string.bluetooth_disconnected),0);
             }
             //错误码
             else if(action.equals(BLEService.ACTION_ERROR_CODE)){

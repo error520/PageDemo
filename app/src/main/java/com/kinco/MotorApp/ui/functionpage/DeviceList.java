@@ -158,6 +158,7 @@ public class DeviceList extends AppCompatActivity{
     @Override
     protected void onDestroy(){
         super.onDestroy();
+        unbindService(connection);
         localBroadcastManager.unregisterReceiver(localReceiver);
     }
 
@@ -167,8 +168,6 @@ public class DeviceList extends AppCompatActivity{
                                 View view, int i, long l) {
                 mBluetoothLeService.close();
                 connected_list.clear();
-                progressBar.setVisibility(View.GONE);
-                BLEScan.setVisibility(View.VISIBLE);
                 mPairedDevicesArrayAdapter.notifyDataSetChanged();
         }
     };
@@ -180,6 +179,8 @@ public class DeviceList extends AppCompatActivity{
         public void onItemClick(AdapterView<?> adapterView,
                                 View view, int i, long l) {
             mBluetoothLeService.stopLeScan();
+            progressBar.setVisibility(View.GONE);
+            BLEScan.setVisibility(View.VISIBLE);
             String info=((TextView) view).getText().toString();
             String address=info.substring(info.length()-17);
             slaveAddress = info;
@@ -256,7 +257,7 @@ public class DeviceList extends AppCompatActivity{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast toast = Toast.makeText(getApplicationContext(),"Connection succeed!",Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.connected),Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                         mBluetoothLeService.slaveAddress = slaveAddress;
@@ -284,7 +285,7 @@ public class DeviceList extends AppCompatActivity{
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)){
                 if(!(loadingDialog==null))
                     loadingDialog.gone();
-                Toast toast = Toast.makeText(getApplicationContext(),"Connection failed!",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.connection_failed),Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER,0,0);
                 toast.show();
                 connected_list.clear();
@@ -297,14 +298,14 @@ public class DeviceList extends AppCompatActivity{
                 String password=util.toHexString(message,false);
                 if(dialog!=null){
                     if(editPassword.equals(password)) {
-                        util.centerToast(DeviceList.this, "Correct!", 0);
+                        util.centerToast(DeviceList.this, getString(R.string.password_correct), 0);
                         dialog.gone();
                         Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
                         startActivity(activityIntent);
                         finish();
                         dialog=null;
                     }else
-                        util.centerToast(DeviceList.this, "Wrong!", 0);
+                        util.centerToast(DeviceList.this, getString(R.string.password_wrong), 0);
                 }
 
 

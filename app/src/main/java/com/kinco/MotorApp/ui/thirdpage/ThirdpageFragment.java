@@ -151,11 +151,11 @@ public class ThirdpageFragment extends MyFragment {
                 if(state.equals("read"))
                     currentValue.setText(util.toHexString(message,3,true));
                 if(state.equals("write"))
-                    util.centerToast(context,"succeed!!!",Toast.LENGTH_SHORT);
+                    util.centerToast(context,getString(R.string.succeed),Toast.LENGTH_SHORT);
 
             }
             else if(action.equals(BLEService.ACTION_GATT_DISCONNECTED)) {
-                util.centerToast(context,"Bluetooth disconnected!", Toast.LENGTH_SHORT);
+                util.centerToast(context,getString(R.string.bluetooth_disconnected), Toast.LENGTH_SHORT);
             }
             else if(action.equals(BLEService.ACTION_DATA_LENGTH_FALSE)) {
                 Toast.makeText(context, "Length error!", Toast.LENGTH_SHORT).show();

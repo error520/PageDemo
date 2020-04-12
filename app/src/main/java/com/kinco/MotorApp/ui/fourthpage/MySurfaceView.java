@@ -402,7 +402,7 @@ public class MySurfaceView extends SurfaceView implements
         else
             ImageRatio = step/(max-average);
         //Log.d(TAG,"centerY是"+centerY+"");
-        for(int i=0;i<1024;i++){
+        for(int i=0;i<data.length;i++){
             cx += scale;
             cy = centerY-(data[i]-average)*step/(max-average);
             if(max == average)
