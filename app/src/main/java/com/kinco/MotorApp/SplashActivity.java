@@ -47,7 +47,7 @@ public class SplashActivity extends Activity {
 
 
 
-        setContentView(R.layout.start);
+        setContentView(R.layout.start2);
 
 
 
@@ -67,7 +67,7 @@ public class SplashActivity extends Activity {
 
 
 
-                    sleep(500);//使程序休眠500ms
+                    sleep(2000);//使程序休眠500ms
 
 
 
