@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
     <!--android:background="@mipmap/wallpaper1"-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerText="连接设备"
+        app:centerType="textView"
+        android:layout_alignParentTop="true"/>
     <LinearLayout
         android:id="@+id/llayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/title_bar"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -82,7 +88,5 @@
             android:layout_weight="1"
             android:visibility="gone" />
 
-
     </LinearLayout>
-
 </RelativeLayout>

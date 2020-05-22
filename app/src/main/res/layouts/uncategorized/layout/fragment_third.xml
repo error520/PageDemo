@@ -160,7 +160,7 @@
                         android:inputType="number"
                         android:maxLength="4"
                         android:textAlignment="center"
-                        android:textColor="@color/mtrl_on_surface_emphasis_high_type" />
+                        android:textColor="@color/black" />
                     <!--                android:layout_width="match_parent"-->
 
                     <Button

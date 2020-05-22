@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kinco</string>
+    <string name="app_name">KMlink</string>
     <string name="title_Setting">Setting</string>
     <string name="title_Condition">Condition</string>
     <string name="title_ReadWrite">Read/Write</string>
     <string name="title_OSC">OSC</string>
+    <string name="title_More">More</string>
     <string name="A0_00">User password</string>
     <string name="A0_01">Control mode</string>
     <string name="A0_02">Main reference frequency selector</string>

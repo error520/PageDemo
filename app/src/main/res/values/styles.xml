@@ -1,9 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.Bridge">
+<!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light.Bridge">-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorAccent</item>#通知栏颜色
+        <item name="colorPrimary">@color/white</item>#通知栏颜色
         <item name="colorPrimaryDark">@color/colorAccent</item>#导航栏颜色
         <item name="colorAccent">@color/colorAccent</item>#控件选中后颜色
         <item name="android:textColorPrimary">@color/white</item>
@@ -18,11 +19,27 @@
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">#000000</item>
-        <item name="backgroundTint">?attr/actionMenuTextColor</item>
         <item name="cornerRadius">8dp</item>
         <item name="elevation">10dp</item>
-        <item name="rippleColor">@color/gray</item>
-        <item name="android:layout_margin">3dp</item>
+        <item name="rippleColor">@color/ripple_gray</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="Widget.Kinco.MaterialNegativeButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">43dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@drawable/selector_textcolor</item>
+        <item name="backgroundTint">@color/selector_neg_btn_background</item>
+        <item name="strokeColor">@color/selector_btn_stroke_color</item>
+<!--        <item name="strokeWidth">0dp</item>-->
+        <item name="cornerRadius">8dp</item>
+        <item name="rippleColor">@color/ripple_gray</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
     </style>
 
     <style name="Widget.Kinco.Button" parent="Widget.AppCompat.Button">
@@ -33,5 +50,18 @@
         <item name="android:background">@drawable/button</item>
     </style>
 
+    <style name="Widget.Kinco.ItemTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawableRight">@drawable/ic_keyboard_arrow_right_black_24dp</item>
+    </style>
+
+    <declare-styleable name="ConstraintHeightListView">
+        <attr name="maxHeight" format="dimension"></attr>
+    </declare-styleable>
 
 </resources>

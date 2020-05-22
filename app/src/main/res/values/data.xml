@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources >
-
+<string-array name="test">
+    <item>语言</item>
+    <item>调试</item>
+    <item>联系厂商</item>
+</string-array>
 
 <!--这里存放不需要区别语言的参数组成部分-->
 

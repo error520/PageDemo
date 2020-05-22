@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -241,6 +242,8 @@ public class FirstpageFragment extends MyFragment implements View.OnClickListene
     public void onStart() {
         super.onStart();
         if(Showing) {
+            ImageView icon = getActivity().findViewById(R.id.icon_status);
+            icon.setActivated(true);
             initService();
             if(initializing){
                 mHandler.postDelayed(new Runnable() {

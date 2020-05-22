@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/shape_device_list"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_disconnect"
+        style="@style/Widget.Kinco.MaterialNegativeButton"
+        android:enabled="false"
+        android:insetBottom="5dp"
+        android:text="断开当前" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_scan"
+        style="@style/Widget.Kinco.MaterialButton"
+        android:insetTop="5dp"
+        android:text="@string/SCAN" />
+
+    <com.kinco.MotorApp.ui.widget.MyListView
+        android:id="@+id/lv_new_device"
+        style="@style/Widget.AppCompat.ListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        custom:maxHeight="400dp"/>
+
+    <ProgressBar
+        android:id="@+id/pb_scanning"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
+</LinearLayout>

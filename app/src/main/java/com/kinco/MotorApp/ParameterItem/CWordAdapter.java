@@ -1,6 +1,5 @@
 package com.kinco.MotorApp.ParameterItem;
 
-import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -9,12 +8,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.kinco.MotorApp.BluetoothService.BLEService;
 import com.kinco.MotorApp.R;
 import com.kinco.MotorApp.sys.SysApplication;
 import com.kinco.MotorApp.utils.util;
@@ -22,7 +19,6 @@ import com.kinco.MotorApp.utils.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class CWordAdapter extends BaseAdapter {
     private Context context = SysApplication.getContext();
@@ -64,7 +60,7 @@ public class CWordAdapter extends BaseAdapter {
     @Override
     public View getView(final int bitPosition, View convertView, ViewGroup parent) {
         if(convertView==null)
-            convertView = inflater.inflate(R.layout.controlword_item,null);
+            convertView = inflater.inflate(R.layout.item_controlword,null);
         final CWordBean bean= beans.get(bitPosition);
         final TextView textView = convertView.findViewById(R.id.CWtextview);
         textView.setText(bean.bit);

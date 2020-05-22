@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kinco</string>
+    <string name="app_name">KMlink</string>
     <string name="title_Setting">设置</string>
     <string name="title_Condition">状态</string>
     <string name="title_ReadWrite">自由读写</string>
@@ -259,7 +259,7 @@
     <string name="CONNECTED">已连接</string>
     <string name="NEW">新的设备</string>
     <string name="SKIP">跳过</string>
-    <string name="SCAN">扫描</string>
+    <string name="SCAN">搜索设备</string>
 
     <string name="Device">设备连接</string>
     <string name="Language">Language</string>
@@ -321,6 +321,7 @@
     <string name="password_correct">密码正确</string>
     <string name="password_wrong">密码错误</string>
     <string name="connection_failed">连接失败</string>
+    <string name="title_More">更多</string>
 
 
 </resources>

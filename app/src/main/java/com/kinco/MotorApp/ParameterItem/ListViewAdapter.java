@@ -67,7 +67,7 @@ public class ListViewAdapter extends BaseAdapter {
         ViewHolder holder = null;
         final ItemBean itemObj = mData.get(position);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_edittext, null);
+            convertView = inflater.inflate(R.layout.item_set, null);
             holder = new ViewHolder(convertView);
             holder.edit_name=(TextView)convertView.findViewById(R.id.edit_name);//1
             holder.edit_unit=(TextView)convertView.findViewById(R.id.edit_unit);

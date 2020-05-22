@@ -6,42 +6,47 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.codingending.popuplayout.PopupLayout;
 import com.kinco.MotorApp.LanguageUtils.LanguageUtil;
 import com.kinco.MotorApp.LanguageUtils.PrefUtils;
 import com.kinco.MotorApp.alertdialog.ContactDialog;
+import com.kinco.MotorApp.alertdialog.PasswordDialog;
 import com.kinco.MotorApp.alertdialog.SetLanguageDialog;
 import com.kinco.MotorApp.sys.MyFragment;
 import com.kinco.MotorApp.ui.functionpage.DeviceList;
 
+import com.kinco.MotorApp.ui.functionpage.DevicePopup;
 import com.kinco.MotorApp.ui.functionpage.LogActivity;
 import com.kinco.MotorApp.ui.firstpage.FirstpageFragment;
 import com.kinco.MotorApp.ui.fourthpage.FourthpageFragment;
+import com.kinco.MotorApp.ui.menupage.MenuFragment;
 import com.kinco.MotorApp.ui.secondpage.SecondpageFragment;
 import com.kinco.MotorApp.ui.thirdpage.ThirdpageFragment;
-import com.kinco.MotorApp.utils.FileUtil;
 import com.kinco.MotorApp.utils.util;
+import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
     private FirstpageFragment firstpageFragment=new FirstpageFragment();
     private SecondpageFragment secondpageFragment=new SecondpageFragment();
-    private ThirdpageFragment thirdpageFragment=new ThirdpageFragment();
-    private FourthpageFragment fourthpageFragment=new FourthpageFragment();
+    private FourthpageFragment thirdpageFragment=new FourthpageFragment();
+    private MenuFragment fourthpageFragment=new MenuFragment();
     private String TAG = "MainActivity";
     public static boolean  flag = false;
     public static TabFragmentUtils tabFragmentUtils;
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity  {
         LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this)); // onCreate 之前调用 否则不起作用
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initTitleBar();
         mainRadioGroupId = (RadioGroup) findViewById(R.id.main_radioGroupId);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -138,6 +144,33 @@ public class MainActivity extends AppCompatActivity  {
         return true;
     }
 
+    private void initTitleBar(){
+        final CommonTitleBar titleBar = findViewById(R.id.main_titleBar);
+        View rightLayout = titleBar.getRightCustomView();
+        rightLayout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+//                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+//                View layout = inflater.inflate(R.layout.language_layout,null);
+//                PopupLayout popupLayout=PopupLayout.init(MainActivity.this, layout);
+//                RadioButton radioButton = layout.findViewById(R.id.radio_en);
+//                radioButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        util.centerToast(MainActivity.this,"切换成英语啦",0);
+//                        PasswordDialog dialog = new PasswordDialog(MainActivity.this);
+//
+//                    }
+//                });
+//                popupLayout.show(PopupLayout.POSITION_TOP);
+                DevicePopup deviceList = new DevicePopup(MainActivity.this);
+                deviceList.setAlignBackground(true);
+                deviceList.showPopupWindow(titleBar);
+
+            }
+        });
+    }
+
     /**
      * 切换到波形界面展示波形
      */
@@ -151,7 +184,7 @@ public class MainActivity extends AppCompatActivity  {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        fourthpageFragment.readWave(uri);
+                        thirdpageFragment.readWave(uri);
                     }
                 },1000);
             }else{

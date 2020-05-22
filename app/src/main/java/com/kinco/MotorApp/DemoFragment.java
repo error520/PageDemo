@@ -21,7 +21,7 @@ public class DemoFragment {
     @Nullable
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_demo, container, false);
+        View view = inflater.inflate(R.layout. fragment_demo, container, false);
 //        int anInt = getArguments().getInt("int");
         TextView textView = (TextView) view.findViewById(R.id.text);
         textView.setText("这是第" + 1 + "张");
