@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btn_back"
+    style="@style/Widget.Kinco.TextButton"
+    android:layout_width="wrap_content"
+    android:layout_height="30dp"
+    android:gravity="center_vertical|start"
+    android:padding="0dp"
+    android:text="@string/back"
+    android:textColor="@color/black"
+    android:textSize="16sp"
+    app:icon="@drawable/ic_keyboard_arrow_left_black_24dp"
+    app:iconGravity="textStart"
+    app:iconPadding="3dp"
+    app:iconSize="30dp"
+    app:iconTint="@color/black" />

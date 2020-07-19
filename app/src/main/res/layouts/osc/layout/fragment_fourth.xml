@@ -57,7 +57,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.kinco.MotorApp.ui.fourthpage.MyProgressBar
+                <com.kinco.kmlink.ui.fourthpage.MyProgressBar
                     android:id="@+id/my_progressbar"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
@@ -109,7 +109,7 @@
 
         </LinearLayout>
 
-        <com.kinco.MotorApp.ui.fourthpage.MySurfaceView
+        <com.kinco.kmlink.ui.fourthpage.MySurfaceView
             android:id="@+id/MySV3"
             android:layout_width="match_parent"
             android:layout_height="450dp" />

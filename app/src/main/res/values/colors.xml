@@ -10,4 +10,5 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="ripple_gray">#40858585</color>
+    <color name="text_color">#110202</color>
 </resources>

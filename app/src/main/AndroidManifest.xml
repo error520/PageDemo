@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kinco.MotorApp">
+    package="com.kinco.kmlink">
 
     <application
-        android:name="com.kinco.MotorApp.sys.SysApplication"
+        android:name=".sys.SysApplication"
         android:allowBackup="true"
         android:label="KMlink"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/_128"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label">
+
         <activity
-            android:name="com.kinco.MotorApp.MainActivity"
+            android:name="com.kinco.kmlink.SplashActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.kinco.kmlink.MainActivity"
             android:label="KMlink"
             android:exported="true"
             android:launchMode="singleTask">
-
             <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="content"/>
                 <data android:scheme="file"/>
                 <data android:host="*" />
-<!--                <data android:pathPattern=".*\\.wave" />-->
+                <data android:pathPattern=".*\\.dat" />
                 <data android:mimeType="*/*"/>
             </intent-filter>
-
         </activity>
+
         <activity
-            android:name="com.kinco.MotorApp.ui.secondpage.SecondMoreActivity"
+            android:name="com.kinco.kmlink.ui.secondpage.SecondMoreActivity"
             android:configChanges="orientation|keyboard|keyboardHidden"
             android:theme="@style/AppTheme"
             android:launchMode="singleInstance"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name="com.kinco.MotorApp.ui.functionpage.DeviceList"/>
+            android:parentActivityName="com.kinco.kmlink.MainActivity"/>
+        <activity android:name="com.kinco.kmlink.ui.functionpage.DeviceList"/>
+        <activity android:name=".ui.secondpage.ReadChildActivity"
+            android:launchMode="singleInstance"/>
 
         <activity
-            android:name="com.kinco.MotorApp.ui.firstpage.FirstMoreActivity"
+            android:name="com.kinco.kmlink.ui.firstpage.FirstMoreActivity"
             android:launchMode="singleInstance"/>
 <!--            android:parentActivityName=".MainActivity"/>-->
 
-        <activity android:name=".SplashActivity" >
-
-            <intent-filter>
-
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
-            </intent-filter>
-
-        </activity>
-        <activity android:name=".ui.functionpage.LogActivity" />
         <activity
-            android:name=".ui.functionpage.FileActivity"
+            android:name=".ui.firstpage.SetChildActivity"
+            android:launchMode="singleInstance"/>
+
+        <activity android:name="com.kinco.kmlink.ui.functionpage.LogActivity" />
+
+        <activity
+            android:name="com.kinco.kmlink.ui.functionpage.FileActivity"
             android:exported="true" />
         <service
-            android:name="com.kinco.MotorApp.BluetoothService.BLEService"
+            android:name="com.kinco.kmlink.BluetoothService.BleService"
             android:enabled="true"
             android:exported="true" />
 

@@ -30,7 +30,8 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dial" />
+            android:text="@string/dial"
+            android:textColor="@color/colorAccent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -58,6 +59,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/copy" />
+            android:text="@string/copy"
+            android:textColor="@color/colorAccent"/>
     </LinearLayout>
 </LinearLayout>

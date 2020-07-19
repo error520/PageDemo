@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="B0_00">
+        <item>Output frequency</item>
+        <item>输出频率</item>
+        <item>@string/signed_value</item>
+        <item>0.01</item>
+        <item>Hz</item>
+        <item>0~60000</item>
+    </string-array>
+    <string-array name="B0_01">
+        <item>Output voltage</item>
+        <item>输出电压</item>
+        <item>@string/value</item>
+        <item>1</item>
+        <item>V</item>
+        <item>0~60000</item>
+    </string-array>
+    <string-array name="B0_02">
+        <item>Output current</item>
+        <item>输出电流</item>
+        <item>@string/value</item>
+        <item>0.1</item>
+        <item>A</item>
+        <item>0~30</item>
+    </string-array>
+    <string-array name="B0_03">
+        <item>Motor power</item>
+        <item>电机功率</item>
+        <item>@string/value</item>
+        <item>0.1</item>
+        <item>%</item>
+        <item>0~2000</item>
+    </string-array>
+    <string-array name="B0_04">
+        <item>Motor actual frequency</item>
+        <item>电机实测频率</item>
+        <item>@string/value</item>
+        <item>0.01</item>
+        <item>Hz</item>
+        <item>0~60000</item>
+    </string-array>
+    <string-array name="B0_05">
+        <item>Device running status</item>
+        <item>设备运行状态</item>
+        <item>@string/options</item>
+        <item>Run/Stop </item>
+        <item>运行/停机</item>
+        <item>Reverse/Forward</item>
+        <item>反转/正转</item>
+        <item>Operating at zero frequency</item>
+        <item>零速运行</item>
+        <item>Accelerating</item>
+        <item>加速中</item>
+        <item>Decelerating</item>
+        <item>减速中</item>
+        <item>Operating at constant speed</item>
+        <item>恒速运行</item>
+        <item>Pre-commutation</item>
+        <item>预励磁中</item>
+        <item>Tuning</item>
+        <item>调谐中</item>
+        <item>Over-current limiting</item>
+        <item>过流限制中</item>
+        <item>DC over-voltage limiting</item>
+        <item>DC过压限制中</item>
+        <item>Torque limiting</item>
+        <item>转矩限幅中</item>
+        <item>Speed limiting</item>
+        <item>速度限幅中</item>
+        <item>Drive fault</item>
+        <item>设备故障</item>
+        <item>Speed control</item>
+        <item>速度控制</item>
+        <item>Torque control</item>
+        <item>转矩控制</item>
+        <item>Position control(Reserved)</item>
+        <item>位置控制(保留)</item>
+    </string-array>
+    <string-array name="B0_06">
+        <item>Input terminals status</item>
+        <item>开关量输入状态</item>
+        <item>@string/options</item>
+        <item>0: OFF</item>
+        <item>1: ON</item>
+    </string-array>
+    <string-array name="B0_07">
+        <item>Output terminals status</item>
+        <item>开关量输出状态</item>
+        <item>@string/options</item>
+        <item>0: OFF</item>
+        <item>1: ON</item>
+    </string-array>
+    <string-array name="B0_08">
+        <item>AI1 input voltage</item>
+        <item>AI1输入电压</item>
+        <item>@string/signed_value</item>
+        <item>0.01</item>
+        <item>V</item>
+        <item>0~2000</item>
+    </string-array>
+    <string-array name="B0_09">
+        <item>Temperature of heatsink 1</item>
+        <item>散热器温度</item>
+        <item>@string/value</item>
+        <item>0.1</item>
+        <item>℃</item>
+        <item>0~1500</item>
+    </string-array>
+    <string-array name="B0_10">
+        <item>Fault record 1</item>
+        <item>故障纪录1</item>
+        <item>@string/options_common</item>
+        <item>B0_10_options</item>
+    </string-array>
+    <string-array name="B0_11">
+        <item>Bus voltage of the latest failure</item>
+        <item>故障时刻母线电压</item>
+        <item>@string/value</item>
+        <item>1</item>
+        <item>V</item>
+        <item>0~999</item>
+    </string-array>
+    <string-array name="B0_12">
+        <item>Actual current of the latest failure</item>
+        <item>故障时刻电流</item>
+        <item>@string/value</item>
+        <item>0.1</item>
+        <item>A</item>
+        <item>0~9999</item>
+    </string-array>
+    <string-array name="B0_13">
+        <item>Operation frequency of the latest failure</item>
+        <item>故障时刻频率</item>
+        <item>@string/value</item>
+        <item>0.01</item>
+        <item>Hz</item>
+        <item>0~30000</item>
+    </string-array>
+    <string-array name="B0_14">
+        <item>Custom-made version number</item>
+        <item>软件定制版本</item>
+        <item>@string/value</item>
+        <item>1</item>
+        <item></item>
+        <item>0~65536</item>
+    </string-array>
+    <string-array name="B0_15">
+        <item>Software date</item>
+        <item>软件日期</item>
+        <item>@string/value</item>
+        <item>1</item>
+        <item></item>
+        <item>0~65536</item>
+    </string-array>
+    <string-array name="B0_16">
+        <item>Status word</item>
+        <item>状态字</item>
+        <item>@string/value</item>
+        <item>1</item>
+        <item></item>
+        <item>-300~300</item>
+    </string-array>
+    <string-array name="B0_17">
+        <item>Bus voltage</item>
+        <item>母线电压</item>
+        <item>@string/value</item>
+        <item>1</item>
+        <item>V</item>
+        <item>0~800</item>
+    </string-array>
+    <string-array name="B0_18">
+        <item>AI1 input</item>
+        <item>AI1 输入电压</item>
+        <item>@string/signed_value</item>
+        <item>0.01</item>
+        <item>V</item>
+        <item>0~2000</item>
+    </string-array>
+    <string-array name="B0_19">
+        <item>AI2 input</item>
+        <item>AI2 输入电压</item>
+        <item>@string/signed_value</item>
+        <item>0.01</item>
+        <item>V</item>
+        <item>0~2000</item>
+    </string-array>
+    <string-array name="B0_20">
+        <item>AO1 output</item>
+        <item>AO1输出</item>
+        <item>@string/value</item>
+        <item>0.1</item>
+        <item>%</item>
+        <item>0~1000</item>
+    </string-array>
+    <string-array name="B0_21">
+        <item>AO2 output</item>
+        <item>AO2输出</item>
+        <item>@string/value</item>
+        <item>0.1</item>
+        <item>%</item>
+        <item>0~1000</item>
+    </string-array>
+    <string-array name="B0_22">
+        <item>Percentage of AI2 after regulation</item>
+        <item>AI2调整后的百分比</item>
+        <item>@string/signed_value</item>
+        <item>0.01</item>
+        <item>%</item>
+        <item>0~20000</item>
+    </string-array>
+    <string-array name="B0_23">
+        <item>Percentage of Keyboard potentiometer after regulation</item>
+        <item>调节后的键盘电位计百分比</item>
+        <item>@string/signed_value</item>
+        <item>0.01</item>
+        <item>%</item>
+        <item>0~20000</item>
+    </string-array>
+
+
+</resources>

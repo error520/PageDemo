@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    <com.wuhenzhizao.titlebar.widget.CommonTitleBar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:rightType="customView"-->
+<!--        app:rightCustomView="@layout/connect_status"-->
+<!--        />-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
 
         android:layout_width="match_parent"
@@ -13,17 +24,6 @@
         android:paddingRight="5dp"
         android:orientation="vertical"
         >
-
-        <!--        <TextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:padding="12dp"-->
-        <!--            android:paddingBottom="10dip"-->
-        <!--            android:paddingTop="10dip"-->
-        <!--            android:text="Choose"-->
-        <!--            android:textColor="#3838AC"-->
-        <!--            android:textSize="20sp"-->
-        <!--            android:textStyle="bold" />-->
 
         <Button
             android:id="@+id/btnInit"
@@ -152,3 +152,4 @@
 
 
     </LinearLayout></ScrollView>
+</LinearLayout>

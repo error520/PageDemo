@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KMlink</string>
-    <string name="title_Setting">Setting</string>
+    <string name="title_Setting">Settings</string>
     <string name="title_Condition">Condition</string>
     <string name="title_ReadWrite">Read/Write</string>
     <string name="title_OSC">OSC</string>
@@ -27,7 +27,7 @@
     <string name="A0_19">Number of polarities 0f AC motor 1</string>
     <string name="A0_20">Rated power of PMSM motor 1</string>
     <string name="A0_21">Number of polarities 0f PMSM motor 1</string>
-    <string name="A0_22">Parameter initialization</string>
+    <string name="A0_22">OldParameter initialization</string>
     <string name="A0_24">Rated voltage of AC motor</string>
     <string name="A0_25">Rated current of AC motor</string>
     <string name="A0_26">Rated frequency of AC motor</string>
@@ -127,7 +127,7 @@
         <item>20:Reserved (E020)</item>
         <item>21:Reserved</item>
         <item>22:Reserved</item>
-        <item>23:Parameter copy error (E023)</item>
+        <item>23:OldParameter copy error (E023)</item>
         <item>24:Auto tunning fault in vector control.(E024)</item>
         <item>25:Encoder signal fault in lose-loop control(E025)</item>
         <item>26:VFD running current is detected smaller than set value of load lost(E026)</item>
@@ -267,11 +267,32 @@
     <string name="timeout">Timeout</string>
     <string name="stop">Stop</string>
     <string name="succeed">Succeed</string>
-    <string name="bluetooth_disconnected">Bluetooth disconnected</string>
+    <string name="device_disconnected">Device disconnected</string>
     <string name="connected">Connected</string>
     <string name="password_correct">Correct</string>
     <string name="password_wrong">Wrong</string>
     <string name="connection_failed">Connection failed</string>
     <string name="title_More">More</string>
+    <string name="disconnect_current">Disconnect</string>
+    <string name="stop_scan">Stop</string>
+    <string name="unconnected">disconnected</string>
+    <string name="device_out_of_range">The device is out of range</string>
+    <string name="title_general">General</string>
+    <string name="title_motor">Motor</string>
+    <string name="title_vf">V/F</string>
+    <string name="title_terminal">Terminal</string>
+    <string name="title_control">Control</string>
+    <string name="title_fault">Fault</string>
+    <string name="title_status">Status</string>
+    <string name="title_others">Others</string>
+    <string name="data_out_of_range">Out of range</string>
+    <string name="please_enter_complete_data">Please enter complete data</string>
+    <string name="back">Back</string>
+    <string name="parameter_list">Parameter list</string>
+    <string name="quick_command">Quick command</string>
+    <string name="version">Version</string>
+    <string name="start_receiving">Start receiving</string>
+    <string name="stop_receiving">Stop receiving</string>
+    <string name="device_connection">Device connection</string>
 
 </resources>

@@ -13,15 +13,20 @@
         style="@style/Widget.Kinco.MaterialNegativeButton"
         android:enabled="false"
         android:insetBottom="5dp"
-        android:text="断开当前" />
+        android:text="@string/disconnect_current" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_scan"
         style="@style/Widget.Kinco.MaterialButton"
+        custom:icon="@drawable/ic_search"
+        custom:iconTint="#000000"
+        custom:iconGravity="textStart"
+        custom:iconSize="12dp"
         android:insetTop="5dp"
         android:text="@string/SCAN" />
 
-    <com.kinco.MotorApp.ui.widget.MyListView
+
+    <com.kinco.kmlink.ui.widget.MyListView
         android:id="@+id/lv_new_device"
         style="@style/Widget.AppCompat.ListView"
         android:layout_width="match_parent"

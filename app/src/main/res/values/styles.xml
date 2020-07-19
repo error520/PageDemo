@@ -4,12 +4,21 @@
 <!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light.Bridge">-->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/white</item>#通知栏颜色
-        <item name="colorPrimaryDark">@color/colorAccent</item>#导航栏颜色
+        <item name="colorPrimary">@color/colorAccent</item>#通知栏颜色, Material控件默认颜色(文字或按钮)
+        <item name="colorPrimaryDark">@color/colorAccent</item>#状态栏颜色
         <item name="colorAccent">@color/colorAccent</item>#控件选中后颜色
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColor">@color/black</item>
         <item name="editTextColor">@color/black</item>
+        <item name="titleTextColor">@color/black</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+<!--        <item name="android:background">@drawable/splash_img</item>-->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Widget.Kinco.MaterialButton" parent="Widget.MaterialComponents.Button">
@@ -21,9 +30,26 @@
         <item name="android:textColor">#000000</item>
         <item name="cornerRadius">8dp</item>
         <item name="elevation">10dp</item>
+        <item name="backgroundTint">@color/white</item>
         <item name="rippleColor">@color/ripple_gray</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="Widget.Kinco.QuickButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:paddingLeft">0.5dp</item>
+        <item name="android:paddingRight">0.5dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="rippleColor">@color/ripple_gray</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
     </style>
 
     <style name="Widget.Kinco.MaterialNegativeButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
@@ -50,6 +76,12 @@
         <item name="android:background">@drawable/button</item>
     </style>
 
+    <style name="Widget.Kinco.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="rippleColor">@color/ripple_gray</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+    </style>
+
     <style name="Widget.Kinco.ItemTextView" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -58,10 +90,25 @@
         <item name="android:drawablePadding">10dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawableRight">@drawable/ic_keyboard_arrow_right_black_24dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
     <declare-styleable name="ConstraintHeightListView">
         <attr name="maxHeight" format="dimension"></attr>
     </declare-styleable>
+
+    <style name="Widget.Kinco.Button.Category" parent="Widget.MaterialComponents.Button">
+<!--        <item name="backgroundTint">@android:color/transparent</item>-->
+        <item name="textAllCaps">false</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:paddingTop">25dp</item>
+        <item name="android:paddingBottom">25dp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
 
 </resources>

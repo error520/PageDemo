@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="options">0</string>
+    <string name="options_common">1</string>
+    <string name="value">2</string>
+    <string name="signed_value">3</string>
+
     <string name="A0_03U" translatable="false">HZ</string>
     <string name="A0_06U" translatable="false">S</string>
     <string name="A0_07U" translatable="false">S</string>

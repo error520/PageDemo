@@ -9,7 +9,6 @@
 <!--这里存放不需要区别语言的参数组成部分-->
 
 
-
     <string-array name="B0_Unit">
         <item>Hz</item>
         <item>V</item>

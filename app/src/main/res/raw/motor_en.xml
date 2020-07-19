@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Parameters xmlns:android="http://schemas.android.com/apk/res/android">
+    <Parameter>
+        <id>A0.37</id>
+        <name>Motor type selection</name>
+        <type>0</type>
+        <description>
+            <item>0: Asynchronous motor</item>
+            <item>1: Frequency conversion motor</item>
+            <item>2: Synchronous motor</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.18</id>
+        <name>Rated power of AC motor 1</name>
+        <type>0</type>
+        <description>
+            <item>0.1</item>
+            <item>KW</item>
+            <item>0.2~999.9</item>
+        </description>
+    </Parameter>
+</Parameters>

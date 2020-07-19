@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/common_titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftType="customView"
+        app:leftCustomView="@layout/view_btn_back"
+        app:showBottomLine="true"/>
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_marginVertical="-7dp"/>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="auto"/>
+
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.viewpager.widget.ViewPager>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            app:fabCustomSize="56dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:backgroundTint="@color/white"
+            app:tint="@color/colorAccent"
+            app:srcCompat="@drawable/selector_fab"
+            android:scaleType="center"
+            app:maxImageSize="67dp"
+            app:borderWidth="0dp"
+            />
+    </FrameLayout>
+
+
+</LinearLayout>

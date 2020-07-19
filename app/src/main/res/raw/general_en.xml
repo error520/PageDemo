@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--type0是选择型, type1是数值型-->
+<!--根据id换算出寄存器地址-->
+<Parameters>
+    <Parameter>
+        <id>A0.01</id>
+        <name>Control mode</name>
+        <type>0</type>
+        <description>
+            <item>0: Vector control without PG</item>
+            <item>1: Vector control with PG</item>
+            <item>2: V/F control</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.02</id>
+        <name>Main reference frequency selector</name>
+        <type>0</type>
+        <description>
+            <item>0: Digital setting Keyboard UP/DN or terminal UP/DN</item>
+            <item>1: AI1</item>
+            <item>2: AI2</item>
+            <item>3: AI3</item>
+            <item>4: Set via DI terminal(PULSE)</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.03</id>
+        <name>Digital reference frequency</name>
+        <type>1</type>
+        <description>
+            <item>0.01</item>
+            <item>Hz</item>
+            <item>0~30000</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.04</id>
+        <name>Methods of inputting operating commands</name>
+        <type>0</type>
+        <description>
+            <item>0: Panel control</item>
+            <item>1: Terminal control</item>
+            <item>2: Communication control</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.05</id>
+        <name>Running direction</name>
+        <type>0</type>
+        <description>
+            <item>0: Forward</item>
+            <item>1: Reverse</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.33</id>
+        <name>Starting mode</name>
+        <type>0</type>
+        <description>
+            <item>0: Start from the starting frequency</item>
+            <item>1: Brake first and then start</item>
+            <item>2: Start on the fly(including direction judgement), start at starting frequency</item>
+            <item>3: Current search type speed tracking starting (only valid in V/F control)</item>
+        </description>
+    </Parameter>
+    <Parameter>
+        <id>A0.34</id>
+        <name>Stopping mode</name>
+        <type>0</type>
+        <description>
+            <item>0: Dec-to-stop</item>
+            <item>1: Coast-to-stop</item>
+            <item>2: Dec-to-stop+DC injection braking</item>
+        </description>
+    </Parameter>
+</Parameters>

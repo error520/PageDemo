@@ -16,6 +16,7 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=".wave" />
+        android:text=".dat"
+        android:textSize="18sp" />
 
 </LinearLayout>
