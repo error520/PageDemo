@@ -94,7 +94,7 @@ public class SecondpageFragment extends MyFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(Showing)
+        if(showing)
             initService();
         //count++;
         //util.centerToast(getActivity(),"2被启动"+count+"次",0);
@@ -204,7 +204,6 @@ public class SecondpageFragment extends MyFragment {
                                 util.centerToast(getContext(),getString(R.string.reload_completed),0);
                                 adapter.notifyDataSetChanged();
                                 addressState="0000";
-                                return;
                             }
 
                         }catch(Exception e){

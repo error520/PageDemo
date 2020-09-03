@@ -1,93 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="options">0</string>
-    <string name="options_common">1</string>
-    <string name="value">2</string>
-    <string name="signed_value">3</string>
-
-    <string name="A0_03U" translatable="false">HZ</string>
-    <string name="A0_06U" translatable="false">S</string>
-    <string name="A0_07U" translatable="false">S</string>
-    <string name="A0_16U" translatable="false"></string>
-    <string name="A0_18U" translatable="false">KW</string>
-    <string name="A0_19U" translatable="false"></string>
-    <string name="A0_20U" translatable="false">KW</string>
-    <string name="A0_21U" translatable="false"></string>
-    <string name="A0_22U" translatable="false"></string>
-    <string name="A0_24U" translatable="false">V</string>
-    <string name="A0_25U" translatable="false">A</string>
-    <string name="A0_26U" translatable="false">Hz</string>
-    <string name="A0_27U" translatable="false">RPM</string>
-    <string name="A0_28U" translatable="false">V</string>
-    <string name="A0_29U" translatable="false">A</string>
-    <string name="A0_30U" translatable="false">RPM</string>
-    <string name="A0_31U" translatable="false">HZ</string>
-    <string name="A0_32U" translatable="false">%</string>
-    <string name="A0_36U" translatable="false">KHZ</string>
-    <string name="A0_39U" translatable="false">%</string>
-    <string name="A0_47U" translatable="false">HZ</string>
-    <string name="A0_48U" translatable="false">%</string>
-    <string name="A0_49U" translatable="false">HZ</string>
-    <string name="A0_50U" translatable="false">%</string>
-    <string name="A0_51U" translatable="false">HZ</string>
-    <string name="A0_52U" translatable="false">%</string>
-    <string name="A0_53U" translatable="false">%</string>
-
-    <string name="A0_03H" translatable="false">0.00~300.00</string>
-    <string name="A0_06H" translatable="false">0.0~6000.0</string>
-    <string name="A0_07H" translatable="false">0.0~6000.0</string>
-    <string name="A0_16H" translatable="false">1~10000</string>
-    <string name="A0_18H" translatable="false">0.2~999.9</string>
-    <string name="A0_19H" translatable="false">2~24</string>
-    <string name="A0_20H" translatable="false">0.4~999.9</string>
-    <string name="A0_21H" translatable="false">1~40</string>
-    <string name="A0_22H" translatable="false">0~1</string>
-    <string name="A0_24H" translatable="false">0~999</string>
-    <string name="A0_25H" translatable="false">0.1~999.9</string>
-    <string name="A0_26H" translatable="false">1.00~300.00</string>
-    <string name="A0_27H" translatable="false">0~60000</string>
-    <string name="A0_28H" translatable="false">0~999</string>
-    <string name="A0_29H" translatable="false">0.1~999.9</string>
-    <string name="A0_30H" translatable="false">0~60000</string>
-    <string name="A0_31H" translatable="false">0~300.00</string>
-    <string name="A0_32H" translatable="false">0.0~30.0</string>
-    <string name="A0_36H" translatable="false">2.0~15.0</string>
-    <string name="A0_39H" translatable="false">-300.0~+300.0</string>
-    <string name="A0_47H" translatable="false">0.00~300.00</string>
-    <string name="A0_48H" translatable="false">0.0~100.0</string>
-    <string name="A0_49H" translatable="false">0.00~300.00</string>
-    <string name="A0_50H" translatable="false">0.0~100.0</string>
-    <string name="A0_51H" translatable="false">0.00~300.00</string>
-    <string name="A0_52H" translatable="false">0.0~100.0</string>
-    <string name="A0_53H" translatable="false">0.0~50.0</string>
-
-    <item name="A0_03M" format="float" type="string" translatable="false">0.01</item>
-    <item name="A0_06M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_07M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_16M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_18M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_19M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_20M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_21M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_22M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_24M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_25M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_26M" format="float" type="string" translatable="false">0.01</item>
-    <item name="A0_27M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_28M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_29M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_30M" format="float" type="string" translatable="false">1</item>
-    <item name="A0_31M" format="float" type="string" translatable="false">0.01</item>
-    <item name="A0_32M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_36M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_39M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_47M" format="float" type="string" translatable="false">0.01</item>
-    <item name="A0_48M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_49M" format="float" type="string" translatable="false">0.01</item>
-    <item name="A0_50M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_51M" format="float" type="string" translatable="false">0.01</item>
-    <item name="A0_52M" format="float" type="string" translatable="false">0.1</item>
-    <item name="A0_53M" format="float" type="string" translatable="false">0.1</item>
+    <string name="options" translatable="false">0</string>
+    <string name="options_common" translatable="false">1</string>
+    <string name="value" translatable="false">2</string>
+    <string name="signed_value" translatable="false">3</string>
 
     <string-array name="A023_bits_Name">
         <item>bit2~bit0</item>
@@ -99,6 +15,8 @@
         <item>bit8</item>
         <item>bit9</item>
     </string-array>
+
+    <string name="filterPwd" translatable="false">0123456789abcdefABCDEF</string>
 
 
 </resources>

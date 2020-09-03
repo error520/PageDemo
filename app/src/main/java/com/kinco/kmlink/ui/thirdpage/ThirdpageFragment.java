@@ -66,7 +66,7 @@ public class ThirdpageFragment extends MyFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(Showing)
+        if(showing)
             initService();
         //util.centerToast(getContext(),"3的服务被开启",0);
     }
@@ -151,7 +151,7 @@ public class ThirdpageFragment extends MyFragment {
                 if(state.equals("read"))
                     currentValue.setText(util.toHexString(message,3,true));
                 if(state.equals("write"))
-                    util.centerToast(context,getString(R.string.succeed),Toast.LENGTH_SHORT);
+                    util.centerToast(context,getString(R.string.successful),Toast.LENGTH_SHORT);
 
             }
             else if(action.equals(BleService.ACTION_GATT_DISCONNECTED)) {

@@ -3,18 +3,18 @@
     <string-array name="A0_01">
         <item>控制方式选择</item>
         <item>0</item>
-        <item>0: 无PG矢量控制</item>
-        <item>1: 带PG矢量控制</item>
-        <item>2: VF控制</item>
+        <item>0:无PG矢量控制</item>
+        <item>1:带PG矢量控制</item>
+        <item>2:VF控制</item>
     </string-array>
     <string-array name="A0_02">
         <item>主频率源选择</item>
         <item>@string/options</item>
-        <item>0: 数字给定</item>
-        <item>1: AI1</item>
-        <item>2: AI2</item>
-        <item>3: AI3</item>
-        <item>4: DI给定</item>
+        <item>0:数字给定</item>
+        <item>1:AI1</item>
+        <item>2:AI2</item>
+        <item>3:AI3</item>
+        <item>4:DI给定</item>
     </string-array>
     <string-array name="A0_03">
         <item>数字频率给定</item>
@@ -26,15 +26,15 @@
     <string-array name="A0_04">
         <item>运行命令通道选择</item>
         <item>@string/options</item>
-        <item>0: 键盘控制</item>
-        <item>1: 端子控制</item>
-        <item>2: 通信控制</item>
+        <item>0:键盘控制</item>
+        <item>1:端子控制</item>
+        <item>2:通信控制</item>
     </string-array>
     <string-array name="A0_05">
         <item>运转方向设定</item>
         <item>@string/options</item>
-        <item>0: 正转</item>
-        <item>1: 反转</item>
+        <item>0:正转</item>
+        <item>1:反转</item>
     </string-array>
     <string-array name="A0_06">
         <item>加速时间1</item>
@@ -63,11 +63,11 @@
     <string-array name="A0_10">
         <item>端子控制模式选择</item>
         <item>@string/options</item>
-        <item>0: 两线控制模式1</item>
-        <item>1: 两线控制模式2</item>
-        <item>2: 三线式运转控制1</item>
-        <item>3: 三线式运转控制2</item>
-        <item>4: 两线式运转模式3</item>
+        <item>0:两线控制模式1</item>
+        <item>1:两线控制模式2</item>
+        <item>2:三线式运转控制1</item>
+        <item>3:三线式运转控制2</item>
+        <item>4:两线式运转模式3</item>
     </string-array>
     <string-array name="A0_11">
         <item>开路集电极输出Y1功能</item>
@@ -82,41 +82,41 @@
     <string-array name="A0_13">
         <item>Y1 高速脉冲端子输出</item>
         <item>@string/options</item>
-        <item>0: 变频器运行中信号(RUN)</item>
-        <item>1: 频率到达信号(FAR)</item>
-        <item>2: 频率水平检测信号(FDT1)</item>
-        <item>3: 频率水平检测信号(FDT2)</item>
-        <item>4: 过载检出信号(OL)</item>
-        <item>5: 欠压封锁停止中(LU)></item>
-        <item>6: 外部故障停机(EXT)</item>
-        <item>7: 频率上限限制(FHL)</item>
-        <item>8: 频率下限限制(FLL)</item>
-        <item>9: 变频器零速运行中</item>
-        <item>10: X1 端子(保留)</item>
-        <item>11: X2 端子(保留)</item>
-        <item>12: 简易PLC 阶段完成指示</item>
-        <item>13: PLC 循环完成指示</item>
-        <item>14: 摆频上下限限制</item>
-        <item>15: 变频器运行准备完成(RDY)</item>
-        <item>16: 变频器故障</item>
-        <item>17: 上位机开关信号</item>
-        <item>19: 转矩限制中</item>
-        <item>20: 变频器正反转指示端子</item>
-        <item>51: 输出频率(0~最大频率)</item>
-        <item>52: 设定频率(0~最大频率)</item>
-        <item>53: 设定频率(加减速后)(0~最大频率)</item>
-        <item>54: 电机转速(0~最大转速)</item>
-        <item>55: 输出电流(0~2*Iei)</item>
-        <item>56: 输出电流(0~2*Iem)</item>
-        <item>57: 输出转矩(0~3*Tem)</item>
-        <item>58: 输出功率(0~2*Pe)</item>
-        <item>59: 输出电压(0~1.2*Ve)</item>
-        <item>60: 母线电压(0~800V)</item>
-        <item>61: AI1</item>
-        <item>62: AI2</item>
-        <item>63: 键盘电位器</item>
-        <item>64: DI</item>
-        <item>65: 上位机百分比(0~4095)</item>
+        <item>0:变频器运行中信号(RUN)</item>
+        <item>1:频率到达信号(FAR)</item>
+        <item>2:频率水平检测信号(FDT1)</item>
+        <item>3:频率水平检测信号(FDT2)</item>
+        <item>4:过载检出信号(OL)</item>
+        <item>5:欠压封锁停止中(LU)></item>
+        <item>6:外部故障停机(EXT)</item>
+        <item>7:频率上限限制(FHL)</item>
+        <item>8:频率下限限制(FLL)</item>
+        <item>9:变频器零速运行中</item>
+        <item>10:X1 端子(保留)</item>
+        <item>11:X2 端子(保留)</item>
+        <item>12:简易PLC 阶段完成指示</item>
+        <item>13:PLC 循环完成指示</item>
+        <item>14:摆频上下限限制</item>
+        <item>15:变频器运行准备完成(RDY)</item>
+        <item>16:变频器故障</item>
+        <item>17:上位机开关信号</item>
+        <item>19:转矩限制中</item>
+        <item>20:变频器正反转指示端子</item>
+        <item>51:输出频率(0~最大频率)</item>
+        <item>52:设定频率(0~最大频率)</item>
+        <item>53:设定频率(加减速后)(0~最大频率)</item>
+        <item>54:电机转速(0~最大转速)</item>
+        <item>55:输出电流(0~2*Iei)</item>
+        <item>56:输出电流(0~2*Iem)</item>
+        <item>57:输出转矩(0~3*Tem)</item>
+        <item>58:输出功率(0~2*Pe)</item>
+        <item>59:输出电压(0~1.2*Ve)</item>
+        <item>60:母线电压(0~800V)</item>
+        <item>61:AI1</item>
+        <item>62:AI2</item>
+        <item>63:键盘电位器</item>
+        <item>64:DI</item>
+        <item>65:上位机百分比(0~4095)</item>
     </string-array>
     <string-array name="A0_14">
         <item>AO1 输出功能</item>
@@ -126,10 +126,10 @@
     <string-array name="A0_15">
         <item>PG卡类型</item>
         <item>@string/options</item>
-        <item>0: ABZ 增量型</item>
-        <item>1: UVW 增量型</item>
-        <item>2: 正余弦型</item>
-        <item>3: 单脉冲型</item>
+        <item>0:ABZ 增量型</item>
+        <item>1:UVW 增量型</item>
+        <item>2:正余弦型</item>
+        <item>3:单脉冲型</item>
     </string-array>
     <string-array name="A0_16">
         <item>PG每转脉冲数</item>
@@ -141,9 +141,9 @@
     <string-array name="A0_17">
         <item>故障屏蔽选择1</item>
         <item>@string/options</item>
-        <item>0: 未屏蔽，报故障并停机</item>
-        <item>1: 未屏蔽，告警继续运行</item>
-        <item>2: 已屏蔽</item>
+        <item>0:未屏蔽，报故障并停机</item>
+        <item>1:未屏蔽，告警继续运行</item>
+        <item>2:已屏蔽</item>
     </string-array>
     <string-array name="A0_18">
         <item>异步电机1 额定功率</item>
@@ -249,23 +249,23 @@
     <string-array name="A0_33">
         <item>启动方式</item>
         <item>@string/options</item>
-        <item>0: 从起动频率起动</item>
-        <item>1: 先制动再从起动频率起动</item>,,
-        <item>2: 转速跟踪包括方向判别再起动</item>
-        <item>3: 电流搜索型转速跟踪启动(仅VF有效)</item>
+        <item>0:从起动频率起动</item>
+        <item>1:先制动再从起动频率起动</item>,,
+        <item>2:转速跟踪包括方向判别再起动</item>
+        <item>3:电流搜索型转速跟踪启动(仅VF有效)</item>
     </string-array>
     <string-array name="A0_34">
         <item>停机方式</item>
         <item>@string/options</item>
-        <item>0: 减速停机</item>
-        <item>1: 自由停机</item>
-        <item>2: 减速停机+直流制动</item>
+        <item>0:减速停机</item>
+        <item>1:自由停机</item>
+        <item>2:减速停机+直流制动</item>
     </string-array>
     <string-array name="A0_35">
         <item>速度/转矩控制模式</item>
         <item>@string/options</item>
-        <item>0: 速度控制</item>
-        <item>1: 转矩控制</item>
+        <item>0:速度控制</item>
+        <item>1:转矩控制</item>
     </string-array>
     <string-array name="A0_36">
         <item>载波频率</item>
@@ -277,18 +277,18 @@
     <string-array name="A0_37">
         <item>电机型号选择</item>
         <item>@string/options</item>
-        <item>0: 异步电机</item>
-        <item>1: 变频电机</item>
-        <item>2: 同步电机</item>
+        <item>0:异步电机</item>
+        <item>1:变频电机</item>
+        <item>2:同步电机</item>
     </string-array>
     <string-array name="A0_38">
         <item>转矩给定选择</item>
         <item>@string/options</item>
-        <item>0: 数字转矩给定</item>
-        <item>1: AI1</item>
-        <item>2: AI2</item>
-        <item>3: 键盘电位器给定</item>
-        <item>4: 端子脉冲DI给定</item>
+        <item>0:数字转矩给定</item>
+        <item>1:AI1</item>
+        <item>2:AI2</item>
+        <item>3:键盘电位器给定</item>
+        <item>4:端子脉冲DI给定</item>
     </string-array>
     <string-array name="A0_39">
         <item>数字转矩给定</item>
@@ -330,10 +330,10 @@
     <string-array name="A0_46">
         <item>V/F 曲线设定</item>
         <item>@string/options</item>
-        <item>0: 用户定义 V/F 曲线</item>
-        <item>1: 2 次幂曲线</item>
-        <item>2: 1.7 次幂曲线</item>
-        <item>3: 1.2 次幂曲线</item>
+        <item>0:用户定义 V/F 曲线</item>
+        <item>1:2 次幂曲线</item>
+        <item>2:1.7 次幂曲线</item>
+        <item>3:1.2 次幂曲线</item>
     </string-array>
     <string-array name="A0_47">
         <item>V/F 频率 3</item>

@@ -81,15 +81,15 @@
         <item>Input terminals status</item>
         <item>开关量输入状态</item>
         <item>@string/options</item>
-        <item>0: OFF</item>
-        <item>1: ON</item>
+        <item>0:OFF</item>
+        <item>1:ON</item>
     </string-array>
     <string-array name="B0_07">
         <item>Output terminals status</item>
         <item>开关量输出状态</item>
         <item>@string/options</item>
-        <item>0: OFF</item>
-        <item>1: ON</item>
+        <item>0:OFF</item>
+        <item>1:ON</item>
     </string-array>
     <string-array name="B0_08">
         <item>AI1 input voltage</item>
@@ -156,10 +156,19 @@
     <string-array name="B0_16">
         <item>Status word</item>
         <item>状态字</item>
-        <item>@string/value</item>
-        <item>1</item>
-        <item></item>
-        <item>-300~300</item>
+        <item>@string/options_common</item>
+        <item>VFD status</item>
+        <item>变频器运行状态</item>
+        <item>VFD rotation</item>
+        <item>变频器运行方向</item>
+        <item>Main reference</item>
+        <item>主设定</item>
+        <item>Serial port control</item>
+        <item>串口控制</item>
+        <item>Serial port setting</item>
+        <item>串口给定</item>
+        <item>Status</item>
+        <item>状态</item>
     </string-array>
     <string-array name="B0_17">
         <item>Bus voltage</item>

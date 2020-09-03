@@ -147,14 +147,12 @@
                         android:id="@+id/quick_btn0"
                         style="@style/Widget.Kinco.QuickButton"
                         android:text="@string/C_110B"/>
+
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/quick_btn1"
+                        android:id="@+id/quick_btn3"
                         style="@style/Widget.Kinco.QuickButton"
-                        android:text="@string/C_bit3_0" />
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/quick_btn2"
-                        style="@style/Widget.Kinco.QuickButton"
-                        android:text="@string/C_bit9_0"/>
+                        android:text="@string/C_101B" />
+
                 </TableRow>
 
                 <TableRow
@@ -162,17 +160,29 @@
                     android:layout_height="match_parent" >
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/quick_btn3"
+                        android:id="@+id/quick_btn1"
                         style="@style/Widget.Kinco.QuickButton"
-                        android:text="@string/C_101B" />
+                        android:text="@string/C_bit3_0" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/quick_btn4"
                         style="@style/Widget.Kinco.QuickButton"
                         android:text="@string/C_bit3_1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/quick_btn2"
+                        style="@style/Widget.Kinco.QuickButton"
+                        android:text="@string/C_bit9_0" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/quick_btn5"
                         style="@style/Widget.Kinco.QuickButton"
-                        android:text="@string/C_bit9_1"/>
+                        android:text="@string/C_bit9_1" />
                 </TableRow>
 
             </TableLayout>

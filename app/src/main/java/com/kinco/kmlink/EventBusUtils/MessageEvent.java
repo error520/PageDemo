@@ -1,6 +1,8 @@
 package com.kinco.kmlink.EventBusUtils;
 
 public class MessageEvent {
+//    public final static String
+
     public MessageEvent(String message) {
         this.message = message;
     }

@@ -190,6 +190,7 @@ public class MainViewModel extends ViewModel {
                 util.centerToast(context, context.getString(R.string.password_correct), 0);
                 deviceList.remove(position);    //从搜索列表中移除
                 deviceLiveData.setValue(deviceList);
+                BleService.varified = true;
             } else {
                 util.centerToast(context, context.getString(R.string.password_wrong), 0);
             }
@@ -349,7 +350,7 @@ public class MainViewModel extends ViewModel {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             bleService = ((BleService.localBinder) service).getService();
-            bleConnected.setValue(bleService.mConnected);
+//            bleConnected.setValue(bleService);
         }
 
         @Override

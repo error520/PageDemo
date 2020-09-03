@@ -11,8 +11,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_disconnect"
         style="@style/Widget.Kinco.MaterialNegativeButton"
+        android:layout_marginTop="6dp"
         android:enabled="false"
-        android:insetBottom="5dp"
         android:text="@string/disconnect_current" />
 
     <com.google.android.material.button.MaterialButton
@@ -22,7 +22,6 @@
         custom:iconTint="#000000"
         custom:iconGravity="textStart"
         custom:iconSize="12dp"
-        android:insetTop="5dp"
         android:text="@string/SCAN" />
 
 

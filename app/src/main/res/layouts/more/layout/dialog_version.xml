@@ -1,53 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        android:layout_margin="10dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="@string/version"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/version"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:paddingVertical="8dp"
-                android:paddingHorizontal="12dp"/>
-            <TextView
-                android:id="@+id/tv_version_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1.0.0"
-                android:textSize="16sp"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="12dp"/>
+        <TextView
+            android:id="@+id/tv_version_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginVertical="12dp"
+            android:text="1.0.0"
+            android:textSize="16sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@drawable/divider_horizontal_1px"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_ok"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Kinco.TextButton"
-                android:text="@string/OK"
-                />
-        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@drawable/divider_horizontal_1px" />
 
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ok"
+            style="@style/Widget.Kinco.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/OK" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

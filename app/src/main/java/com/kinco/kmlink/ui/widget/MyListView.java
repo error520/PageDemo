@@ -8,7 +8,7 @@ import android.widget.ListView;
 import com.kinco.kmlink.R;
 
 public class MyListView extends ListView {
-    float maxHeight = 1000;
+    float maxHeight = 500;
 
     public MyListView(Context context) {
         super(context);

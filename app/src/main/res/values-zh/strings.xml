@@ -294,10 +294,10 @@
     <string name="A3_Name">端子参数</string>
     <string name="A4_Name">控制参数</string>
     <string name="get_slaveAddress_failed">获取从站地址失败</string>
-    <string name="communiation_log">通信日志</string>
+    <string name="serial_communication">串口通信</string>
     <string name="Clear">清除</string>
     <string name="reload_gap">刷新报文间隔(ms)</string>
-    <string name="debug">调试</string>
+    <string name="master_settings">上位机设置</string>
     <string name="ControlWord">Control command word 1</string>
     <string name="password_title">请输入密码</string>
     <string name="password_hint">4位数字密码</string>
@@ -315,7 +315,7 @@
     <string name="current_no_wave">当前没有波形!</string>
     <string name="timeout">超时未响应</string>
     <string name="stop">停止</string>
-    <string name="succeed">成功</string>
+    <string name="successful">设置成功</string>
     <string name="device_disconnected">设备未连接</string>
     <string name="connected">连接成功</string>
     <string name="password_correct">密码正确</string>
@@ -343,6 +343,28 @@
     <string name="stop_receiving">停止接收</string>
     <string name="start_receiving">开始接收</string>
     <string name="device_connection">连接设备</string>
+    <string name="range">范围</string>
+    <string name="initial">初始值</string>
+    <string name="current">当前值</string>
+    <string name="input_value_hint">请输入一个新数值</string>
+    <string name="cannot_be_blank">不能为空白</string>
+    <string name="wrong_format">格式有误</string>
+    <string name="failed">设置失败</string>
+    <string name="initializing">初始化中</string>
+    <string name="status_word">状态字</string>
+    <string name="modbus_mode">modbus模式</string>
+    <string name="free_mode">自由模式</string>
+    <string name="send">发送</string>
+    <string name="hex_input_hint">十六进制输入...</string>
+    <string name="ble_message_gap">BLE报文间隔</string>
+    <string name="ble_message_gap_hint">最少为20 ms，太短可能导致程序崩溃</string>
+    <string name="read_gap">状态读取间隔</string>
+    <string name="read_gap_hint">状态读取界面刷新一次界面数据的间隔</string>
+    <string name="show_option_num">显示参数选项序号</string>
+    <string name="default_value">默认值</string>
+    <string name="timeout_waiting">超时等待时间</string>
+    <string name="timeout_waiting_hint">下位机超过此时间未回复则视为未响应</string>
+    <string name="not_specific_device">非指定设备</string>
 
 
 </resources>

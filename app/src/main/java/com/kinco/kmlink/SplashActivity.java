@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
@@ -25,7 +24,7 @@ public class SplashActivity extends Activity {
             finish();
             return;
         }
-        setContentView(R.layout.layout_start_background);
+        setContentView(R.layout.activity_splash);
         ImageView imgBuilding = findViewById(R.id.img_building);
         ScaleAnimation animation = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f
         ,Animation.RELATIVE_TO_SELF, 0.4f, Animation.RELATIVE_TO_SELF, 0.1f);

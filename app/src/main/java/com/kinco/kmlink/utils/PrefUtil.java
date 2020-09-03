@@ -1,6 +1,7 @@
 package com.kinco.kmlink.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,15 +13,25 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by sunnyDay on 2019/7/17 17:48
+ * Created by Nicholas on 2020/7/17
  *
- * 存储、获取语言的工具类
+ * 存储、获取偏好配置的工具类
  */
 public class PrefUtil {
-
+    //偏好配置-键
     private static final String PREF = "spf";
     private static String KEY_LANGUAGE = "app_language";
     private static String KEY_GENERAL_EXTRA = "general_extra_items";    //添加到常用的额外item
+
+    private static String KEY_BLE_GAP = "ble_message_gap";  //报文间隔
+    private static String KEY_READ_GAP = "read_gap";    //状态读取间隔
+    private static String KEY_WAIT_TIME = "wait_time";  //超时等待时间
+    private static String KEY_SHOW_NUM = "show_option_num";     //显示选项序号
+
+    public static int bleGap = 50;
+    public static int readGap = 1000;
+    public static int timeoutWaiting = 2000;
+    public static boolean showNum = true;
     /**
      * 获得存入sp的语言
      * */
@@ -101,4 +112,69 @@ public class PrefUtil {
         }
     }
 
+    public static void setPreferences(Context context, int index, String value){
+        switch (index){
+            case 0:
+                bleGap = Integer.parseInt(value);
+                setSpf(context,KEY_BLE_GAP,value);
+                break;
+            case 1:
+                readGap = Integer.parseInt(value);
+                setSpf(context,KEY_READ_GAP,value);
+                break;
+            case 2:
+                timeoutWaiting = Integer.parseInt(value);
+                setSpf(context,KEY_WAIT_TIME,value);
+                break;
+            case 3:
+                showNum = Boolean.parseBoolean(value);
+                setSpf(context,KEY_SHOW_NUM,value);
+                break;
+        }
+    }
+
+    public static int getBleMessageGap(Context context){
+        if(TextUtils.isEmpty(getSpf(context,KEY_BLE_GAP))){
+            return 50;
+        }else{
+            return Integer.parseInt(getSpf(context,KEY_BLE_GAP));
+        }
+    }
+
+    public static int getReadGap(Context context){
+        if(TextUtils.isEmpty(getSpf(context,KEY_READ_GAP))){
+            return 1000;
+        }else{
+            return Integer.parseInt(getSpf(context,KEY_READ_GAP));
+        }
+    }
+
+    public static int getTimeoutWaiting(Context context){
+        if(TextUtils.isEmpty(getSpf(context,KEY_WAIT_TIME))){
+            return 2000;
+        }else{
+            return Integer.parseInt(getSpf(context,KEY_WAIT_TIME));
+        }
+    }
+
+    public static boolean getShowNum(Context context){
+        String flag = getSpf(context,KEY_SHOW_NUM);
+        return TextUtils.isEmpty(flag) || flag.equals("true");
+    }
+
+    public static void setShowNum(Context context, boolean show){
+        showNum = show;
+        if(show){
+            setSpf(context,KEY_SHOW_NUM,"true");
+        }else {
+            setSpf(context,KEY_SHOW_NUM,"false");
+        }
+    }
+
+    public static void initConfig(Context context){
+        bleGap = getBleMessageGap(context);
+        readGap = getReadGap(context);
+        timeoutWaiting = getTimeoutWaiting(context);
+        showNum = getShowNum(context);
+    }
 }

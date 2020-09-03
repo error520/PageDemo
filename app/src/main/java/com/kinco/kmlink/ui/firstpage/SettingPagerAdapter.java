@@ -2,6 +2,7 @@ package com.kinco.kmlink.ui.firstpage;
 
 import android.content.Context;
 
+import com.kinco.kmlink.ParameterItem.ParameterBean;
 import com.kinco.kmlink.R;
 
 import java.util.ArrayList;
@@ -55,5 +56,13 @@ public class SettingPagerAdapter extends FragmentPagerAdapter {
 
     public static List<SettingChildFragment> getFragments(){
         return fragments;
+    }
+
+    public List<ParameterBean> getParameterBeanLists(){
+        List<ParameterBean> list = new ArrayList<>();
+        for(SettingChildFragment child:fragments){
+            list.addAll(child.getParameterList());
+        }
+        return list;
     }
 }

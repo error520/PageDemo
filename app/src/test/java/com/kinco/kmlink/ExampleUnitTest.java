@@ -2,7 +2,16 @@ package com.kinco.kmlink;
 
 import android.util.Log;
 
+import com.kinco.kmlink.ParameterItem.ParameterBean;
+import com.kinco.kmlink.utils.util;
+
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +28,20 @@ public class ExampleUnitTest {
 
     @Test
     public void test(){
-        System.out.println(Double.parseDouble("0.00"));
+//        boolean show = Boolean.parseBoolean("true");
+//        System.out.println(show);
+//        ParameterBean bean = new ParameterBean();
+//        bean.setType(3);
+//        bean.addDescriptionItem("0.1");
+//        bean.addDescriptionItem("%");
+//        bean.addDescriptionItem("0~6000");
+//        byte[] message = {0x05,0x03,0x00,0x00,0x00,0x77,0x09};
+//        util.setParameterByMessage(message, bean);
+//        System.out.println(bean.getCurrentValue()+"%");
+        String pattern = "KINCO_\\d+";
+        boolean isDevice = Pattern.matches(pattern,"KINCO_1000");
+        System.out.println(isDevice);
+
     }
 
 

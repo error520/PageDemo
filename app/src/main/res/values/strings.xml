@@ -348,10 +348,10 @@
     <string name="A3_Name">Terminal parameters</string>
     <string name="A4_Name">Control parameters</string>
     <string name="get_slaveAddress_failed">Failed to get slave address</string>
-    <string name="communiation_log">Log</string>
+    <string name="serial_communication">Serial communication</string>
     <string name="Clear">Clear</string>
     <string name="reload_gap">Refresh interval(ms)</string>
-    <string name="debug">Debug</string>
+    <string name="master_settings">Master settings</string>
     <string name="ControlWord">Control command word 1</string>
     <string name="password_title">Please enter the password</string>
     <string name="password_hint">4 digits password</string>
@@ -369,7 +369,7 @@
     <string name="current_no_wave">No waveform on the screen</string>
     <string name="timeout">Timeout</string>
     <string name="stop">Stop</string>
-    <string name="succeed">Succeed</string>
+    <string name="successful">Successful</string>
     <string name="device_disconnected">Device disconnected</string>
     <string name="connected">Connected</string>
     <string name="password_correct">Correct</string>
@@ -397,5 +397,27 @@
     <string name="start_receiving">Start receiving</string>
     <string name="stop_receiving">Stop receiving</string>
     <string name="device_connection">Device connection</string>
+    <string name="range">Range</string>
+    <string name="initial">Initial</string>
+    <string name="current">Current</string>
+    <string name="input_value_hint">Please input a new value</string>
+    <string name="cannot_be_blank">Cannot be blank</string>
+    <string name="wrong_format">Wrong format</string>
+    <string name="failed">Failed</string>
+    <string name="initializing">Initializing</string>
+    <string name="status_word">Status word</string>
+    <string name="modbus_mode">Modbus mode</string>
+    <string name="free_mode">Free mode</string>
+    <string name="send">Send</string>
+    <string name="hex_input_hint">Hexadecimal input...</string>
+    <string name="ble_message_gap">BLE Message Gap</string>
+    <string name="ble_message_gap_hint">At least 20 ms, too short may cause the program to crash</string>
+    <string name="read_gap">Read Gap</string>
+    <string name="read_gap_hint">The interval for refreshing the read interface once</string>
+    <string name="show_option_num">Show parameter option number</string>
+    <string name="default_value">default</string>
+    <string name="timeout_waiting">Timeout Waiting</string>
+    <string name="timeout_waiting_hint">If the slave computer does not reply within this time, it will be regarded as not responding</string>
+    <string name="not_specific_device">Not specific device</string>
 
 </resources>

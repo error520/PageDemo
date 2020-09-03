@@ -49,15 +49,15 @@
             android:launchMode="singleInstance"/>
 
         <activity
-            android:name="com.kinco.kmlink.ui.firstpage.FirstMoreActivity"
-            android:launchMode="singleInstance"/>
-<!--            android:parentActivityName=".MainActivity"/>-->
-
-        <activity
             android:name=".ui.firstpage.SetChildActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:exported="true"/>
 
-        <activity android:name="com.kinco.kmlink.ui.functionpage.LogActivity" />
+        <activity android:name="com.kinco.kmlink.ui.menupage.SerialActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name="com.kinco.kmlink.ui.menupage.MasterSettingActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <activity
             android:name="com.kinco.kmlink.ui.functionpage.FileActivity"

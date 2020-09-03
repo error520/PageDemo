@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_set_value_window">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:text="@string/A0_24"
+        android:textColor="@color/grayer"
+        android:textStyle="bold"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/divider_horizontal_1px"/>
+
+    <TextView
+        android:id="@+id/tv_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="6dp"
+        android:text="范围: -300.00~+300.00 V"
+        android:drawableStart="@drawable/shape_oval"
+        android:drawablePadding="3dp"/>
+
+    <TextView
+        android:id="@+id/tv_initial_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginVertical="6dp"
+        android:text="初始值: 250 V"
+        android:drawableStart="@drawable/shape_oval"
+        android:drawablePadding="3dp"/>
+
+    <TextView
+        android:id="@+id/tv_current_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="6dp"
+        android:text="当前值: 0.0 V"
+        android:drawableStart="@drawable/shape_oval"
+        android:drawablePadding="3dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="6dp"
+            android:hint="@string/input_value_hint"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="8"
+                android:textSize="18sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </FrameLayout>
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:columnCount="4"
+        app:orientation="horizontal"
+        app:rowCount="4"
+        app:useDefaultMargins="false"
+        app:alignmentMode="alignBounds"
+        android:background="@color/stroke_red">
+
+        <TextView
+            android:id="@+id/key7"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="7"
+            app:layout_row="0"
+            app:layout_column="0"/>
+        <TextView
+            android:id="@+id/key8"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="8"
+            app:layout_row="0"
+            app:layout_column="1"/>
+        <TextView
+            android:id="@+id/key9"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="9"
+            app:layout_row="0"
+            app:layout_column="2"/>
+
+        <ImageButton
+            android:id="@+id/key_backspace"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:src="@drawable/ic_backspace_black_24dp"
+            app:layout_column="3"
+            app:layout_columnWeight="1"
+            app:layout_row="0"
+            android:scaleType="center"
+            android:foreground="?attr/selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/key4"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="4"
+            app:layout_row="1"
+            app:layout_column="0"/>
+        <TextView
+            android:id="@+id/key5"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="5"
+            app:layout_row="1"
+            app:layout_column="1"/>
+        <TextView
+            android:id="@+id/key6"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="6"/>
+
+        <TextView
+            android:id="@+id/key_cancel"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            app:layout_gravity="center_vertical"
+            android:text="@string/CANCEL"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/key1"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="1"/>
+        <TextView
+            android:id="@+id/key2"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="2" />
+        <TextView
+            android:id="@+id/key3"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="3"/>
+        <TextView
+            android:id="@+id/key_set"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            app:layout_rowSpan="2"
+            app:layout_rowWeight="2"
+            android:text="@string/OK"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:background="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/key_sign"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="＋/－"
+            android:textColor="@color/color_selector_btn_text"
+            android:textSize="14sp"
+            app:layout_gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/key0"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="0"/>
+        <TextView
+            android:id="@+id/key_dot"
+            style="@style/Widget.Kinco.KeyboardNumber"
+            android:text="."
+            android:textColor="@color/color_selector_btn_text" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+
+</LinearLayout>

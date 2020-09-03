@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.kinco.kmlink.R;
 
@@ -33,13 +36,17 @@ public class PasswordDialog{
         builder.setCancelable(false);
         builder.setTitle(context.getString(R.string.password_title));
         final EditText edit = new EditText(context);
-        edit.setFocusable(true);
-        edit.setFocusableInTouchMode(true);
+        FrameLayout layout = new FrameLayout(context);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(50,0,50,0);
+        edit.setLayoutParams(params);
+        layout.addView(edit);
         edit.setInputType(InputType.TYPE_CLASS_NUMBER);
         edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
         edit.setHint(context.getString(R.string.password_hint));
         edit.setTextColor(Color.BLACK);
-        builder.setView(edit);
+        builder.setView(layout);
         builder.setPositiveButton(context.getString(R.string.CONNECT), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -74,6 +81,11 @@ public class PasswordDialog{
             ErrorDialog errorDialog = new ErrorDialog(context,e.toString());
             errorDialog.show();
         }
+        dialog.setOnDismissListener(dialog1 -> {
+
+        });
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        edit.requestFocus();
     }
     public interface OnClickBottomListener{
         void onPositiveClick();

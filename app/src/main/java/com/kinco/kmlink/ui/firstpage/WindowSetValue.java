@@ -18,21 +18,27 @@ import com.kinco.kmlink.EventBusUtils.RequestEvent;
 import com.kinco.kmlink.ParameterItem.ParameterBean;
 import com.kinco.kmlink.R;
 import com.kinco.kmlink.sys.SysApplication;
+import com.kinco.kmlink.utils.PrefUtil;
 import com.kinco.kmlink.utils.util;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Map;
 
 import razerdp.basepopup.BaseLazyPopupWindow;
 import razerdp.basepopup.BasePopupWindow;
 
-public class SetValueWindow extends BaseLazyPopupWindow {
+public class WindowSetValue extends BaseLazyPopupWindow {
     ParameterBean bean;
 
-    public SetValueWindow(Context context, ParameterBean bean) {
+    WindowSetValue(Context context, ParameterBean bean) {
         super(context);
         this.bean = bean;
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -41,24 +47,32 @@ public class SetValueWindow extends BaseLazyPopupWindow {
         TextView textView = layout.findViewById(R.id.tv_name);
         textView.setText(bean.getName());
         RadioGroup radioGroup = layout.findViewById(R.id.rg_options);
-        for(String option:bean.getDescription()){
+        for (Map.Entry<Integer, String> entry : bean.getOptionMap().entrySet()) {
             RadioButton radioButton = new RadioButton(getContext());
-            radioButton.setText(option);
+            String finalText = entry.getValue();
+            if (PrefUtil.showNum) {
+                finalText = entry.getKey() + ": " + entry.getValue();
+            }
+            radioButton.setText(finalText);
             radioButton.setTextSize(16);
             radioButton.setTextColor(getContext().getColorStateList(R.color.selector_option_text_color));
-//            radioButton.setTextColor(getContext().getColor(R.color.btn_red));
-            radioButton.setPadding(4,24,4,24);
-            radioGroup.addView(radioButton,MATCH_PARENT,WRAP_CONTENT);
-            if(bean.getCurrentValue().equals(option)){
+            radioButton.setPadding(4, 24, 4, 24);
+            radioGroup.addView(radioButton, MATCH_PARENT, WRAP_CONTENT);
+            if (bean.getCurrentValue().equals(entry.getValue())) {
                 radioButton.setChecked(true);
             }
         }
         //选择
-        radioGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId)->{
-            RadioButton button = (RadioButton)findViewById(checkedId);
-            String option = button.getText().toString().split(":")[0];
-            int value = Integer.parseInt(option);
-            String[] request = {bean.getAddress(),Integer.toHexString(value),"write"};
+        radioGroup.setOnCheckedChangeListener((RadioGroup group, int checkedId) -> {
+            RadioButton button = findViewById(checkedId);
+            int index = 0;
+            if (PrefUtil.showNum) {
+                String option = button.getText().toString().split(":")[0];
+                index = Integer.parseInt(option);
+            } else {
+                index = bean.getIndexByOption(button.getText().toString());
+            }
+            String[] request = {"write", bean.getAddress(), Integer.toHexString(index)};
             EventBus.getDefault().post(new RequestEvent(request));
         });
         setPopupGravity(Gravity.BOTTOM);
@@ -72,34 +86,36 @@ public class SetValueWindow extends BaseLazyPopupWindow {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
-    public void onNewBleData(BleDataEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewBleDataEvent(BleDataEvent event) {
         byte[] message = event.getBleData();
-        if(message.length==8){
-            util.setParameterByMessage(message,bean);
+        if (message.length == 8) {
+            util.setParameterByMessage(message, bean);
+            util.centerToast(getContext(), getContext().getString(R.string.successful), 0);
             dismiss();
+        } else if (message.length == 5) {
+            util.centerToast(getContext(), getContext().getString(R.string.failed), 0);
         }
     }
 
     @Override
     protected Animation onCreateShowAnimation() {
         TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF,0,
-                Animation.RELATIVE_TO_SELF,0,
-                Animation.RELATIVE_TO_SELF,1f,
-                Animation.RELATIVE_TO_SELF,0);
+                Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, 1f,
+                Animation.RELATIVE_TO_SELF, 0);
         animation.setDuration(200);
-//        Animation animation = AnimationUtils.loadAnimation(getContext(),R.anim.pop_up);
         return animation;
     }
 
     @Override
     protected Animation onCreateDismissAnimation() {
         TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF,0,
-                Animation.RELATIVE_TO_SELF,0,
-                Animation.RELATIVE_TO_SELF,0,
-                Animation.RELATIVE_TO_SELF,1f);
+                Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, 1f);
         animation.setDuration(150);
         return animation;
     }

@@ -3,18 +3,18 @@
     <string-array name="A0_01">
         <item>Control mode</item>
         <item>@string/options</item>
-        <item>0: Vector control without PG</item>
-        <item>1: Vector control with PG</item>
-        <item>2: V/F control</item>
+        <item>0:Vector control without PG</item>
+        <item>1:Vector control with PG</item>
+        <item>2:V/F control</item>
     </string-array>
     <string-array name="A0_02">
         <item>Main reference frequency selector</item>
         <item>@string/options</item>
-        <item>0: Digital setting Keyboard UP/DN or terminal UP/DN</item>
-        <item>1: AI1</item>
-        <item>2: AI2</item>
-        <item>3: AI3</item>
-        <item>4: Set via DI terminal(PULSE)</item>
+        <item>0:Digital setting Keyboard UP/DN or terminal UP/DN</item>
+        <item>1:AI1</item>
+        <item>2:AI2</item>
+        <item>3:AI3</item>
+        <item>4:Set via DI terminal(PULSE)</item>
     </string-array>
     <string-array name="A0_03">
         <item>Digital reference frequency</item>
@@ -26,15 +26,15 @@
     <string-array name="A0_04">
         <item>Methods of inputting operating commands</item>
         <item>@string/options</item>
-        <item>0: Panel control</item>
-        <item>1: Terminal control</item>
-        <item>2: Communication control</item>
+        <item>0:Panel control</item>
+        <item>1:Terminal control</item>
+        <item>2:Communication control</item>
     </string-array>
     <string-array name="A0_05">
         <item>Running direction</item>
         <item>@string/options</item>
-        <item>0: Forward</item>
-        <item>1: Reverse</item>
+        <item>0:Forward</item>
+        <item>1:Reverse</item>
     </string-array>
     <string-array name="A0_06">
         <item>Acc time 1</item>
@@ -63,11 +63,11 @@
     <string-array name="A0_10">
         <item>Terminal control mode selection</item>
         <item>@string/options</item>
-        <item>0: 2-wire operating mode 1</item>
-        <item>1: 2-wire operating mode 2</item>
-        <item>2: 3-wire operating mode 1</item>
-        <item>3: 3-wire operation mode 2</item>
-        <item>4: 2-wires operation mode 3</item>
+        <item>0:2-wire operating mode 1</item>
+        <item>1:2-wire operating mode 2</item>
+        <item>2:3-wire operating mode 1</item>
+        <item>3:3-wire operation mode 2</item>
+        <item>4:2-wires operation mode 3</item>
     </string-array>
     <string-array name="A0_11">
         <item>Bi-direction pen-collector output terminal Y1</item>
@@ -82,41 +82,41 @@
     <string-array name="A0_13">
         <item>Y1 terminal output</item>
         <item>@string/options</item>
-        <item>0: Running signal(RUN)</item>
-        <item>1: frequency arriving signal(FAR)</item>
-        <item>2: frequency detection threshold (FDT1)</item>
-        <item>3: frequency detection threshold (FDT2)</item>
-        <item>4: overload signal(OL)</item>
-        <item>5: low voltage signal(LU)</item>
-        <item>6: external fault signal(EXT)</item>
-        <item>7: frequency high limit(FHL)</item>
-        <item>8: frequency low limit(FLL)</item>
-        <item>9: zero-speed running</item>
-        <item>10: Terminal X1(Reserved)</item>
-        <item>11: Terminal X2(Reserved)</item>
-        <item>12: PLC running step complete signal</item>
-        <item>13: PLC running cycle completesignal</item>
-        <item>14: Limit of swing frequency upper/lower limit</item>
-        <item>15: Drive ready (RDY)</item>
-        <item>16: Drive fault</item>
-        <item>17: Switching signal of host</item>
-        <item>19: Torque limiting</item>
-        <item>20: Drive running forward/reverse</item>
-        <item>51: Output frequency (0~ Max. output frequency)</item>
-        <item>52: Preset frequency (0~ Max. output frequency)</item>
-        <item>53: Preset frequency (After Acc/Dec)(0~ Max. output frequency)</item>
-        <item>54: Motor speed(0~ Max. speed)</item>
-        <item>55: Output current(0~2*Iei)</item>
-        <item>56: Output current(0~2*Iem)</item>
-        <item>57: Output torque(0~3*Tem)</item>
-        <item>58: Output power(0~2*Pe)</item>
-        <item>59: Output voltage(0~1.2*Ve)</item>
-        <item>60: Bus voltage(0~800V)</item>
-        <item>61: AI1</item>
-        <item>62: AI2</item>
-        <item>63: Keyboard potentiometer</item>
-        <item>64: DI</item>
-        <item>65: Percentage of host(0~4095)</item>
+        <item>0:Running signal(RUN)</item>
+        <item>1:frequency arriving signal(FAR)</item>
+        <item>2:frequency detection threshold (FDT1)</item>
+        <item>3:frequency detection threshold (FDT2)</item>
+        <item>4:overload signal(OL)</item>
+        <item>5:low voltage signal(LU)</item>
+        <item>6:external fault signal(EXT)</item>
+        <item>7:frequency high limit(FHL)</item>
+        <item>8:frequency low limit(FLL)</item>
+        <item>9:zero-speed running</item>
+        <item>10:Terminal X1(Reserved)</item>
+        <item>11:Terminal X2(Reserved)</item>
+        <item>12:PLC running step complete signal</item>
+        <item>13:PLC running cycle completesignal</item>
+        <item>14:Limit of swing frequency upper/lower limit</item>
+        <item>15:Drive ready (RDY)</item>
+        <item>16:Drive fault</item>
+        <item>17:Switching signal of host</item>
+        <item>19:Torque limiting</item>
+        <item>20:Drive running forward/reverse</item>
+        <item>51:Output frequency (0~ Max. output frequency)</item>
+        <item>52:Preset frequency (0~ Max. output frequency)</item>
+        <item>53:Preset frequency (After Acc/Dec)(0~ Max. output frequency)</item>
+        <item>54:Motor speed(0~ Max. speed)</item>
+        <item>55:Output current(0~2*Iei)</item>
+        <item>56:Output current(0~2*Iem)</item>
+        <item>57:Output torque(0~3*Tem)</item>
+        <item>58:Output power(0~2*Pe)</item>
+        <item>59:Output voltage(0~1.2*Ve)</item>
+        <item>60:Bus voltage(0~800V)</item>
+        <item>61:AI1</item>
+        <item>62:AI2</item>
+        <item>63:Keyboard potentiometer</item>
+        <item>64:DI</item>
+        <item>65:Percentage of host(0~4095)</item>
     </string-array>
     <string-array name="A0_14">
         <item>Functions of terminal AO1</item>
@@ -126,10 +126,10 @@
     <string-array name="A0_15">
         <item>PG type</item>
         <item>@string/options</item>
-        <item>0: ABZ incremental type</item>
-        <item>1: UVW incremental type</item>
-        <item>2: Cosine type</item>
-        <item>3: Single pulse</item>
+        <item>0:ABZ incremental type</item>
+        <item>1:UVW incremental type</item>
+        <item>2:Cosine type</item>
+        <item>3:Single pulse</item>
     </string-array>
     <string-array name="A0_16">
         <item>Number of pulses per revolution of PG</item>
@@ -141,9 +141,9 @@
     <string-array name="A0_17">
         <item>Fault masking selection 1</item>
         <item>@string/options</item>
-        <item>0: Disable.Stop when fault happen</item>
-        <item>1: Disable.Continue operating when fault happen</item>
-        <item>2: Enable</item>
+        <item>0:Disable.Stop when fault happen</item>
+        <item>1:Disable.Continue operating when fault happen</item>
+        <item>2:Enable</item>
     </string-array>
     <string-array name="A0_18">
         <item>Rated power of AC motor 1</item>
@@ -249,23 +249,23 @@
     <string-array name="A0_33">
         <item>Starting mode</item>
         <item>@string/options</item>
-        <item>0：Start from the starting frequency</item>
-        <item>1：Brake first and then start</item>
-        <item>2：Start on the fly(including direction judgement), start at starting frequency</item>
-        <item>3：Current search type speed tracking starting (only valid in V/F control)</item>
+        <item>0:Start from the starting frequency</item>
+        <item>1:Brake first and then start</item>
+        <item>2:Start on the fly(including direction judgement), start at starting frequency</item>
+        <item>3:Current search type speed tracking starting (only valid in V/F control)</item>
     </string-array>
     <string-array name="A0_34">
         <item>Stopping mode</item>
         <item>@string/options</item>
-        <item>0: Dec-to-stop</item>
-        <item>1: Coast-to-stop</item>
-        <item>2: Dec-to-stop+DC injection braking</item>
+        <item>0:Dec-to-stop</item>
+        <item>1:Coast-to-stop</item>
+        <item>2:Dec-to-stop+DC injection braking</item>
     </string-array>
     <string-array name="A0_35">
         <item>Speed/torque control mode</item>
         <item>@string/options</item>
-        <item>0：Speed control mode</item>
-        <item>1：Torque control mode</item>
+        <item>0:Speed control mode</item>
+        <item>1:Torque control mode</item>
     </string-array>
     <string-array name="A0_36">
         <item>Carrier wave frequency</item>
@@ -277,18 +277,18 @@
     <string-array name="A0_37">
         <item>Motor type selection</item>
         <item>@string/options</item>
-        <item>0：Asynchronous motor</item>
-        <item>1：Frequency conversion motor</item>
-        <item>2：Synchronous motor</item>
+        <item>0:Asynchronous motor</item>
+        <item>1:Frequency conversion motor</item>
+        <item>2:Synchronous motor</item>
     </string-array>
     <string-array name="A0_38">
         <item>Reference torque selection</item>
         <item>@string/options</item>
-        <item>0：Digital setting</item>
-        <item>1：AI1</item>
-        <item>2：AI2</item>
-        <item>3：Keyboard potentiometer</item>
-        <item>4：Pulse DI terminal setting</item>
+        <item>0:Digital setting</item>
+        <item>1:AI1</item>
+        <item>2:AI2</item>
+        <item>3:Keyboard potentiometer</item>
+        <item>4:Pulse DI terminal setting</item>
     </string-array>
     <string-array name="A0_39">
         <item>Digital reference torque</item>
@@ -330,10 +330,10 @@
     <string-array name="A0_46">
         <item>V/F curve setting</item>
         <item>@string/options</item>
-        <item>0：V/F curve is defined by user</item>
-        <item>1：2-order curve</item>
-        <item>2：1.7-order curve</item>
-        <item>3：1.2-order curve</item>
+        <item>0:V/F curve is defined by user</item>
+        <item>1:2-order curve</item>
+        <item>2:1.7-order curve</item>
+        <item>3:1.2-order curve</item>
     </string-array>
     <string-array name="A0_47">
         <item>V/F frequency value F3</item>

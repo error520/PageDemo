@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    app:cardElevation="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dial"
-                app:rippleColor="@color/ripple_gray"/>
+                app:rippleColor="@color/ripple_gray" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,8 +68,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/copy"
-                app:rippleColor="@color/ripple_gray"/>
+                app:rippleColor="@color/ripple_gray" />
         </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
+

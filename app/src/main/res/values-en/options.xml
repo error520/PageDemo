@@ -1,102 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="A0_08_options">
-        <item>0: No function</item>
-        <item>1: Forward</item>
-        <item>2: Reverse</item>
-        <item>3: Forward jog operation</item>
-        <item>4: Reverse jog operation</item>
-        <item>5: 3-wire operation control</item>
-        <item>6: External RESET signal input</item>
-        <item>7: External fault signal input</item>
-        <item>8: External interrupt signal input</item>
-        <item>9: Drive operation prohibit</item>
-        <item>10: External stop command</item>
-        <item>11: DC injection braking command</item>
-        <item>12: Coast to stop</item>
-        <item>13: Frequency ramp up (UP)</item>
-        <item>14: Frequency ramp down (DN)</item>
-        <item>15: Switch to panel control</item>
-        <item>16: Switch to terminal control</item>
-        <item>17: Switch to communication control mode</item>
-        <item>18: Main reference frequency via AI1</item>
-        <item>19: Main reference frequency via AI2</item>
-        <item>20: Main reference frequency via AI3</item>
-        <item>21: Main reference frequency via DI</item>
-        <item>22: Auxiliary reference frequency invalid</item>
-        <item>23: Auxiliary reference frequency via AI1 (Reserved)</item>
-        <item>24: Auxiliary reference frequency via AI2 (Reserved)</item>
-        <item>25: Auxiliary reference frequency via AI3 (Reserved)</item>
-        <item>26: Auxiliary reference frequency via DI(Reserved)</item>
-        <item>27: Preset frequency 1</item>
-        <item>28: Preset frequency 2</item>
-        <item>29: Preset frequency 3</item>
-        <item>30: Preset frequency 4</item>
-        <item>31: Acc/Dec time 1</item>
-        <item>32: Acc/Dec time 2</item>
-        <item>33: Multiple close-loop reference selection 1</item>
-        <item>34: Multiple close-loop reference selection 2</item>
-        <item>35: Multiple close-loop reference selection 3</item>
-        <item>36: Multiple close-loop reference selection 4</item>
-        <item>37: Forward prohibit</item>
-        <item>38: Reverse prohibit</item>
-        <item>39: Acc/Dec prohibit</item>
-        <item>40: Process close-loop prohibit</item>
-        <item>41: Speed and torque control switching terminal</item>
-        <item>42: Main frequency switch to digital setting</item>
-        <item>43: PLC pause</item>
-        <item>44: PLC prohibit</item>
-        <item>45: PLC stop memory clear</item>
-        <item>46: Swing input</item>
-        <item>47: Swing reset</item>
-        <item>51: Timer1 start</item>
-        <item>52: Timer2 start</item>
-        <item>53: Counter start</item>
-        <item>54: Counter reset</item>
+        <item>0:No function</item>
+        <item>1:Forward</item>
+        <item>2:Reverse</item>
+        <item>3:Forward jog operation</item>
+        <item>4:Reverse jog operation</item>
+        <item>5:3-wire operation control</item>
+        <item>6:External RESET signal input</item>
+        <item>7:External fault signal input</item>
+        <item>8:External interrupt signal input</item>
+        <item>9:Drive operation prohibit</item>
+        <item>10:External stop command</item>
+        <item>11:DC injection braking command</item>
+        <item>12:Coast to stop</item>
+        <item>13:Frequency ramp up (UP)</item>
+        <item>14:Frequency ramp down (DN)</item>
+        <item>15:Switch to panel control</item>
+        <item>16:Switch to terminal control</item>
+        <item>17:Switch to communication control mode</item>
+        <item>18:Main reference frequency via AI1</item>
+        <item>19:Main reference frequency via AI2</item>
+        <item>20:Main reference frequency via AI3</item>
+        <item>21:Main reference frequency via DI</item>
+        <item>22:Auxiliary reference frequency invalid</item>
+        <item>23:Auxiliary reference frequency via AI1 (Reserved)</item>
+        <item>24:Auxiliary reference frequency via AI2 (Reserved)</item>
+        <item>25:Auxiliary reference frequency via AI3 (Reserved)</item>
+        <item>26:Auxiliary reference frequency via DI(Reserved)</item>
+        <item>27:Preset frequency 1</item>
+        <item>28:Preset frequency 2</item>
+        <item>29:Preset frequency 3</item>
+        <item>30:Preset frequency 4</item>
+        <item>31:Acc/Dec time 1</item>
+        <item>32:Acc/Dec time 2</item>
+        <item>33:Multiple close-loop reference selection 1</item>
+        <item>34:Multiple close-loop reference selection 2</item>
+        <item>35:Multiple close-loop reference selection 3</item>
+        <item>36:Multiple close-loop reference selection 4</item>
+        <item>37:Forward prohibit</item>
+        <item>38:Reverse prohibit</item>
+        <item>39:Acc/Dec prohibit</item>
+        <item>40:Process close-loop prohibit</item>
+        <item>41:Speed and torque control switching terminal</item>
+        <item>42:Main frequency switch to digital setting</item>
+        <item>43:PLC pause</item>
+        <item>44:PLC prohibit</item>
+        <item>45:PLC stop memory clear</item>
+        <item>46:Swing input</item>
+        <item>47:Swing reset</item>
+        <item>51:Timer1 start</item>
+        <item>52:Timer2 start</item>
+        <item>53:Counter start</item>
+        <item>54:Counter reset</item>
     </string-array>
     <string-array name="A0_11_options">
-        <item>0: Running signal(RUN)</item>
-        <item>1: Frequency arriving signal(FAR)</item>
-        <item>2: Frequency detection threshold (FDT1)</item>
-        <item>3: Frequency detection threshold (FDT2)</item>
-        <item>4: Overload detection signal(OL)</item>
-        <item>5: Low voltage signal(LU)</item>
-        <item>6: External fault stop signal(EXT)</item>
-        <item>7: Frequency high limit(FHL)</item>
-        <item>8: Frequency low limit(FLL)</item>
-        <item>9: Zero-speed running</item>
-        <item>10: Terminal X1(Reserved)</item>
-        <item>11: Terminal X2(Reserved)</item>
-        <item>12: PLC running step complete signal</item>
-        <item>13: PLC running cycle complete signal</item>
-        <item>14: Limit of swing frequency upper/lower limit</item>
-        <item>15: Drive ready (RDY)</item>
-        <item>16: Drive fault</item>
-        <item>17: Switching signal of host</item>
-        <item>19: Torque limiting</item>
-        <item>20: Drive running forward/reverse</item>
-        <item>21: Timer 1 full</item>
-        <item>22: Timer 2 full</item>
-        <item>23: Setting counter full</item>
-        <item>24: Intermediate counter full</item>
+        <item>0:Running signal(RUN)</item>
+        <item>1:Frequency arriving signal(FAR)</item>
+        <item>2:Frequency detection threshold (FDT1)</item>
+        <item>3:Frequency detection threshold (FDT2)</item>
+        <item>4:Overload detection signal(OL)</item>
+        <item>5:Low voltage signal(LU)</item>
+        <item>6:External fault stop signal(EXT)</item>
+        <item>7:Frequency high limit(FHL)</item>
+        <item>8:Frequency low limit(FLL)</item>
+        <item>9:Zero-speed running</item>
+        <item>10:Terminal X1(Reserved)</item>
+        <item>11:Terminal X2(Reserved)</item>
+        <item>12:PLC running step complete signal</item>
+        <item>13:PLC running cycle complete signal</item>
+        <item>14:Limit of swing frequency upper/lower limit</item>
+        <item>15:Drive ready (RDY)</item>
+        <item>16:Drive fault</item>
+        <item>17:Switching signal of host</item>
+        <item>19:Torque limiting</item>
+        <item>20:Drive running forward/reverse</item>
+        <item>21:Timer 1 full</item>
+        <item>22:Timer 2 full</item>
+        <item>23:Setting counter full</item>
+        <item>24:Intermediate counter full</item>
     </string-array>
     <string-array name="A0_14_options">
-        <item>0: No function</item>
-        <item>1: Output frequency(0~ Max. output frequency)</item>
-        <item>2: Preset frequency(0~ Max. output frequency)</item>
-        <item>3: Preset frequency(After Acc/Dec)(0~ Max. output frequency)</item>
-        <item>4: Motor speed(0~ Max. speed)</item>
-        <item>5: Output current(0~2*Iei)</item>
-        <item>6: Output current(0~2*Iem)</item>
-        <item>7: Output torque(0~3*Tem)</item>
-        <item>8: Output power(0~2*Pe)</item>
-        <item>9: Output voltage(0~1.2*Ve)</item>
-        <item>10: Bus voltage(0~800V)</item>
-        <item>11: AI1</item>
-        <item>12: AI2</item>
-        <item>13: Keyboard potentiometer</item>
-        <item>14: DI</item>
-        <item>15: Percentage of host(0~4095)</item>
+        <item>0:No function</item>
+        <item>1:Output frequency(0~ Max. output frequency)</item>
+        <item>2:Preset frequency(0~ Max. output frequency)</item>
+        <item>3:Preset frequency(After Acc/Dec)(0~ Max. output frequency)</item>
+        <item>4:Motor speed(0~ Max. speed)</item>
+        <item>5:Output current(0~2*Iei)</item>
+        <item>6:Output current(0~2*Iem)</item>
+        <item>7:Output torque(0~3*Tem)</item>
+        <item>8:Output power(0~2*Pe)</item>
+        <item>9:Output voltage(0~1.2*Ve)</item>
+        <item>10:Bus voltage(0~800V)</item>
+        <item>11:AI1</item>
+        <item>12:AI2</item>
+        <item>13:Keyboard potentiometer</item>
+        <item>14:DI</item>
+        <item>15:Percentage of host(0~4095)</item>
     </string-array>
     <string-array name="B0_10_options">
         <item>0:No fault records</item>
@@ -127,5 +127,21 @@
         <item>25:Encoder signal fault in lose-loop control(E025)</item>
         <item>26:VFD running current is detected smaller than set value of load lost(E026)</item>
         <item>27:Brake unit failure(E027)</item>
+    </string-array>
+
+    <string-array name="B0_16_options">
+        <item>Stop</item>
+        <item>Running</item>
+        <item>Forward</item>
+        <item>Reverse</item>
+        <item>Not Reach</item>
+        <item>Reach</item>
+        <item>Disable</item>
+        <item>Enable</item>
+        <item>Disable</item>
+        <item>Enable</item>
+        <item>Normal</item>
+        <item>Alarm</item>
+        <item>Fault</item>
     </string-array>
 </resources>

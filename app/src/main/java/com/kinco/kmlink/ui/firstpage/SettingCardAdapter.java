@@ -28,6 +28,8 @@ import com.kinco.kmlink.utils.util;
 import com.kinco.kmlink.R;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,14 +57,6 @@ public class SettingCardAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //根据type返回对应的viewHolder
-//        if(viewType<2){
-//            View v = LayoutInflater.from(context).inflate(R.layout.item_spinner, parent, false) ;
-//            return new SpinnerViewHolder(v);
-//        }else {
-//            View v = LayoutInflater.from(context).inflate(R.layout.item_setting_card, parent, false) ;
-//            return new ValueViewHolder(v);
-//        }
         View v = LayoutInflater.from(context).inflate(R.layout.item_setting_card, parent, false) ;
         return new ValueViewHolder(v);
     }
@@ -72,66 +66,25 @@ public class SettingCardAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ParameterBean parameter = datas.get(position);
-        //选择型的参数数据绑定
-        if(holder instanceof SpinnerViewHolder){
-            SpinnerViewHolder spinnerHolder = (SpinnerViewHolder) holder;
-            spinnerHolder.name.setText(parameter.getName());
-            List<String> optionsList = parameter.getDescription();
-            ArrayAdapter adapter = new ArrayAdapter(context,android.R.layout.simple_spinner_item,optionsList);
-            spinnerHolder.spinner.setAdapter(adapter);
-            for(int i=0; i<optionsList.size(); i++){
-                if(optionsList.get(i).equals(parameter.getCurrentValue())){
-                    spinnerHolder.spinner.setSelection(i);
-                }else{
-                    spinnerHolder.spinner.setSelection(0);
-                }
-            }
-            spinnerHolder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String currentValue = optionsList.get(position);
-                    parameter.setCurrentValue(currentValue);
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-            spinnerHolder.button.setOnClickListener(v->{
-                if(onSetButtonListener!=null){
-                    onSetButtonListener.onClick(position);
-                }
-            });
-            spinnerHolder.itemView.setOnLongClickListener(v->{
-                showPopupMenu(v,parameter);
-                return true;
-            });
-            //数值型的参数
-        }else if(holder instanceof ValueViewHolder){
-            ValueViewHolder valueHolder = (ValueViewHolder)holder;
-            valueHolder.name.setText(parameter.getName());
-            List<String> description = parameter.getDescription();
-            String currentValue = parameter.getCurrentValue();
-            if(parameter.getType()>=2){ //数值型要加上单位
-                currentValue +=" "+parameter.getUnit();
-            }
-            valueHolder.value.setText(currentValue);
-            valueHolder.itemView.setOnClickListener(v->{
-                if(onSetButtonListener!=null){
-                    onSetButtonListener.onClick(position);
-                }
-            });
-//            valueHolder.button.setOnClickListener(v->{
-////                viewModel.showSetDataDialog(parameter);
-//                if(onSetButtonListener!=null){
-//                    onSetButtonListener.onClick(position);
-//                }
-//            });
-            valueHolder.itemView.setOnLongClickListener(v->{
-                showPopupMenu(v,parameter);
-                return true;
-            });
+        ValueViewHolder valueHolder = (ValueViewHolder)holder;
+        valueHolder.name.setText(parameter.getName());
+        String currentValue = parameter.getCurrentValue();
+        if(parameter.getType()>=2){ //数值型要加上单位
+            currentValue +=" "+parameter.getUnit();
+        } else if(PrefUtil.showNum && !currentValue.equals("error")){        //选项型是否添加选项号
+            int index = parameter.getIndexByOption(currentValue);
+            currentValue = index+": "+currentValue;        //添加选项号
         }
+        valueHolder.value.setText(currentValue);
+        valueHolder.itemView.setOnClickListener(v->{
+            if(onSetButtonListener!=null){
+                onSetButtonListener.onClick(position);
+            }
+        });
+        valueHolder.itemView.setOnLongClickListener(v->{
+            showPopupMenu(v,parameter);
+            return true;
+        });
     }
 
     @Override
@@ -146,24 +99,9 @@ public class SettingCardAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * spinner的viewHolder
-     */
-    class SpinnerViewHolder extends RecyclerView.ViewHolder{
-        TextView name;
-        Spinner spinner;
-        Button button;
-        public SpinnerViewHolder(View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.item_spinner_name);
-            spinner = itemView.findViewById(R.id.item_spinner_spinner);
-            button = itemView.findViewById(R.id.item_spinner_button);
-        }
-    }
-
-    /**
      * value的viewHolder
      */
-    class ValueViewHolder extends RecyclerView.ViewHolder{
+    static class ValueViewHolder extends RecyclerView.ViewHolder{
         TextView name;
         TextView value;
         ValueViewHolder(View itemView){

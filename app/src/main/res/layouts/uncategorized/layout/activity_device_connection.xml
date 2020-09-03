@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--android:background="@mipmap/wallpaper1"-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,6 +12,22 @@
         android:layout_height="wrap_content"
         app:centerText="@string/device_connection"
         app:centerType="textView" />
+
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        app:contentInsetStart="0dp"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        android:clipToPadding="true">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/device_connection"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="18sp"-->
+<!--            />-->
+<!--    </androidx.appcompat.widget.Toolbar>-->
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -29,16 +44,21 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-    <LinearLayout
-        android:id="@+id/scanBottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_skip"
-            android:text="@string/SKIP"
-            style="@style/Widget.Kinco.MaterialButton"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_scan"
+        style="@style/Widget.Kinco.MaterialButton"
+        android:text="@string/SCAN"
+        app:icon="@drawable/ic_search"
+        app:iconGravity="textStart"
+        app:iconSize="12dp"
+        app:iconTint="@color/black"
+        android:layout_marginTop="6dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_skip"
+        android:text="@string/SKIP"
+        style="@style/Widget.Kinco.MaterialButton"/>
 
 <!--        <com.google.android.material.button.MaterialButton-->
 <!--            android:id="@+id/BLEscan"-->
@@ -52,5 +72,4 @@
 <!--            android:layout_weight="1"-->
 <!--            android:visibility="gone" />-->
 
-    </LinearLayout>
 </LinearLayout>

@@ -87,8 +87,7 @@ public class ResourceUtil {
             "B0_03",
             "B0_17",
             "B0_09",
-            "B0_10",
-            "B0_16"
+            "B0_10"
     };
     public static String[] readTerminal = {
             "B0_06",
@@ -115,34 +114,6 @@ public class ResourceUtil {
     };
     public static String[][] readParameters = {readGeneral,readTerminal,readFault,readStatus,readOthers};
 
-
-    //以选择的options里位置取值
-    public static String[][] getOptions(Resources res,int []item){
-        String [][]options = new String[item.length][];
-        for(int i=0; i<item.length; i++)
-            options[i] = res.getStringArray(R.array.A0_options)[item[i]].split(",");
-        return options;
-    }
-
-    //以功能码取值
-    public static String[][] getOptions(Context context, int []item){
-        String [][]options = new String[item.length][];
-        int compareNum[] = {1,2,4,5,8,9,10,11,12,13,14,15,17,33,34,35,37,38,40,41,42,43,44,45,46};
-        for(int i=0; i<item.length; i++){
-            for(int j=0; j<compareNum.length; j++){
-                String nn[] = context.getResources().getStringArray(R.array.A0_options)[j].split(",");
-                if(item[i]==compareNum[j]) {
-                    options[i] = context.getResources().getStringArray(R.array.A0_options)[j].split(",");
-                }
-
-            }
-
-        }
-
-        return options;
-
-    }
-
     /**
      * 批量得到参数名
      * @param context
@@ -162,48 +133,6 @@ public class ResourceUtil {
         return Name;
     }
 
-    public static float[] getMin(Context context, int item[]){
-        float []Min = new float[item.length];
-        Resources res = context.getResources();
-        for(int i=0;i<item.length;i++){
-            String num = String.valueOf(item[i]);
-            if(num.length()<2)
-                num = "0"+num;
-            int id = res.getIdentifier("A0_"+num+"M","string",context.getPackageName());
-            Min[i] = Float.parseFloat(res.getString(id));
-        }
-
-        return Min;
-    }
-
-    public static String[] getUnit(Context context, int item[]){
-        String []Unit = new String[item.length];
-        Resources res = context.getResources();
-        for(int i=0;i<item.length;i++){
-            String num = String.valueOf(item[i]);
-            if(num.length()<2)
-                num = "0"+num;
-
-            Log.d("XmlUtil","A0_"+num+"U");
-            int id = res.getIdentifier("A0_"+num+"U","string",context.getPackageName());
-            Unit[i] = res.getString(id);
-        }
-        return Unit;
-    }
-
-    public static String[] getHint(Context context, int []item){
-        String []Hint = new String[item.length];
-        Resources res = context.getResources();
-        for(int i=0;i<item.length;i++){
-            String num = String.valueOf(item[i]);
-            if(num.length()<2)
-                num = "0"+num;
-            int id = res.getIdentifier("A0_"+num+"H","string",context.getPackageName());
-            Hint[i] = context.getResources().getString(id);
-        }
-        return Hint;
-    }
-
     public static List<ParameterBean> getParameters(Context context,String[] parameterIds){
         List<ParameterBean> parameterBeanList = new ArrayList<>();
         Resources res = context.getResources();
@@ -216,24 +145,40 @@ public class ResourceUtil {
                 String[] parameterXmlArray = res.getStringArray(id);
                 ParameterBean bean = new ParameterBean();
                 bean.setName(parameterXmlArray[0]);
-//                for(String yyy:parameterXmlArray)
-//                    Log.d("child",yyy);
-                int type = Integer.valueOf(parameterXmlArray[1]);
+                int type = Integer.parseInt(parameterXmlArray[1]);
                 bean.setType(type);
-                if (type == 0 || type >= 2) {
+                if(type==0){
+                    for (int j = 2; j < parameterXmlArray.length; j++) {
+                        String[] entry = parameterXmlArray[j].split(":");
+                        bean.addOption(Integer.parseInt(entry[0]),entry[1]);
+                    }
+                }else if(type==1){
+                    id = res.getIdentifier(parameterXmlArray[2], "array", context.getPackageName());
+                    String[] options = res.getStringArray(id);
+                    for (String option : options) {
+                        String[] entry = option.split(":");
+                        bean.addOption(Integer.parseInt(entry[0]),entry[1]);
+                    }
+                }else if(type>=2){
                     //从2到末尾是选项或数值属性
                     for (int j = 2; j < parameterXmlArray.length; j++) {
                         bean.addDescriptionItem(parameterXmlArray[j]);
                     }
-                } else if (type == 1) {
-                    id = res.getIdentifier(parameterXmlArray[2], "array", context.getPackageName());
-                    String[] options = res.getStringArray(id);
-                    for (String option : options) {
-                        bean.addDescriptionItem(option);
-                    }
                 }
+//                if (type == 0 || type >= 2) {
+//                    //从2到末尾是选项或数值属性
+//                    for (int j = 2; j < parameterXmlArray.length; j++) {
+//                        bean.addDescriptionItem(parameterXmlArray[j]);
+//                    }
+//                } else if (type == 1) {
+//                    id = res.getIdentifier(parameterXmlArray[2], "array", context.getPackageName());
+//                    String[] options = res.getStringArray(id);
+//                    for (String option : options) {
+//                        bean.addDescriptionItem(option);
+//                    }
+//                }
                 if(type<2){
-                    bean.setCurrentValue(bean.getDescription().get(0)); //初始值
+                    bean.setCurrentOption(0); //初始值
                 }
                 bean.setResourceId(i);
                 bean.setAddress(idToAddress(i));
@@ -260,34 +205,36 @@ public class ResourceUtil {
                     }else{
                         bean.setName(parameterXmlArray[1]);
                     }
-                    int type = Integer.valueOf(parameterXmlArray[2]);
+                    int type = Integer.parseInt(parameterXmlArray[2]);
                     bean.setType(type);
-                    if(type==1){    //共用选项参数
+                    if(type==0){
+                        for(int j=3; j<parameterXmlArray.length; j++){
+                            String[] entry = parameterXmlArray[j].split(":");
+                            bean.addOption(Integer.parseInt(entry[0]),entry[1]);
+                        }
+                        bean.setCurrentValue("null");
+                    }else if(type==1){      //共用选项参数
                         id = res.getIdentifier(parameterXmlArray[3], "array", context.getPackageName());
                         String[] options = res.getStringArray(id);
                         for(String option:options){
-                            bean.addDescriptionItem(option);
+                            String[] entry = option.split(":");
+                            bean.addOption(Integer.parseInt(entry[0]),entry[1]);
                         }
                         bean.setCurrentValue("null");
-                    }else{
+                    }else if(type>=2){
                         for(int j=3; j<parameterXmlArray.length; j++){
                             bean.addDescriptionItem(parameterXmlArray[j]);
-                        }
-                        if(type==0){
-                            bean.setCurrentValue("null");
                         }
                     }
                     bean.setResourceId(i);
                     bean.setAddress(idToAddress(i));
                     parameterBeanList.add(bean);
-                }else{  //B0.05参数(设备运行状态)
+                }else{  //B0.05参数(设备运行状态)   只有true和false
                     int offset = PrefUtil.getLanguage(context).equals("en")?3:4;
                     for(int j=offset; j<parameterXmlArray.length; j+=2){
                         ParameterBean bean = new ParameterBean();
                         bean.setName(parameterXmlArray[j]);
                         bean.setType(0);
-                        bean.addDescriptionItem("false");
-                        bean.addDescriptionItem("true");
                         bean.setCurrentValue("null");
                         bean.setResourceId(i);
                         bean.setAddress(idToAddress(i));
@@ -301,6 +248,29 @@ public class ResourceUtil {
             }
         }
         return parameterBeanList;
+    }
+
+    public static List<ParameterBean> getStatusWordParameter(Context context){
+        String[] name = context.getResources().getStringArray(R.array.B0_16);
+        int offset = PrefUtil.getLanguage(context).equals("en")?3:4;
+        int optionIndex = 0;
+        String[] options = context.getResources().getStringArray(R.array.B0_16_options);
+        List<ParameterBean> parameterList = new ArrayList<>();
+        for(int i=offset; i<name.length; i+=2){
+            ParameterBean bean = new ParameterBean();
+            bean.setName(name[i]);
+            bean.setType(0);
+            bean.addOption(0, options[optionIndex]);
+            bean.addOption(1, options[optionIndex+1]);
+            optionIndex+=2;
+            bean.setCurrentValue("null");
+            bean.setResourceId("B0_16");
+            bean.setAddress(idToAddress("B0_16"));
+            parameterList.add(bean);
+        }
+        int last = options.length-1;
+        parameterList.get(parameterList.size()-1).addOption(2,options[last]);
+        return parameterList;
     }
 
     private static String idToAddress(String id){

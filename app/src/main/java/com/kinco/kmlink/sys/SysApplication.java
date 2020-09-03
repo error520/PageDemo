@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.kinco.kmlink.utils.PrefUtil;
+
 public class SysApplication extends Application {
     private List<Activity> mList = new LinkedList<Activity>();
     private static SysApplication instance;
@@ -18,6 +20,7 @@ public class SysApplication extends Application {
         instance = this;
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+        PrefUtil.initConfig(this);
 //        //file形式分享文件
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

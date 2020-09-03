@@ -122,7 +122,7 @@ public class FourthpageFragment extends MyFragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
-        if(Showing)
+        if(showing)
             initService();
     }
 

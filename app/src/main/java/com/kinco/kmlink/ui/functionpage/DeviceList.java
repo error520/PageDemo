@@ -31,130 +31,107 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.kinco.kmlink.BluetoothService.BleService;
+import com.kinco.kmlink.EventBusUtils.BleDataEvent;
+import com.kinco.kmlink.EventBusUtils.MessageEvent;
+import com.kinco.kmlink.EventBusUtils.RequestEvent;
 import com.kinco.kmlink.LanguageUtils.LanguageUtil;
+import com.kinco.kmlink.ui.widget.DeviceAdapter;
 import com.kinco.kmlink.utils.PrefUtil;
 import com.kinco.kmlink.MainActivity;
 import com.kinco.kmlink.alertdialog.LoadingDialog;
 import com.kinco.kmlink.alertdialog.PasswordDialog;
 import com.kinco.kmlink.utils.util;
 import com.kinco.kmlink.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
  * 用于显示蓝牙设备列表，并返回蓝牙设备信息
  */
 public class DeviceList extends AppCompatActivity{
-    private ArrayAdapter<String> mPairedDevicesArrayAdapter;
-    private ArrayAdapter<String> mNewDevicesArrayAdapter;
+    private DeviceAdapter deviceAdapter;
     private ProgressBar progressBar;
-    private Button BLEScan;
-    private Button SKIP;
+    private MaterialButton btnScan;
+    private Button btnSkip;
     private PasswordDialog dialog;
-    private LoadingDialog loadingDialog;
     Timer timer = new Timer();
     private static final long SCAN_PERIOD = 10000;
     private String TAG = "DeviceList";
-    private String slaveAddress="null";
-    private LocalBroadcastManager localBroadcastManager;
-    ArrayList<String> device_list = new ArrayList<String>();
-    ArrayList<String> connected_list = new ArrayList<String>();
-    private LocalReceiver localReceiver;
+    ArrayList<String> deviceList = new ArrayList<String>();
     private BleService mBluetoothLeService;
-    private String editPassword="";
-    private String name = "";
+    private String inputPassword="";
+    private Boolean scanning = false;
 
     private void initUI(){
         setContentView(R.layout.activity_device_connection);
-        setResult(Activity.RESULT_CANCELED);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
-//        BLEScan=(Button)findViewById(R.id.BLEscan);
-        SKIP = findViewById(R.id.btn_skip);
-        SKIP.setOnClickListener(new OnClickListener() {
+        progressBar = findViewById(R.id.progressBar);
+        btnScan=findViewById(R.id.btn_scan);
+        btnSkip = findViewById(R.id.btn_skip);
+        btnScan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopScan();
-                Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
-                startActivity(activityIntent);
-                finish();
+                if(!scanning){
+                    scanDevice(true);
+                    deviceAdapter.showConnecting(-1);
+                }else{
+                    scanDevice(false);
+                }
             }
         });
-//        BLEScan.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               try {
-//                   mBluetoothLeService.scanLeDevice(true);
-//                   device_list.clear();
-//                   mNewDevicesArrayAdapter.notifyDataSetChanged();
-//                   BLEScan.setVisibility(View.GONE);
-//                   progressBar.setVisibility(View.VISIBLE);
-//               }catch(Exception e ){Log.d("activity_device_connection",e.toString());}
-//            }
-//        });
-
-        mPairedDevicesArrayAdapter=new ArrayAdapter<String>(this,
-                R.layout.list_item,connected_list);
-        mNewDevicesArrayAdapter=new ArrayAdapter<String>(this,
-                R.layout.list_item,device_list);
-        ListView newDeviceListView=(ListView)findViewById(R.id.new_devices);
-        newDeviceListView.setAdapter(mNewDevicesArrayAdapter);
-        newDeviceListView.setOnItemClickListener(mDeviceClickListen);
+        btnSkip.setOnClickListener(v -> startMainActivity());
+        deviceAdapter=new DeviceAdapter(deviceList);
+        ListView newDeviceListView=findViewById(R.id.new_devices);
+        newDeviceListView.setAdapter(deviceAdapter);
+        newDeviceListView.setOnItemClickListener(((parent, view, position, id) -> {
+            String[] info = deviceList.get(position).split("\n");   //0是设备名, 1是地址
+            if(Pattern.matches(BleService.namePattern,info[0])){
+                mBluetoothLeService.connect(info[1]);
+                deviceAdapter.showConnecting(position);
+            }else{
+                util.centerToast(this,getString(R.string.not_specific_device),0);
+            }
+        }));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         LanguageUtil.changeAppLanguage(this, PrefUtil.getLanguage(this)); // onCreate 之前调用 否则不起作用
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         initUI();
         getBlePermissionFromSys();
         Intent BLEIntent = new Intent(this, BleService.class);
         bindService(BLEIntent, connection, BIND_AUTO_CREATE);
-        localReceiver = new LocalReceiver();
-        localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        localBroadcastManager.registerReceiver(localReceiver, util.makeGattUpdateIntentFilter());
+        BleService.isConnected.observe(this,isConnected->{
+            if(isConnected){
+                showPasswordDialog();
+            }else{
+                deviceAdapter.showConnecting(-1);
+            }
+        });
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        stopScan();
+        scanDevice(false);
         unbindService(connection);
-        localBroadcastManager.unregisterReceiver(localReceiver);
+        EventBus.getDefault().unregister(this);
+//        localBroadcastManager.unregisterReceiver(localReceiver);
     }
-
-    //选项监听器
-    private OnItemClickListener mDeviceClickListen=new OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView,
-                                View view, int i, long l) {
-            stopScan();
-            String info=((TextView) view).getText().toString();
-            String address=info.substring(info.length()-17);
-            name = info.split("\n")[0];
-            slaveAddress = info;
-            if(!slaveAddress.equals("null")) {
-                connected_list.clear();
-                mPairedDevicesArrayAdapter.notifyDataSetChanged();
-            }
-            loadingDialog = new LoadingDialog(DeviceList.this,"",getResources().getString(R.string.connecting_text),true);
-            loadingDialog.setOnClickCancelListener(new LoadingDialog.OnClickCancelListener(){
-                public void onNegativeClick(){
-                    loadingDialog.gone();
-                    mBluetoothLeService.close();
-                }
-            });
-            mBluetoothLeService.connect(address);
-
-        }
-    };
-
-
-
 
     //获取位置权限
     public void getBlePermissionFromSys() {
@@ -192,75 +169,12 @@ public class DeviceList extends AppCompatActivity{
         }
     }
 
-    private class LocalReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            Log.d(TAG,action);
-            //Toast.makeText(DeviceList.this, intent.getStringExtra(BLEService.EXTRA_DATA), Toast.LENGTH_SHORT).show();
-            if (action.equals(BleService.ACTION_GET_DEVICE_NAME)){
-                device_list.add(intent.getStringExtra(BleService.ACTION_GET_DEVICE_NAME));
-                mNewDevicesArrayAdapter.notifyDataSetChanged();
-            }
-            else if(action.equals(BleService.ACTION_SEARCH_COMPLETED)) {
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            else if(action.equals(BleService.ACTION_GATT_CONNECTED)){
-//                stopScan();
-                util.centerToast(DeviceList.this,getString(R.string.connected),0);
-                mBluetoothLeService.slaveAddress = slaveAddress;
-                try {
-                    loadingDialog.gone();
-                    mBluetoothLeService.slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
-                    Log.d(TAG,slaveAddress.substring(slaveAddress.indexOf("_")+1,slaveAddress.indexOf("\n")));
-                    connected_list.clear();
-                    connected_list.add(slaveAddress);
-                    mPairedDevicesArrayAdapter.notifyDataSetChanged();
-                    showPasswordDialog();
-
-                }catch(Exception e){
-                    util.centerToast(DeviceList.this,getString(R.string.get_slaveAddress_failed),0);
-                    e.printStackTrace();
-                    Log.d(TAG,e.toString());
-                }
-            }
-            else if(action.equals(BleService.ACTION_GATT_DISCONNECTED)){
-                if(!(loadingDialog==null))
-                    loadingDialog.gone();
-                scanPeriodically();
-                BleService.deviceName.postValue(getString(R.string.unconnected));
-                util.centerToast(DeviceList.this,getString(R.string.connection_failed),0);
-            }
-            else if(action.equals(BleService.ACTION_DATA_AVAILABLE)){
-                byte[] message = new byte[2];
-                message[0]=intent.getByteArrayExtra(BleService.EXTRA_MESSAGE_DATA)[3];
-                message[1]=intent.getByteArrayExtra(BleService.EXTRA_MESSAGE_DATA)[4];
-                String password=util.toHexString(message,false);
-                if(dialog!=null){
-                    if(editPassword.equals(password)) {
-                        util.centerToast(DeviceList.this, getString(R.string.password_correct), 0);
-                        dialog.gone();
-                        dialog=null;
-                        BleService.deviceName.setValue(name);
-                        Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
-                        startActivity(activityIntent);
-                        finish();
-
-                    }else
-                        util.centerToast(DeviceList.this, getString(R.string.password_wrong), 0);
-                }
-
-
-            }
-        }
-    }
-
     private ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mBluetoothLeService = ((BleService.localBinder) service)
                     .getService();
-            scanPeriodically();
+//            scanPeriodically();
         }
 
         @Override
@@ -277,8 +191,7 @@ public class DeviceList extends AppCompatActivity{
                   @Override
                   public void onPositiveClick() {
                       mBluetoothLeService.readData("0000","0001");
-                      editPassword = dialog.getPassword();
-
+                      inputPassword = dialog.getPassword();
                   }
                   @Override
                   public void onNegativeClick() {
@@ -291,6 +204,9 @@ public class DeviceList extends AppCompatActivity{
         }
     }
 
+    /**
+     * 周期性自动扫描
+     */
     private void scanPeriodically(){
         if (timer == null) {
             timer = new Timer();
@@ -311,12 +227,71 @@ public class DeviceList extends AppCompatActivity{
     class ScanTimeTask extends TimerTask{
         @Override
         public void run() {
-            device_list.clear();
+            deviceList.clear();
             runOnUiThread(()->{
                 progressBar.setVisibility(View.VISIBLE);
-                mNewDevicesArrayAdapter.notifyDataSetChanged();
+                deviceAdapter.notifyDataSetChanged();
             });
             mBluetoothLeService.scanLeDevice(7000);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewMessage(MessageEvent event) {
+        String message = event.getMessage();
+        if (message.startsWith("d:")) {
+            String device = message.split("d:")[1];
+            if (!deviceList.contains(device)) {
+                deviceList.add(device);
+                deviceAdapter.notifyDataSetChanged();
+            }
+        }else if (message.equals("search completed")) {
+            scanDevice(false);
+        }else if(message.equals("connect failed")){
+            deviceAdapter.showConnecting(-1);
+            util.centerToast(this,getString(R.string.connection_failed),0);
+        }
+    }
+    
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewBleData(BleDataEvent event){
+        byte[] message = event.getBleData();
+        byte[] bytesPassword = new byte[]{message[3], message[4]};
+        String password = util.toHexString(bytesPassword, false);
+        if(this.inputPassword.equals(password)&&dialog!=null){
+            dialog.gone();
+            dialog = null;
+            BleService.varified = true;
+            util.centerToast(this,getString(R.string.password_correct),0);
+            startMainActivity();
+        }else{
+            util.centerToast(this,getString(R.string.password_wrong),0);
+        }
+    }
+
+    /**
+     * 是否扫描设备
+     */
+    private void scanDevice(Boolean scanning) {
+        this.scanning = scanning;
+        if (scanning) {
+            deviceList.clear();
+            deviceAdapter.notifyDataSetChanged();
+            mBluetoothLeService.scanLeDevice(7000);
+            btnScan.setText(getString(R.string.stop_scan));
+            btnScan.setIcon(null);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            mBluetoothLeService.stopLeScan();
+            btnScan.setText(getString(R.string.SCAN));
+            btnScan.setIcon(getDrawable(R.drawable.ic_search));
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void startMainActivity(){
+        Intent activityIntent = new Intent(DeviceList.this, MainActivity.class);
+        startActivity(activityIntent);
+        finish();
     }
 }

@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,7 @@ public class BleService extends Service {
     private ArrayList<String> device_list = new ArrayList<String>();
     private Map<String,String> deviceMap = new HashMap<>();
     private LocalBroadcastManager localBroadcastManager;
+    public static String namePattern = "KINCO_\\d+";
     public final static String ACTION_GATT_CONNECTED = "com.kinco.BLEService.ACTION_GATT_CONNECTED";
     public final static String ACTION_GATT_DISCONNECTED = "com.kinco.BLEService.ACTION_GATT_DISCONNECTED";
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.kinco.BLEService.ACTION_GATT_SERVICES_DISCOVERED";
@@ -56,13 +59,8 @@ public class BleService extends Service {
     public final static String EXTRA_MESSAGE_DATA = "com.kinco.BLEService.EXTRA_DATA";
     public final static String ACTION_DATA_LENGTH_FALSE = "com.kinco.BLEService.ACTION_DATA_LENGTH_FALSE";
     public final static  String ACTION_ERROR_CODE="com.kinco.BLEService.ACTION_ERROR_CODE";
-    public final static String ACTION_DEVICE_PASSWORD = "";
     private boolean mScanning;
-    public boolean mConnected=false;
-    public boolean mNewConnection = false;
-    public static String slaveAddress="null";
     public static byte slaveCode = 0x00;
-    private String password;
     private final  IBinder mBinder = new localBinder();
     private BluetoothGatt mBluetoothGatt;
     private List<BluetoothGattCharacteristic> gattCharacteristics;
@@ -75,6 +73,7 @@ public class BleService extends Service {
     private UUID notify_UUID_chara;
     private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGattCharacteristic writeCharacteristic;
+    Handler handler = new Handler(Looper.getMainLooper());
 
     //记录蓝牙通信日志
     public static List<String> BLELog = new ArrayList<>();
@@ -84,8 +83,10 @@ public class BleService extends Service {
 
     public static MutableLiveData<Boolean> isConnected = new MutableLiveData<>();
     public static MutableLiveData<String> deviceName = new MutableLiveData<>();
+    public static boolean newConnection = false;    //是否是新连接的设备(需要初始化参数)
+    public static boolean varified = false;     //是否通过密码验证
 
-    public boolean init(){
+    public void init(){
         isConnected.setValue(false);
         deviceName.setValue(getString(R.string.unconnected));
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
@@ -93,14 +94,13 @@ public class BleService extends Service {
         mBtAdapter = bluetoothManager.getAdapter();
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.d("BLEService","不支持BLE!");
-            return false;
+            return;
         }
         if (mBtAdapter == null || !mBtAdapter.isEnabled()) {
               mBtAdapter.enable();//强制打开蓝牙
 //            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 //            activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-        return true;
     }
     /**
     *发送普通带action字段的广播
@@ -171,6 +171,7 @@ public class BleService extends Service {
                     mScanning = false;
                     mBtAdapter.stopLeScan(mLeScanCallback);
                     Log.d(TAG,"扫描完成");
+                    EventBus.getDefault().post(new MessageEvent("search completed"));
                     broadcastUpdate(ACTION_SEARCH_COMPLETED);
                 }
             },period);
@@ -197,28 +198,25 @@ public class BleService extends Service {
                     deviceMap.put(device.getName(),device.getAddress());
                     broadcastUpdate(ACTION_GET_DEVICE_NAME,device.getName()+"\n" +
                             device.getAddress());
+                    EventBus.getDefault().post(new MessageEvent("d:"+device.getName()+"\n" +
+                            device.getAddress()));  //发送设备信息
                     Log.d(TAG,device.getName()+"\n"+device.getAddress());   //打印日志
                 }
             }
 
     };
 
-    public boolean connect(int position){
-        String address = device_list.get(position).split("\n")[1];
-        return connect(address);
-    }
-
-    public boolean connect(final String address) {//4
+    public void connect(final String address) {//4
         if(deviceMap.containsValue(address)){
             for(String name:deviceMap.keySet()){
                 if(deviceMap.get(name).equals(address)){
                     try{
                         String code = name.substring(name.indexOf("_")+1);
-                        slaveCode = util.intToByte2(Integer.valueOf(code))[1];
+                        slaveCode = util.intToByte2(Integer.parseInt(code))[1];
                     }catch (Exception e){
                         String text = getResources().getString(R.string.connection_failed);
                         util.centerToast(this,text,0);
-                        return false;   //获取从站地址失败, 返回连接失败
+                        return;   //获取从站地址失败, 返回连接失败
                     }
                     break;
                 }
@@ -226,31 +224,36 @@ public class BleService extends Service {
         }
         //如果当前有设备连接, 关闭这个连接
         if(mBluetoothGatt!=null)
-            close();
+             close();
         if (mBtAdapter == null || address == null) {
             Log.d(TAG,"BluetoothAdapter不能初始化 or 未知 address.");
-            Toast.makeText(this,"未能连接",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"未能连接",Toast.LENGTH_LONG).show();
+            EventBus.getDefault().post(new MessageEvent("connect failed"));
 //            broadcastUpdate(ACTION_GATT_DISCONNECTED);
-            return false;
+            return;
         }
 
         final BluetoothDevice device = mBtAdapter
                 .getRemoteDevice(address);
         if (device == null) {
-            String text = getResources().getString(R.string.device_out_of_range);
-            util.centerToast(this,text,0);
+            EventBus.getDefault().post(new MessageEvent("connect failed"));
+//            String text = getResources().getString(R.string.device_out_of_range);
+//            util.centerToast(this,text,0);
             Log.d("data", "设备没找到，不能连接");
 //            broadcastUpdate(ACTION_GATT_DISCONNECTED);
-            return false;
+            return;
         }
 
-        mBluetoothGatt = device.connectGatt(this, false, mBluetoothGattCallback);//真正的连接
+        mBluetoothGatt = device.connectGatt(this, false, connectCallback);//真正的连接
         //这个方法需要三个参数：一个Context对象，自动连接（boolean值,表示只要BLE设备可用是否自动连接到它），和BluetoothGattCallback调用。
         Log.d(TAG, "尝试新的连接:"+address);
-        return true;
 
     }
-    BluetoothGattCallback mBluetoothGattCallback = new BluetoothGattCallback() {
+
+    /**
+     * 连接回调
+     */
+    BluetoothGattCallback connectCallback = new BluetoothGattCallback() {
         //当连接状态发生改变(有信息来)
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -268,6 +271,7 @@ public class BleService extends Service {
             }else {
                 //连接失败
                 Log.e(TAG,"失败=="+status);
+                EventBus.getDefault().post(new MessageEvent("connect failed"));
                 close();
             }
         }
@@ -349,11 +353,12 @@ public class BleService extends Service {
                 Log.d(TAG, notifyCList.get(i).getUuid() + ":");
             }
             //真正连接成功
-            mConnected = true;
             isConnected.postValue(true);
+            deviceName.postValue(gatt.getDevice().getName());
+            newConnection = true;
+            BLELog.clear();
 //            slaveCode = util.intToByte2(Integer.valueOf(slaveAddress.substring(slaveAddress.indexOf("_") + 1, slaveAddress.indexOf("\n"))))[1];
             //mBluetoothGatt.setCharacteristicNotification(UUID.fromString("00002b13-0000-1000-8000-00805f9b34fb"),true);
-
 
         }
 
@@ -379,13 +384,14 @@ public class BleService extends Service {
                 EventBus.getDefault().post(new BleDataEvent(bb2));
             }else if((bb2.length==5)){
                 broadcastUpdate(util.toHexString(bb2,true),1);//广播错误码
+                EventBus.getDefault().post(new BleDataEvent(bb2));
             }
             else{
                 Log.e(TAG,"长度错误!当前长度为"+bb2.length+"");
                 broadcastUpdate(bb2.length+"",2);
             }
-            String logText = "Slave:"+util.toHexString(bb2,true);
-            BLELog.add(BLELog.size()+"   "+logText);
+            String logText = "Slave: "+util.toHexString(bb2,true);
+            BLELog.add(logText);
             Log.d(TAG, logText);
 
         }
@@ -412,25 +418,35 @@ public class BleService extends Service {
         init();
         EventBus.getDefault().register(this);
         Log.d(TAG,"创建了服务");
-//        //调试用
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //scanLeDevice(true);
-//                connect("78:DB:2F:C7:63:A8");
-//            }
-//        },2000);
-
-
     }
 
     @Subscribe
     public void onNewRequestEvent(RequestEvent event){
         String[] request = event.getRequest();
-        if(request[2].equals("read")){
-            readData(request[0],request[1]);
-        }else if(request[2].equals("write")){
-            writeData(request[0],request[1]);
+        String function = request[0];
+        switch (function) {
+            case "read":
+                readData(request[1], request[2]);
+                break;
+            case "write":
+                writeData(request[1], request[2]);
+                break;
+            case "connect":
+                connect(request[1]);
+                break;
+            case "disconnect":
+                close();
+                break;
+            case "scan":
+                scanLeDevice(Integer.parseInt(request[1]));
+                break;
+            case "stop scan":
+                stopLeScan();
+                break;
+            case "send bytes":
+                byte[] data = util.hexStringToBytes(request[1]);
+                sendRawBytes(data,Boolean.parseBoolean(request[2]));
+                break;
         }
     }
 
@@ -450,17 +466,13 @@ public class BleService extends Service {
         }
         mBluetoothGatt.close();
         mBluetoothGatt = null;
-        mConnected=false;
         isConnected.postValue(false);
-        slaveAddress = "null";
+        deviceName.postValue(getString(R.string.unconnected));
+        varified = false;
         slaveCode=0x00;
         broadcastUpdate(ACTION_GATT_DISCONNECTED);
     }
 
-    public void verifyPassword(String password){
-        this.password = password;
-        readData("0000","0001");
-    }
 
     //读取数据
     public void readData(String data1, String data2){
@@ -496,8 +508,8 @@ public class BleService extends Service {
         if(isConnected.getValue()) {
             writeCharacteristic.setValue(send);
             mBluetoothGatt.writeCharacteristic(writeCharacteristic);
-            String logText = "Master:"+util.toHexString(send,true);
-            BLELog.add(BLELog.size()+"   "+logText);
+            String logText = "Master: "+util.toHexString(send,true);
+            BLELog.add(logText);
             Log.d(TAG,logText);
         } else
             broadcastUpdate(ACTION_GATT_DISCONNECTED);
@@ -510,9 +522,9 @@ public class BleService extends Service {
                 data2 = "0"+data2;
         int numA = Integer.parseInt(data1, 16);
         int numB = Integer.parseInt(data2, 16);
-        byte dataA[] = util.intToByte2(numA);
-        byte dataB[] = util.intToByte2(numB);
-        byte send[] = {slaveCode, 0X06, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00};
+        byte[] dataA = util.intToByte2(numA);
+        byte[] dataB = util.intToByte2(numB);
+        byte[] send = {slaveCode, 0X06, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00};
         if(mode)    send[1] = 0x03;
         send[2] = dataA[0];
         send[3] = dataA[1];
@@ -523,13 +535,28 @@ public class BleService extends Service {
         send[7] = CRC[1];
         try {
             writeCharacteristic.setValue(send);
-            boolean result = mBluetoothGatt.writeCharacteristic(writeCharacteristic);
-            String logText = "Master:"+util.toHexString(send,true);
-            BLELog.add(BLELog.size()+"   "+logText);
+            mBluetoothGatt.writeCharacteristic(writeCharacteristic);
+            String logText = "Master: "+util.toHexString(send,true);
+            BLELog.add(logText);
             Log.d(TAG,logText);
         } catch (Exception e) {
             Log.d("data", e.toString());
         }
+    }
+
+    private void sendRawBytes(byte[] data, boolean addCRC){
+        byte[] finalData = data;
+        if(addCRC){
+            finalData = Arrays.copyOf(data,data.length+2);
+            byte[] crc = util.CRC16_Check(data,data.length);
+            finalData[data.length] = crc[0];
+            finalData[data.length+1] = crc[1];
+        }
+        writeCharacteristic.setValue(finalData);
+        mBluetoothGatt.writeCharacteristic(writeCharacteristic);
+        String logText = "Master: "+util.toHexString(finalData,true);
+        BLELog.add(logText);
+        Log.d(TAG,logText);
     }
 
 

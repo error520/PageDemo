@@ -5,27 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/common_titleBar"
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftType="customView"
-        app:leftCustomView="@layout/view_btn_back"
-        app:showBottomLine="true"/>
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_marginVertical="-7dp"/>
+        app:centerType="textView"
+        app:centerText="@string/title_Condition"
+        app:leftType="imageButton"
+        app:leftImageResource="@drawable/ic_back" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressBar2"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:indeterminate="true"-->
+<!--        android:layout_marginVertical="-7dp"/>-->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabTextColor="@color/color_selector_tab_title"
         app:tabMode="auto"/>
-
-
-
 
     <FrameLayout
         android:layout_width="match_parent"

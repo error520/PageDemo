@@ -11,4 +11,7 @@
     <color name="black">#000000</color>
     <color name="ripple_gray">#40858585</color>
     <color name="text_color">#110202</color>
+    <color name="error_orange">#FF5722</color>
+    <color name="master_log_background">#0DDA0D0D</color>
+    <color name="transparent">#00000000</color>
 </resources>
