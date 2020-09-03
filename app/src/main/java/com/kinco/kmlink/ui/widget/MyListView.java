@@ -7,6 +7,9 @@ import android.widget.ListView;
 
 import com.kinco.kmlink.R;
 
+/**
+ * 限定高度的listView
+ */
 public class MyListView extends ListView {
     float maxHeight = 500;
 

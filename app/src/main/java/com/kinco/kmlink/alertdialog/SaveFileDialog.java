@@ -16,6 +16,9 @@ import com.kinco.kmlink.utils.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 文件存储弹窗
+ */
 public class SaveFileDialog {
     final private AlertDialog.Builder builder;
     private AlertDialog dialog;

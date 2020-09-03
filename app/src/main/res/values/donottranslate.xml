@@ -5,17 +5,6 @@
     <string name="value" translatable="false">2</string>
     <string name="signed_value" translatable="false">3</string>
 
-    <string-array name="A023_bits_Name">
-        <item>bit2~bit0</item>
-        <item>bit3</item>
-        <item>bit4</item>
-        <item>bit5</item>
-        <item>bit6</item>
-        <item>bit7</item>
-        <item>bit8</item>
-        <item>bit9</item>
-    </string-array>
-
     <string name="filterPwd" translatable="false">0123456789abcdefABCDEF</string>
 
 

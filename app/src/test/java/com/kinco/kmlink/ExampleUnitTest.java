@@ -38,10 +38,8 @@ public class ExampleUnitTest {
 //        byte[] message = {0x05,0x03,0x00,0x00,0x00,0x77,0x09};
 //        util.setParameterByMessage(message, bean);
 //        System.out.println(bean.getCurrentValue()+"%");
-        String pattern = "KINCO_\\d+";
-        boolean isDevice = Pattern.matches(pattern,"KINCO_1000");
-        System.out.println(isDevice);
-
+        byte[] bytes = util.hexStringToBytes("ABCDEF");
+        System.out.println("1234abCd".toUpperCase());
     }
 
 

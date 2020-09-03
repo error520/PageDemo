@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:centerType="textView"
+        app:centerText="@string/local_files"
+        app:leftType="imageButton"
+        app:leftImageResource="@drawable/ic_back"/>
     <ListView
         android:id="@+id/file_list"
         android:layout_width="match_parent"

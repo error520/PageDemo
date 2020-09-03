@@ -5,147 +5,11 @@
     <string name="title_Condition">Condition</string>
     <string name="title_ReadWrite">Read/Write</string>
     <string name="title_OSC">OSC</string>
-    <string name="A0_00">User password</string>
-    <string name="A0_01">Control mode</string>
-    <string name="A0_02">Main reference frequency selector</string>
-    <string name="A0_03">Digital reference frequency</string>
-    <string name="A0_04">Methods of inputting operating commands</string>
-    <string name="A0_05">Running direction</string>
-    <string name="A0_06">Acc time 1</string>
-    <string name="A0_07">Dec time 1</string>
-    <string name="A0_08">Input terminal X1 function selection</string>
-    <string name="A0_09">Input terminal X2 function selection</string>
-    <string name="A0_10">Terminal control mode selection</string>
-    <string name="A0_11">Bi-direction pen-collector output terminal Y1</string>
-    <string name="A0_12">Output functions of relay R1</string>
-    <string name="A0_13">Y1 terminal output</string>
-    <string name="A0_14">Functions of terminal AO1</string>
-    <string name="A0_15">PG type</string>
-    <string name="A0_16">Number of pulses per revolution of PG</string>
-    <string name="A0_17">Fault masking selection 1</string>
-    <string name="A0_18">Rated power of AC motor 1</string>
-    <string name="A0_19">Number of polarities 0f AC motor 1</string>
-    <string name="A0_20">Rated power of PMSM motor 1</string>
-    <string name="A0_21">Number of polarities 0f PMSM motor 1</string>
-    <string name="A0_22">OldParameter initialization</string>
-    <string name="A0_24">Rated voltage of AC motor</string>
-    <string name="A0_25">Rated current of AC motor</string>
-    <string name="A0_26">Rated frequency of AC motor</string>
-    <string name="A0_27">Rated speed of AC motor</string>
-    <string name="A0_28">Rated voltage of PMSM motor 1</string>
-    <string name="A0_29">Rated current of PMSM motor 1</string>
-    <string name="A0_30">Rated speed of PMSM motor 1</string>
-    <string name="A0_31">Max output frequency</string>
-    <string name="A0_32">Torque boost</string>
-    <string name="A0_33">Starting mode</string>
-    <string name="A0_34">Stopping mode</string>
-    <string name="A0_35">Speed/torque control mode</string>
-    <string name="A0_36">Carrier wave frequency</string>
-    <string name="A0_37">Motor type selection</string>
-    <string name="A0_38">Reference torque selection</string>
-    <string name="A0_39">Digital reference torque</string>
-    <string name="A0_40">Input terminal X3 function selection</string>
-    <string name="A0_41">Input terminal X4 function selection</string>
-    <string name="A0_42">Input terminal X5 function selection</string>
-    <string name="A0_43">Input terminal X6 function selection</string>
-    <string name="A0_44">Functions of terminal A02</string>
-    <string name="A0_45">Output functions of relay R2</string>
-    <string name="B0_00">Output frequency</string>
-    <string name="B0_01">Output voltage</string>
-    <string name="B0_02">Output current</string>
-    <string name="B0_03">Motor power</string>
-    <string name="B0_04">Motor actual frequency</string>
-    <string name="B0_05">Device running status</string>
-    <string name="B0_06">Input terminals status</string>
-    <string name="B0_07">Output terminals status</string>
-    <string name="B0_08">AI1 input voltage</string>
-    <string name="B0_09">Temperature of heatsink 1</string>
-    <string name="B0_10">Fault record 1</string>
-    <string name="B0_11">Bus voltage of the latest failure</string>
-    <string name="B0_12">Actual current of the latest failure</string>
-    <string name="B0_13">Operation frequency of the latest failure</string>
-    <string name="B0_14">Custom-made version number</string>
-    <string name="B0_15">Software date</string>
-    <string name="B0_17">Bus voltage</string>
-    <string name="B0_18">AI1 input</string>
-    <string name="B0_19">AI2 input</string>
-    <string name="B0_20">AO1 output</string>
-    <string name="B0_21">AO2 output</string>
-    <string name="B0_22">Percentage of AI2 after regulation</string>
-    <string name="B0_23">Percentage of Keyboard potentiometer after regulation</string>
 
-    <string-array name="A0_options">
-        <item>0: Vector control without PG,1: Vector control with PG,2: V/F control</item>
-        <item>0: Digital setting Keyboard UP/DN or terminal UP/DN ,1: AI1,2:AI2,3: AI3,4: Set via DI terminal(PULSE),5:Reserved</item>
-        <item>0: Panel control,1: Terminal control,2: Communication control</item>
-        <item>0: Forward,1: Reverse</item>
-        <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit,10: External stop command,11: DC injection braking command,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN),15: Switch to panel control,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2, 20: Main reference frequency via AI3 ,21: Main reference frequency via DI ,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2 ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause ,44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
-        <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit ,10: External stop command,11: DC injection braking command ,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN) ,15: Switch to panel control ,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2 ,20: Main reference frequency via AI3 ,21: Main reference frequency via DI,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2  ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause 44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
-        <item>0: 2-wire operating mode 1,1: 2-wire operating mode 2 ,2: 3-wire operating mode 1,3: 3-wire operation mode 2,4: 2-wires operation mode 3,</item>
-        <item>0: Running signal(RUN),1: Frequency arriving signal(FAR),2: Frequency detection threshold (FDT1),3: Frequency detection threshold (FDT2),4: Overload detection signal(OL) ,5: Low voltage signal(LU) ,6: External fault stop signal(EXT) ,7: Frequency high limit(FHL) ,8: Frequency low limit(FLL) ,9: Zero-speed running ,10: Terminal X1(Reserved) ,11: Terminal X2(Reserved),12: PLC running step complete signal,13: PLC running cycle complete signal,14: Limit of swing frequency upper/lower limit,15: Drive ready (RDY) ,16: Drive fault ,17: Switching signal of host,18: Reserved,19: Torque limiting,20: Drive running forward/reverse,21: Timer 1 full,22: Timer 2 full,23: Setting counter full,24: Intermediate counter full</item>
-        <item>0: Running signal(RUN),1: Frequency arriving signal(FAR),2: Frequency detection threshold (FDT1),3: Frequency detection threshold (FDT2),4: Overload detection signal(OL) ,5: Low voltage signal(LU) ,6: External fault stop signal(EXT) ,7: Frequency high limit(FHL) ,8: Frequency low limit(FLL) ,9: Zero-speed running ,10: Terminal X1(Reserved) ,11: Terminal X2(Reserved),12: PLC running step complete signal,13: PLC running cycle complete signal,14: Limit of swing frequency upper/lower limit,15: Drive ready (RDY) ,16: Drive fault ,17: Switching signal of host,18: Reserved,19: Torque limiting,20: Drive running forward/reverse,21: Timer 1 full,22: Timer 2 full,23: Setting counter full,24: Intermediate counter full</item>
-        <item>0: Running signal(RUN),1: frequency arriving signal(FAR),2: frequency detection threshold (FDT1),3: frequency detection threshold (FDT2),4: overload signal(OL) ,5: low voltage signal(LU) ,6: external fault signal(EXT,7: frequency high limit(FHL),8: frequency low limit(FLL) ,9: zero-speed running ,10: Terminal X1(Reserved) ,11: Terminal X2(Reserved),12: PLC running step complete signal,13: PLC running cycle completesignal,14: Limit of swing frequency upper/lower limit,15: Drive ready (RDY) ,16: Drive fault,17: Switching signal of host ,18: Reserved,19: Torque limiting,20: Drive running forward/reverse ,21~50: Reserved,51: Output frequency (0~ Max. output frequency),52: Preset frequency (0~ Max. output frequency),53: Preset frequency (After Acc/Dec)(0~ Max. output frequency),54: Motor speed(0~ Max. speed) ,55: Output current(0~2*Iei),56: Output current(0~2*Iem) ,57: Output torque(0~3*Tem) ,58: Output power(0~2*Pe),59: Output voltage(0~1.2*Ve),60: Bus voltage(0~800V) ,61: AI1,62: AI2,63: Keyboard potentiometer,64: DI,65: Percentage of host(0~4095)</item>
-        <item>0: No function,1: Output frequency(0~ Max. output frequency),2: Preset frequency(0~ Max. output frequency) ,3: Preset frequency(After Acc/Dec)(0~ Max. output frequency) ,4: Motor speed(0~ Max. speed) ,5: Output current(0~2*Iei),6: Output current(0~2*Iem),7: Output torque(0~3*Tem),8: Output power(0~2*Pe) ,9: Output voltage(0~1.2*Ve),10: Bus voltage(0~800V) ,11: AI1,12: AI2,13: Keyboard potentiometer,14: DI,15: Percentage of host(0~4095) </item>
-        <item>0: ABZ incremental type ,1: UVW incremental type ,2: Cosine type,3: Single pulse</item>
-        <item>0: Disable.Stop when fault happen,1: Disable.Continue operating when fault happen,2: Enable</item>
-        <!--以下为新参数-->
-        <item>0：Start from the starting frequency,1：Brake first and then start,2：Start on the fly(including direction judgement), start at starting frequency,3：Current search type speed tracking starting (only valid in V/F control)</item>
-        <item>0：Dec-to-stop,1：Coast-to-stop,2：Dec-to-stop+DC injection braking</item>
-        <item>0：Speed control mode,1：Torque control mode</item>
-        <item>0：Asynchronous motor,1：Frequency conversion motor,2：Synchronous motor</item>
-        <item>0：Digital setting,1：AI1,2：AI2,3：Keyboard potentiometer,4：Pulse DI terminal setting</item>
-        <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit ,10: External stop command,11: DC injection braking command ,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN) ,15: Switch to panel control ,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2 ,20: Main reference frequency via AI3 ,21: Main reference frequency via DI,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2  ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause 44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,48~50：Reserved,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
-        <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit ,10: External stop command,11: DC injection braking command ,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN) ,15: Switch to panel control ,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2 ,20: Main reference frequency via AI3 ,21: Main reference frequency via DI,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2  ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause 44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,48~50：Reserved,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
-        <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit ,10: External stop command,11: DC injection braking command ,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN) ,15: Switch to panel control ,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2 ,20: Main reference frequency via AI3 ,21: Main reference frequency via DI,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2  ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause 44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,48~50：Reserved,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
-        <item>0: No function,1: Forward,2: Reverse,3: Forward jog operation,4: Reverse jog operation,5: 3-wire operation control,6:External RESET signal input,7: External fault signal input,8: External interrupt signal input,9: Drive operation prohibit ,10: External stop command,11: DC injection braking command ,12:Coast to stop,13:Frequency ramp up (UP),14: Frequency ramp down (DN) ,15: Switch to panel control ,16: Switch to terminal control,17: Switch to communication control mode,18: Main reference frequency via AI1 ,19: Main reference frequency via AI2 ,20: Main reference frequency via AI3 ,21: Main reference frequency via DI,22: Auxiliary reference frequency invalid,23: Auxiliary reference frequency via AI1 (Reserved),24: Auxiliary reference frequency via AI2 (Reserved),25: Auxiliary reference frequency via AI3 (Reserved),26: Auxiliary reference frequency via DI(Reserved),27: Preset frequency 1,28: Preset frequency 2,29: Preset frequency 3,30: Preset frequency 4,31: Acc/Dec time 1,32: Acc/Dec time 2,33: Multiple close-loop reference selection 1,34: Multiple close-loop reference selection 2  ,35: Multiple close-loop reference selection 3 ,36: Multiple close-loop reference selection 4 ,37: Forward prohibit ,38: Reverse prohibit ,39: Acc/Dec prohibit ,40: Process close-loop prohibit ,41: Speed and torque control switching terminal,42: Main frequency switch to digital setting,43: PLC pause 44: PLC prohibit,45: PLC stop memory clear ,46: Swing input,47:Swing reset,48~50：Reserved,51：Timer1 start,52：Timer2 start,53：Counter start,54：Counter reset</item>
-        <item>0: No function,1: Output frequency(0~ Max. output frequency),2: Preset frequency(0~ Max. output frequency) ,3: Preset frequency(After Acc/Dec)(0~ Max. output frequency) ,4: Motor speed(0~ Max. speed) ,5: Output current(0~2*Iei),6: Output current(0~2*Iem),7: Output torque(0~3*Tem),8: Output power(0~2*Pe) ,9: Output voltage(0~1.2*Ve),10: Bus voltage(0~800V) ,11: AI1,12: AI2,13: Keyboard potentiometer,14: DI,15: Percentage of host(0~4095) </item>
-        <item>0: Running signal(RUN),1: Frequency arriving signal(FAR),2: Frequency detection threshold (FDT1),3: Frequency detection threshold (FDT2),4: Overload detection signal(OL) ,5: Low voltage signal(LU) ,6: External fault stop signal(EXT) ,7: Frequency high limit(FHL) ,8: Frequency low limit(FLL) ,9: Zero-speed running ,10: Terminal X1(Reserved) ,11: Terminal X2(Reserved),12: PLC running step complete signal,13: PLC running cycle complete signal,14: Limit of swing frequency upper/lower limit,15: Drive ready (RDY) ,16: Drive fault ,17: Switching signal of host,18: Reserved,19: Torque limiting,20: Drive running forward/reverse,21: Timer 1 full,22: Timer 2 full,23: Setting counter full,24: Intermediate counter full</item>
-        <item>0：V/F curve is defined by user,1：2-order curve,2：1.7-order curve,3：1.2-order curve</item>
-    </string-array>
-
-    <string-array name="fault_record1_options">
-        <item>0:No fault records</item>
-        <item>1:Hardware or software over</item>
-        <item>2:Hardware or software over</item>
-        <item>3:Hardware or software over current during running in constant speed.</item>
-        <item>4:Hardware or software over voltage during acceleration.</item>
-        <item>5:Hardware or software over voltage during deceleration.</item>
-        <item>6:Hardware or software over voltage during running in constant speed.</item>
-        <item>7:Input voltage is too high</item>
-        <item>8:Input phase loss (E008)</item>
-        <item>9:Output phase failure (E009)</item>
-        <item>10:IGBT module protection</item>
-        <item>11:IGBT module’s heatsink overheat.</item>
-        <item>12:Rectifer’s heatsink overheat.</item>
-        <item>13:Running current is larger than VFD rated current for long time.</item>
-        <item>14:Running current is larger than motor rated current for long time.</item>
-        <item>15:External device fault.</item>
-        <item>16:EEPROM R/W fault (E016)</item>
-        <item>17:VFD can not get communication with host.</item>
-        <item>18:Power	board/drive board/contactor damage causes contactor abnormal.</item>
-        <item>19:Hall/drive board abnormal causes current detective circuit fault.</item>
-        <item>20:Reserved (E020)</item>
-        <item>21:Reserved</item>
-        <item>22:Reserved</item>
-        <item>23:OldParameter copy error (E023)</item>
-        <item>24:Auto tunning fault in vector control.(E024)</item>
-        <item>25:Encoder signal fault in lose-loop control(E025)</item>
-        <item>26:VFD running current is detected smaller than set value of load lost(E026)</item>
-        <item>27:Brake unit failure(E027)</item>
-        <item>28:Reserved</item>
-        <item>29:Reserved</item>
-        <item>30:Reserved</item>
-        <item>31:Reserved</item>
-        <item>32:Reserved</item>
-        <item>33:VFD output is short circuit to earth(E033)</item>
-        <item>34:VFD running speed and encoder detected speed deviation exceeds</item>
-        <item>35:Reserved</item>
-        <item>36:Reserved</item>
-        <item>37:Reserved</item>
-        <item>38:Reserved</item>
-        <item>39:Reserved</item>
-        <item>40:Extension card and control board SPIcommunication fault(E040)</item>
-
+    <string-array name="osc_item">
+        <item>Output frequency</item>
+        <item>Output voltage</item>
+        <item>Output current</item>
     </string-array>
 
     <string name="C_110B">Stop mode 0</string>
@@ -154,51 +18,6 @@
     <string name="C_bit3_1">Backward</string>
     <string name="C_bit9_0">Fault reset enable</string>
     <string name="C_bit9_1">Fault reset disable</string>
-
-    <string-array name="CWord_options">
-        <item>111B: Running command,110B: Stop mode 0,101B: Stop mode 1,100B: Stop by external fault,011B: Stop mode 2</item>
-        <item>0: Forward,1: Reverse</item>
-        <item>0: Jog forward disable,1: Jog forward</item>
-        <item>0: Jog reverse disable,1: Jog reverse</item>
-        <item>0: Disable Acc/Dec,1: Enable Acc/Dec</item>
-        <item>0: Host computer control word 1 disable,1: Host computer control word 1 enable</item>
-        <item>0: Main reference disable,1: Main reference enable</item>
-        <item>0: Fault reset disable,1: Fault reset enable</item>
-    </string-array>
-
-    <string-array name = "status_word">
-        <item>@string/B0_00</item>
-        <item>@string/B0_01</item>
-        <item>@string/B0_03</item>
-        <item>VFD run/stop</item>
-        <item>VFD rotation</item>
-        <item>Main reference</item>
-        <item>Serial port control</item>
-        <item>Serial port setting</item>
-        <item>State</item>
-    </string-array>
-
-    <string-array name="status_options">
-        <item>Running</item>
-        <item>Stop</item>
-        <item>Reverse</item>
-        <item>Forward</item>
-        <item>Reach</item>
-        <item>Not Reach</item>
-        <item>Enable</item>
-        <item>Disable</item>
-        <item>Alarm</item>
-        <item>Fault</item>
-        <item>Normal</item>
-    </string-array>
-
-    <string-array name="setDataDialog">
-        <item>range:</item>
-        <item>default:</item>
-        <item>current:</item>
-        <item>input:</item>
-        <item>Set data here</item>
-    </string-array>
 
     <string name="SET">SET</string>
     <string name="OK">OK</string>
@@ -231,15 +50,7 @@
     <string name="CONNECT">connect</string>
     <string name="SAVE">Save</string>
     <string name="OPEN">Open</string>
-    <string name="A0_46">V/F curve setting</string>
-    <string name="A0_47">V/F frequency value F3</string>
-    <string name="A0_48">V/F voltage value V3</string>
-    <string name="A0_49">V/F frequency value F2</string>
-    <string name="A0_50">V/F voltage value V2</string>
-    <string name="A0_51">V/F frequency value F1</string>
-    <string name="A0_52">V/F voltage value V1</string>
-    <string name="A0_53">Cut-off point used for manual torque boost</string>
-    <string name="B0_16">Status word</string>
+
     <string name="A1_Name">Motor parameters</string>
     <string name="A2_Name">V/F parameters</string>
     <string name="A3_Name">Terminal parameters</string>
@@ -316,5 +127,6 @@
     <string name="timeout_waiting">Timeout Waiting</string>
     <string name="timeout_waiting_hint">If the slave computer does not reply within this time, it will be regarded as not responding</string>
     <string name="not_specific_device">Not specific device</string>
+    <string name="local_files">Local files</string>
 
 </resources>

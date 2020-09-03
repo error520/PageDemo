@@ -6,7 +6,7 @@ import android.content.res.Configuration;
 import android.view.KeyEvent;
 
 import com.kinco.kmlink.LanguageUtils.LanguageUtil;
-import com.kinco.kmlink.MainActivity;
+import com.kinco.kmlink.ui.main.MainActivity;
 import com.kinco.kmlink.R;
 import com.kinco.kmlink.utils.PrefUtil;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;

@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-
+/**
+ * 参数数据类, 用于存储一个参数的属性, 当前值等信息
+ */
 public class ParameterBean {
     private String resourceId;
     private String name;
@@ -172,6 +174,7 @@ public class ParameterBean {
         return index;
     }
 
+    //调试用
     public void printInfo(){
         Log.d("child","name:"+name);
         Log.d("child","type:"+type);

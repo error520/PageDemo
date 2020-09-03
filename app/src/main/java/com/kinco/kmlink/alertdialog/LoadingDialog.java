@@ -10,17 +10,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.kinco.kmlink.R;
-import com.kinco.kmlink.ParameterItem.TableAdapter;
 
 import java.lang.reflect.Field;
 
+/**
+ * 带取消按钮的初始化弹窗
+ */
 public class LoadingDialog {
     private View view;
     private LayoutInflater inflater;
     private TextView textView;
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
-    private TableAdapter.ViewHolder holder;
     private Field field;
     Button btnPos;
     Button btnNeg;

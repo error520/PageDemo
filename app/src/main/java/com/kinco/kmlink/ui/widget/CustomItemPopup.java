@@ -1,26 +1,16 @@
 package com.kinco.kmlink.ui.widget;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.kinco.kmlink.ParameterItem.ParameterBean;
 import com.kinco.kmlink.R;
-import com.kinco.kmlink.ui.firstpage.SettingPagerAdapter;
-import com.kinco.kmlink.utils.util;
-
-import java.util.List;
 
 import razerdp.basepopup.BaseLazyPopupWindow;
-import razerdp.basepopup.BasePopupWindow;
 
 /**
  * 添加和移除item的弹起菜单

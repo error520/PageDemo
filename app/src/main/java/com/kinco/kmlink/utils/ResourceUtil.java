@@ -12,6 +12,9 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 从资源文件中获取参数信息
+ */
 public class ResourceUtil {
     public static String[] settingGeneral = {
             "A0_01",

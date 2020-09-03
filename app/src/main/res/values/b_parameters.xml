@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--存放B组参数, 因B组参数选择型的较少, 所以直接把中文和英文存在一个文件里-->
 <resources>
     <string-array name="B0_00">
         <item>Output frequency</item>

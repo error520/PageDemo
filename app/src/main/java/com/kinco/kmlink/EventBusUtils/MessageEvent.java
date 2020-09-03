@@ -1,5 +1,8 @@
 package com.kinco.kmlink.EventBusUtils;
 
+/**
+ * 消息事件
+ */
 public class MessageEvent {
 //    public final static String
 

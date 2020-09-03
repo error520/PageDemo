@@ -9,6 +9,9 @@ import com.kinco.kmlink.R;
 import razerdp.basepopup.BasePopup;
 import razerdp.basepopup.BasePopupWindow;
 
+/**
+ * 初始化数据弹窗
+ */
 public class DialogInitialize extends BasePopupWindow {
 
     public DialogInitialize(Context context){

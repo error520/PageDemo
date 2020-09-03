@@ -147,7 +147,8 @@ public class SerialActivity extends SecondaryActivity {
             }
             boolean addCrc = toggleGroup.getCheckedButtonId() == R.id.toggle_modbus;
             if (BleService.isConnected.getValue()) {
-                String[] request = {"send bytes", editText.getText().toString(), Boolean.toString(addCrc)};
+                String[] request = {"send bytes", editText.getText().toString().toUpperCase(),
+                        Boolean.toString(addCrc)};
                 EventBus.getDefault().post(new RequestEvent(request));
                 refreshLog();
             } else {

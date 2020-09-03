@@ -17,7 +17,6 @@ import java.util.Locale;
 
 
 /**
- * Created by sunnyDay on 2019/7/17 17:48
  * 修改app内部的语言工具类
  */
 public class LanguageUtil {

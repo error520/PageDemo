@@ -41,7 +41,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-
+/**
+ * 蓝牙连接服务
+ */
 public class BleService extends Service {
     private final String TAG = "BLEService";
     private BluetoothAdapter mBtAdapter;
@@ -73,14 +75,9 @@ public class BleService extends Service {
     private UUID notify_UUID_chara;
     private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGattCharacteristic writeCharacteristic;
-    Handler handler = new Handler(Looper.getMainLooper());
 
     //记录蓝牙通信日志
     public static List<String> BLELog = new ArrayList<>();
-
-    //刷新间隔
-    public static int reloadGap = 50;
-
     public static MutableLiveData<Boolean> isConnected = new MutableLiveData<>();
     public static MutableLiveData<String> deviceName = new MutableLiveData<>();
     public static boolean newConnection = false;    //是否是新连接的设备(需要初始化参数)
@@ -281,10 +278,6 @@ public class BleService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                //真正连接成功
-//                FirstpageFragment.initializing = true;//让碎片1初始化
-//                FirstMoreActivity.initializing = true;//让二级界面初始化
-                //mNewConnection = true;
                 broadcastUpdate(ACTION_GATT_CONNECTED);
                 //得到所有Service
                 List<BluetoothGattService> supportedGattServices = gatt.getServices();
@@ -544,6 +537,11 @@ public class BleService extends Service {
         }
     }
 
+    /**
+     *
+     * @param data
+     * @param addCRC
+     */
     private void sendRawBytes(byte[] data, boolean addCRC){
         byte[] finalData = data;
         if(addCRC){

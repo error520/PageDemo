@@ -21,6 +21,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+/**
+ * 读写文件工具类
+ */
 public final class FileUtil {
     public static String pathDir = SysApplication.getContext().getExternalFilesDir(null).getAbsolutePath();
     public static String waveDir = pathDir+"/WaveFile";

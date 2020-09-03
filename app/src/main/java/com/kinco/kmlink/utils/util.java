@@ -330,7 +330,7 @@ public class util {
         return result;
     }
 
-    private static byte charToByte(char c) {
+    public static byte charToByte(char c) {
         return (byte) "0123456789ABCDEF".indexOf(c);
     }
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--存放一些参数共有的选项以节省空间和简化代码-->
 <resources>
     <string-array name="A0_08_options">
         <item>0:No function</item>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--存放A组参数-->
 <resources>
     <string-array name="A0_01">
         <item>Control mode</item>

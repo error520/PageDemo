@@ -119,6 +119,7 @@
                 android:digits="@string/filterPwd"
                 android:hint="@string/hex_input_hint"
                 android:inputType="textEmailAddress"
+                android:textAllCaps="true"
                 android:maxLines="3"
                 android:paddingStart="2dp"
                 android:paddingTop="8dp"

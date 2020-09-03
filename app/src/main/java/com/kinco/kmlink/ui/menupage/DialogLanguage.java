@@ -2,24 +2,18 @@ package com.kinco.kmlink.ui.menupage;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.kinco.kmlink.LanguageUtils.LanguageUtil;
-import com.kinco.kmlink.MainActivity;
+import com.kinco.kmlink.ui.main.MainActivity;
 import com.kinco.kmlink.R;
 import com.kinco.kmlink.utils.PrefUtil;
-import com.kinco.kmlink.utils.util;
 
-import androidx.annotation.NonNull;
 import razerdp.basepopup.BasePopupWindow;
 
 public class DialogLanguage extends BasePopupWindow {

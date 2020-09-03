@@ -18,6 +18,9 @@ import android.os.Process;
 
 import com.kinco.kmlink.utils.FileUtil;
 
+/**
+ * 保存错误日志
+ */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private static final boolean DEBUG = true;

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="osc_item">
-        <item>@string/B0_00</item>
-        <item>@string/B0_01</item>
-        <item>@string/B0_02</item>
-    </string-array>
-</resources>

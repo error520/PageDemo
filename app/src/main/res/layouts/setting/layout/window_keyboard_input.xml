@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="20dp"
         android:paddingVertical="12dp"
-        android:text="@string/A0_24"
+        android:text="@string/A1_Name"
         android:textColor="@color/grayer"
         android:textStyle="bold"/>
     <View

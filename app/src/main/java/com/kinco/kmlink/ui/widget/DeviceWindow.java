@@ -1,7 +1,6 @@
 package com.kinco.kmlink.ui.widget;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,7 +15,6 @@ import com.kinco.kmlink.BluetoothService.BleService;
 import com.kinco.kmlink.EventBusUtils.BleDataEvent;
 import com.kinco.kmlink.EventBusUtils.MessageEvent;
 import com.kinco.kmlink.EventBusUtils.RequestEvent;
-import com.kinco.kmlink.MainViewModel;
 import com.kinco.kmlink.R;
 import com.kinco.kmlink.alertdialog.PasswordDialog;
 import com.kinco.kmlink.utils.util;
@@ -27,12 +25,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import razerdp.basepopup.BasePopupWindow;
 
 /**
@@ -64,7 +59,7 @@ public class DeviceWindow extends BasePopupWindow {
         return layout;
     }
 
-    public DeviceWindow(Context context, MainViewModel viewModel) {
+    public DeviceWindow(Context context) {
         super(context); //在这里面执行onCreateContentView
         BleService.deviceName.observe((LifecycleOwner) context, name -> {
             if(!name.equals(getContext().getString(R.string.unconnected)) && BleService.isConnected.getValue()){
